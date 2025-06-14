@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?ccsproject version="1.0"?>
+<projectOptions>
+	<ccsVariant value="50:Theia-based"/>
+	<ccsVersion value="70.2.0"/>
+	<deviceFamily value="C2000"/>
+	<executableActions value=""/>
+	<createSlaveProjects value=""/>
+	<templateProperties value="id=empty_bitfield.projectspec.empty_bitfield_project"/>
+	<origin value="D:/Yite/Self/Back/P200W_ACDC_DSP_2800137_V1.000"/>
+	<filesToOpen value=""/>
+</projectOptions>
