@@ -112,6 +112,9 @@ PDE_DEPS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 01_App/Source \
+02_Ctr/Source \
+03_Task/Source \
+05_BSP/Source \
 06_CSP/Source \
 08_Cmd \
 
