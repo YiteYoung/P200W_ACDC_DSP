@@ -116,5 +116,6 @@ SUBDIRS := \
 03_Task/Source \
 05_BSP/Source \
 06_CSP/Source \
+07_Driver/Source \
 08_Cmd \
 

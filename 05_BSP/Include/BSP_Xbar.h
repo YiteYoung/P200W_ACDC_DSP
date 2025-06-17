@@ -1,15 +1,15 @@
 #ifndef _BSP_XBAR_H
 #define _BSP_XBAR_H
 
-#ifdef BSP_FUNCTION_XBAR_G
-#define BSP_FUNCTION_XBAR extern
+#ifdef BSP_XBAR_FUNCTION_G
+#define BSP_XBAR_FUNCTION extern
 #else
-#define BSP_FUNCTION_XBAR
+#define BSP_XBAR_FUNCTION
 #endif
 
-BSP_FUNCTION_XBAR   void    sInitInputXbar      (void);
-BSP_FUNCTION_XBAR   void    sInitOutputXbar     (void);
-BSP_FUNCTION_XBAR   void    sInitEPwmXbar       (void);
+BSP_XBAR_FUNCTION   void    sInitInputXbar      (void);
+BSP_XBAR_FUNCTION   void    sInitOutputXbar     (void);
+BSP_XBAR_FUNCTION   void    sInitEPwmXbar       (void);
 
 #endif
 

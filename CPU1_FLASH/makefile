@@ -49,6 +49,9 @@ ORDERED_OBJS += \
 "./06_CSP/Source/f280013x_sysctrl.obj" \
 "./06_CSP/Source/f280013x_tempsensorconv.obj" \
 "./06_CSP/Source/f280013x_usdelay.obj" \
+"./07_Driver/Source/Driver_Adc.obj" \
+"./07_Driver/Source/Driver_Cmpss.obj" \
+"./07_Driver/Source/Driver_Sci.obj" \
 "../08_Cmd/280013x_generic_flash_lnk.cmd" \
 "../08_Cmd/f280013x_headers_nonBIOS.cmd" \
 $(GEN_CMDS__FLAG) \
@@ -66,12 +69,14 @@ RMDIR := RMDIR /S/Q
 -include 03_Task/Source/subdir_vars.mk
 -include 05_BSP/Source/subdir_vars.mk
 -include 06_CSP/Source/subdir_vars.mk
+-include 07_Driver/Source/subdir_vars.mk
 -include 08_Cmd/subdir_vars.mk
 -include 01_App/Source/subdir_rules.mk
 -include 02_Ctr/Source/subdir_rules.mk
 -include 03_Task/Source/subdir_rules.mk
 -include 05_BSP/Source/subdir_rules.mk
 -include 06_CSP/Source/subdir_rules.mk
+-include 07_Driver/Source/subdir_rules.mk
 -include 08_Cmd/subdir_rules.mk
 -include objects.mk
 
@@ -189,14 +194,14 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 P200W_ACDC_DSP_2800137_V1.000.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 -Ooff --define=CPU1 --define=_FLASH --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --abi=coffabi -z -m"P200W_ACDC_DSP_2800137_V1.000.map" --stack_size=0x100 --warn_sections -i"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/lib" -i"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="P200W_ACDC_DSP_2800137_V1.000_linkInfo.xml" --entry_point=code_start --rom_model -o "P200W_ACDC_DSP_2800137_V1.000.out" $(ORDERED_OBJS)
+	"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 -Ooff --define=CPU1 --define=_FLASH --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --abi=coffabi -z -m"P200W_ACDC_DSP_2800137_V1.000.map" --stack_size=0x100 --warn_sections -i"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/lib" -i"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="P200W_ACDC_DSP_2800137_V1.000_linkInfo.xml" --entry_point=code_start --rom_model -o "P200W_ACDC_DSP_2800137_V1.000.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 P200W_ACDC_DSP_2800137_V1.000.hex: $(EXE_OUTPUTS)
 	@echo 'Building secondary target: "$@"'
 	@echo 'Invoking: C2000 Hex Utility'
-	"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/hex2000" --fill=0xFFFF --memwidth=16 --order=LS --romwidth=16 --diag_wrap=off --intel -o "P200W_ACDC_DSP_2800137_V1.000.hex" $(EXE_OUTPUTS__QUOTED)
+	"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/hex2000" --fill=0xFFFF --memwidth=16 --order=MS --romwidth=16 --diag_wrap=off --intel -o "P200W_ACDC_DSP_2800137_V1.000.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -205,15 +210,15 @@ P200W_ACDC_DSP_2800137_V1.000.hex: $(EXE_OUTPUTS)
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
 	-$(RM) "01_App\Source\Communication.obj" "01_App\Source\Grid.obj" "01_App\Source\Init.obj" "01_App\Source\Sample.obj" "01_App\Source\Tempture.obj" "01_App\Source\UserMath.obj" "01_App\Source\main.obj" "02_Ctr\Source\Config_Inv.obj" "02_Ctr\Source\Config_LLc.obj" "02_Ctr\Source\Ctr_Inv.obj" "02_Ctr\Source\Ctr_LLc.obj" "02_Ctr\Source\Protect_Inv.obj" "02_Ctr\Source\Protect_LLc.obj" "03_Task\Source\Task_Fun.obj" "03_Task\Source\Task_Inv.obj" "03_Task\Source\Task_Msw.obj" "03_Task\Source\Task_Sci.obj" "05_BSP\Source\BSP_Adc.obj" "05_BSP\Source\BSP_Cmpss.obj" "05_BSP\Source\BSP_EPwm.obj" "05_BSP\Source\BSP_Gpio.obj" "05_BSP\Source\BSP_Ntc.obj" "05_BSP\Source\BSP_Rly.obj" "05_BSP\Source\BSP_Sci.obj" "05_BSP\Source\BSP_Xbar.obj" "06_CSP\Source\f280013x_adc.obj" "06_CSP\Source\f280013x_codestartbranch.obj" "06_CSP\Source\f280013x_cputimers.obj" "06_CSP\Source\f280013x_dbgier.obj" "06_CSP\Source\f280013x_defaultisr.obj" "06_CSP\Source\f280013x_epwm.obj" "06_CSP\Source\f280013x_globalvariabledefs.obj" "06_CSP\Source\f280013x_gpio.obj" 
-	-$(RM) "06_CSP\Source\f280013x_piectrl.obj" "06_CSP\Source\f280013x_pievect.obj" "06_CSP\Source\f280013x_spi.obj" "06_CSP\Source\f280013x_sysctrl.obj" "06_CSP\Source\f280013x_tempsensorconv.obj" "06_CSP\Source\f280013x_usdelay.obj" 
+	-$(RM) "06_CSP\Source\f280013x_piectrl.obj" "06_CSP\Source\f280013x_pievect.obj" "06_CSP\Source\f280013x_spi.obj" "06_CSP\Source\f280013x_sysctrl.obj" "06_CSP\Source\f280013x_tempsensorconv.obj" "06_CSP\Source\f280013x_usdelay.obj" "07_Driver\Source\Driver_Adc.obj" "07_Driver\Source\Driver_Cmpss.obj" "07_Driver\Source\Driver_Sci.obj" 
 	-$(RM) "01_App\Source\Communication.d" "01_App\Source\Grid.d" "01_App\Source\Init.d" "01_App\Source\Sample.d" "01_App\Source\Tempture.d" "01_App\Source\UserMath.d" "01_App\Source\main.d" "02_Ctr\Source\Config_Inv.d" "02_Ctr\Source\Config_LLc.d" "02_Ctr\Source\Ctr_Inv.d" "02_Ctr\Source\Ctr_LLc.d" "02_Ctr\Source\Protect_Inv.d" "02_Ctr\Source\Protect_LLc.d" "03_Task\Source\Task_Fun.d" "03_Task\Source\Task_Inv.d" "03_Task\Source\Task_Msw.d" "03_Task\Source\Task_Sci.d" "05_BSP\Source\BSP_Adc.d" "05_BSP\Source\BSP_Cmpss.d" "05_BSP\Source\BSP_EPwm.d" "05_BSP\Source\BSP_Gpio.d" "05_BSP\Source\BSP_Ntc.d" "05_BSP\Source\BSP_Rly.d" "05_BSP\Source\BSP_Sci.d" "05_BSP\Source\BSP_Xbar.d" "06_CSP\Source\f280013x_adc.d" "06_CSP\Source\f280013x_cputimers.d" "06_CSP\Source\f280013x_defaultisr.d" "06_CSP\Source\f280013x_epwm.d" "06_CSP\Source\f280013x_globalvariabledefs.d" "06_CSP\Source\f280013x_gpio.d" "06_CSP\Source\f280013x_piectrl.d" "06_CSP\Source\f280013x_pievect.d" "06_CSP\Source\f280013x_spi.d" "06_CSP\Source\f280013x_sysctrl.d" 
-	-$(RM) "06_CSP\Source\f280013x_tempsensorconv.d" 
+	-$(RM) "06_CSP\Source\f280013x_tempsensorconv.d" "07_Driver\Source\Driver_Adc.d" "07_Driver\Source\Driver_Cmpss.d" "07_Driver\Source\Driver_Sci.d" 
 	-$(RM) "06_CSP\Source\f280013x_codestartbranch.d" "06_CSP\Source\f280013x_dbgier.d" "06_CSP\Source\f280013x_usdelay.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
 post-build:
-	-"D:/ti/ccs2020/ccs//utils/tiobj2bin/tiobj2bin.bat" "P200W_ACDC_DSP_2800137_V1.000.out" "P200W_ACDC_DSP_2800137_V1.000.bin" "D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/ofd2000" "D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/hex2000" "D:/ti/ccs2020/ccs//utils/tiobj2bin/mkhex4bin"  & "D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/hex2000" -i "P200W_ACDC_DSP_2800137_V1.000.out" -o "P200W_ACDC_DSP_2800137_V1.000.hex" -order LS -romwidth 16
+	-"D:/ti/ccs2020/ccs//utils/tiobj2bin/tiobj2bin.bat" "P200W_ACDC_DSP_2800137_V1.000.out" "P200W_ACDC_DSP_2800137_V1.000.bin" "D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/ofd2000" "D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/hex2000" "D:/ti/ccs2020/ccs//utils/tiobj2bin/mkhex4bin" & "D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/hex2000" -i "P200W_ACDC_DSP_2800137_V1.000.out" -o "P200W_ACDC_DSP_2800137_V1.000.hex" -order MS -romwidth 16
 	-@echo ' '
 
 secondary-outputs: $(BIN_OUTPUTS)
