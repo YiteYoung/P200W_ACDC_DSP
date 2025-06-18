@@ -1,4 +1,3 @@
-#include "f28x_project.h"
 #include "BSP_Gpio.h"
 
 // =========================== Power Board ================================= //
