@@ -15,7 +15,15 @@ void main(void)
 
     while (true) 
     {
+        sSYS_Time();
         
+        sMswTask();
+
+        sInvTask();
+
+        sFunTask();
+
+        sSciTask();
     }
 }
 

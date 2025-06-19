@@ -1,4 +1,3 @@
-#include "f28x_project.h"
 #include "BSP_Xbar.h"
 
 void    sInitInputXbar(void)

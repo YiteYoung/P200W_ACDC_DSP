@@ -31,13 +31,6 @@ typedef struct{
 static SciStruct    SciList[cMAX_SCI_NO];
 static QUEUE        QList[cMAX_SCI_NO];
 
-volatile struct SCI_REGS* const SciReg[SCI_PORT_End] = 
-{
-    &SciaRegs,
-    &ScibRegs,
-    &ScicRegs
-};
-
 void            sQSciInit   (unsigned int SCI_NO, unsigned int RxSize);
 void            sQInit      (QUEUE *pq, unsigned char *pStart, unsigned int Size);
 unsigned char   sQDataIn    (QUEUE *pq, unsigned char bData);
@@ -210,7 +203,7 @@ unsigned char   sSciWrite(unsigned int SCI_NO, unsigned char *pStart, unsigned i
     sSCI_TX_DATA(SCI_NO, *(pSci->pbTx));
     (pSci->pbTx)++;
     pSci->TxLength--;
-    asm(" CLRC INITM ");
+    asm(" CLRC INTM ");
 
     return eSci_Ready;
 }

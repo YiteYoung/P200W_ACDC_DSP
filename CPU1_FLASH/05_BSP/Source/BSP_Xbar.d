@@ -1,6 +1,7 @@
 # FIXED
 
 05_BSP/Source/BSP_Xbar.obj: ../05_BSP/Source/BSP_Xbar.c
+05_BSP/Source/BSP_Xbar.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Xbar.h
 05_BSP/Source/BSP_Xbar.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f28x_project.h
 05_BSP/Source/BSP_Xbar.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_device.h
 05_BSP/Source/BSP_Xbar.obj: D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/assert.h
@@ -55,9 +56,10 @@
 05_BSP/Source/BSP_Xbar.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_sysctrl_defines.h
 05_BSP/Source/BSP_Xbar.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_epwm_defines.h
 05_BSP/Source/BSP_Xbar.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_defaultisr.h
-05_BSP/Source/BSP_Xbar.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Xbar.h
 
 ../05_BSP/Source/BSP_Xbar.c:
+
+D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Xbar.h:
 
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f28x_project.h:
 
@@ -166,6 +168,4 @@ D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_sysctr
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_epwm_defines.h:
 
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_defaultisr.h:
-
-D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Xbar.h:
 

@@ -128,6 +128,8 @@ typedef enum
     eSCI_Parity_End
 }SciParity_e;
 
+extern                  volatile struct SCI_REGS*               const SciReg[SCI_PORT_End];
+
 DRIVER_SCI_FUNCTION     void            sDrv_SetSci             (unsigned int SCI_NO, unsigned int BaudRate, unsigned int CharSize, unsigned int Parity, unsigned int StopBit, signed int FIFOMode);
 DRIVER_SCI_FUNCTION     void            sDrv_SetSci_Baud        (unsigned int SCI_NO, unsigned int BaudRate);
 DRIVER_SCI_FUNCTION     void            sDrv_SetSci_Char        (unsigned int SCI_NO, unsigned int CharSize);

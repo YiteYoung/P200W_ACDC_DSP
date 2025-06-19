@@ -5,12 +5,20 @@ void sInitDspConfig(void)
     InitSysCtrl();
     DELAY_US(50);
 
+    sInitRam();
+    memcpy(&RamfuncsRunStart, &RamfuncsLoadStart, (size_t)&RamfuncsLoadSize);
+    InitFlash();
+
     sInitGpio();
-    InitPieCtrl();
-    InitPieVectTable();
-
-
-
+    sInitInterrupt();
+    sInitSci();
+    sInitAdc();
+    sInitCmpss();
+    sInitInputXbar();
+    sInitOutputXbar();
+    sInitEPwmXbar();
+    sInitEPwm();
+    sInitTimer();
 }
 
 void sInitSysConfig(void)
