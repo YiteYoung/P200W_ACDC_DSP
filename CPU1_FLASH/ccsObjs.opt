@@ -44,6 +44,8 @@
 "./07_Driver/Source/Driver_Adc.obj"
 "./07_Driver/Source/Driver_Cmpss.obj"
 "./07_Driver/Source/Driver_Sci.obj"
+"./09_Protocol/Source/Crc16.obj"
+"./09_Protocol/Source/Protocol.obj"
 "../08_Cmd/280013x_generic_flash_lnk.cmd"
 "../08_Cmd/f280013x_headers_nonBIOS.cmd"
 -llibc.a

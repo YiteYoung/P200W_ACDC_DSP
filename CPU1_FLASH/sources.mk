@@ -118,4 +118,5 @@ SUBDIRS := \
 06_CSP/Source \
 07_Driver/Source \
 08_Cmd \
+09_Protocol/Source \
 

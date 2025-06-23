@@ -1,7 +1,7 @@
 ******************************************************************************
              TMS320C2000 Linker PC v22.6.2                     
 ******************************************************************************
->> Linked Fri Jun 20 01:51:48 2025
+>> Linked Tue Jun 24 01:24:14 2025
 
 OUTPUT FILE NAME:   <P200W_ACDC_DSP_2800137_V1.000.out>
 ENTRY POINT SYMBOL: "code_start"  address: 00080000
@@ -15,7 +15,7 @@ PAGE 0:
   BOOT_RSVD             00000002   00000126  00000000  00000126  RWIX
   RAMM0                 00000128   000002d8  00000000  000002d8  RWIX
   RAMM1                 00000400   000003f8  00000100  000002f8  RWIX
-  RAMLS0                00008000   00002000  00000353  00001cad  RWIX
+  RAMLS0                00008000   00002000  0000043b  00001bc5  RWIX
   RAMLS1                0000a000   00001ff8  00000000  00001ff8  RWIX
   BEGIN                 00080000   00000002  00000002  00000000  RWIX
   FLASH_BANK0_SEC_0_7   00080002   00001ffe  0000003d  00001fc1  RWIX
@@ -123,7 +123,7 @@ codestart
 
 .pinit     0    00080008    00000000     UNINITIALIZED
 
-.ebss      0    00008000    00000330     UNINITIALIZED
+.ebss      0    00008000    00000418     UNINITIALIZED
                   00008000    000001f2     BSP_Sci.obj (.ebss:_SciList)
                   000081f2    00000009     BSP_Timer.obj (.ebss)
                   000081fb    00000004     BSP_OS.obj (.ebss:_OS_TASK_EVEN)
@@ -135,11 +135,13 @@ codestart
                   000082fc    00000002                       : _lock.c.obj (.ebss:__unlock)
                   000082fe    00000001     Task_Msw.obj (.ebss)
                   000082ff    00000001     --HOLE--
-                  00008300    00000018     BSP_Sci.obj (.ebss:_QList)
-                  00008318    00000018     f280013x_cputimers.obj (.ebss)
+                  00008300    000000de     Protocol.obj (.ebss)
+                  000083de    00000018     BSP_Sci.obj (.ebss:_QList)
+                  000083f6    0000000a     --HOLE--
+                  00008400    00000018     f280013x_cputimers.obj (.ebss)
 
 .TI.ramfunc 
-*          0    00080008    00000023     RUN ADDR = 00008330
+*          0    00080008    00000023     RUN ADDR = 00008418
                   00080008    0000001f     f280013x_sysctrl.obj (.TI.ramfunc)
                   00080027    00000004     f280013x_usdelay.obj (.TI.ramfunc)
 
@@ -508,6 +510,11 @@ MODULE SUMMARY
     +--+---------------------------------+-------+------------------+--------------------+
        Total:                            3159    14                 0                 
                                                                                       
+    .\09_Protocol\Source\
+       Protocol.obj                      0       0                  222               
+    +--+---------------------------------+-------+------------------+--------------------+
+       Total:                            0       0                  222               
+                                                                                      
     D:\ti\ccs2020\ccs\tools\compiler\ti-cgt-c2000_22.6.2.LTS\lib\rts2800_fpu32.lib
        fs_div28.asm.obj                  136     0                  0                 
        boot28.asm.obj                    86      0                  0                 
@@ -524,7 +531,7 @@ MODULE SUMMARY
                                                                                       
        Stack:                            0       0                  256               
     +--+---------------------------------+-------+------------------+--------------------+
-       Grand Total:                      10472   309                6995              
+       Grand Total:                      10472   309                7217              
 
 
 GLOBAL DATA SYMBOLS: SORTED BY DATA PAGE
@@ -618,9 +625,9 @@ address     data page           name
 000082fa     20b (000082c0)     __lock
 000082fc     20b (000082c0)     __unlock
 
-00008318     20c (00008300)     _CpuTimer0
-00008320     20c (00008300)     _CpuTimer1
-00008328     20c (00008300)     _CpuTimer2
+00008400     210 (00008400)     _CpuTimer0
+00008408     210 (00008400)     _CpuTimer1
+00008410     210 (00008400)     _CpuTimer2
 
 00048000    1200 (00048000)     _CanaRegs
 
@@ -712,11 +719,11 @@ abs   ffffffff  .text
 0     000838ad  _ComputeCntrSeedValue           
 0     0008454d  _ConfigCpuTimer                 
 1     0005d300  _CpuSysRegs                     
-0     00008318  _CpuTimer0                      
+0     00008400  _CpuTimer0                      
 1     00000c00  _CpuTimer0Regs                  
-0     00008320  _CpuTimer1                      
+0     00008408  _CpuTimer1                      
 1     00000c08  _CpuTimer1Regs                  
-0     00008328  _CpuTimer2                      
+0     00008410  _CpuTimer2                      
 1     00000c10  _CpuTimer2Regs                  
 0     00083931  _DATALOG_ISR                    
 0     00083adf  _DCC0_ISR                       
@@ -762,7 +769,7 @@ abs   ffffffff  .text
 0     0008477a  _EnableInterrupts               
 1     0005ecd0  _Epg1MuxRegs                    
 1     0005ec00  _Epg1Regs                       
-0     0000834f  _F28x_usDelay                   
+0     00008437  _F28x_usDelay                   
 0     00083bcf  _FLSS_ISR                       
 1     0005f800  _Flash0CtrlRegs                 
 1     0005fb00  _Flash0EccRegs                  
@@ -789,7 +796,7 @@ abs   ffffffff  .text
 0     000837fe  _IDLE                           
 0     00083959  _ILLEGAL_ISR                    
 0     0008450c  _InitCpuTimers                  
-0     00008330  _InitFlash                      
+0     00008418  _InitFlash                      
 0     00084000  _InitGpio                       
 0     00083647  _InitPeripheralClocks           
 0     0008475b  _InitPieCtrl                    
@@ -818,9 +825,9 @@ abs   ffffffff  .text
 0     0008002b  _RamfuncsLoadEnd                
 abs   00000023  _RamfuncsLoadSize               
 0     00080008  _RamfuncsLoadStart              
-0     00008353  _RamfuncsRunEnd                 
+0     0000843b  _RamfuncsRunEnd                 
 abs   00000023  _RamfuncsRunSize                
-0     00008330  _RamfuncsRunStart               
+0     00008418  _RamfuncsRunStart               
 0     00083b25  _SCIA_RX_ISR                    
 0     00083b2f  _SCIA_TX_ISR                    
 0     00083b39  _SCIB_RX_ISR                    
@@ -998,13 +1005,13 @@ page  address   name
 0     000082f8  _tempSensor_scaleFactor         
 0     000082fa  __lock                          
 0     000082fc  __unlock                        
-0     00008318  _CpuTimer0                      
-0     00008320  _CpuTimer1                      
-0     00008328  _CpuTimer2                      
-0     00008330  _InitFlash                      
-0     00008330  _RamfuncsRunStart               
-0     0000834f  _F28x_usDelay                   
-0     00008353  _RamfuncsRunEnd                 
+0     00008400  _CpuTimer0                      
+0     00008408  _CpuTimer1                      
+0     00008410  _CpuTimer2                      
+0     00008418  _InitFlash                      
+0     00008418  _RamfuncsRunStart               
+0     00008437  _F28x_usDelay                   
+0     0000843b  _RamfuncsRunEnd                 
 0     00080000  code_start                      
 0     00080008  _RamfuncsLoadStart              
 0     0008002b  _RamfuncsLoadEnd                
