@@ -31,6 +31,9 @@
 // Driver
 
 
+// Protocol
+#include "Protocol.h"
+
 // CSP
 #include "f28x_project.h"
 

@@ -76,6 +76,8 @@
 01_App/Source/Interrupt.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Xbar.h
 01_App/Source/Interrupt.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Ram.h
 01_App/Source/Interrupt.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Timer.h
+01_App/Source/Interrupt.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/09_Protocol/Include/Protocol.h
+01_App/Source/Interrupt.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/09_Protocol/Include/Crc16.h
 
 ../01_App/Source/Interrupt.c:
 
@@ -228,4 +230,8 @@ D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Xbar.h:
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Ram.h:
 
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Timer.h:
+
+D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/09_Protocol/Include/Protocol.h:
+
+D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/09_Protocol/Include/Crc16.h:
 

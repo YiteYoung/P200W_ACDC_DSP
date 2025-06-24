@@ -20,16 +20,16 @@
 #define     DATA_PART_LO                0
 
 #undef      DATA_PART_HI
-#define     DATA_PART_HI                0
+#define     DATA_PART_HI                1
 
 #undef      DATA_PART_ALL_LO
-#define     DATA_PART_ALL_LO            0
+#define     DATA_PART_ALL_LO            2
 
-#define     RX_HEAD_A                   0x55
-#define     RX_HEAD_B                   0xAA
+#define     RX_HEAD_A                   0x5A
+#define     RX_HEAD_B                   0xA5
 
-#define     TX_HEAD_A                   0xAA
-#define     TX_HEAD_B                   0x55
+#define     TX_HEAD_A                   0xA5
+#define     TX_HEAD_B                   0x5A
 
 // 高字节在前/低字节在前
 #define     RX_DATA_PART_TYPE           DATA_FIRST_LO
@@ -169,8 +169,8 @@ typedef enum
 {
     eRxTx_Control_None      = 0x00,
 
-    eRxTx_Control_Read,
-    eRxTx_Control_Write,
+    // eRxTx_Control_Read,
+    // eRxTx_Control_Write,
     eRxTx_Control_InvOn,
     eRxTx_Control_InvOff,
     eRxTx_Control_ChgOn,
@@ -179,6 +179,7 @@ typedef enum
     eRxTx_Control_GridOff,
     eRxTx_Control_AllOff,
     eRxTx_Control_ClrFault,
+    eRxTx_Control_BootLoader,
 
     eRxTx_Control_End
 }RxTx_Control_e;

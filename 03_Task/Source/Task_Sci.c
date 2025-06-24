@@ -10,7 +10,7 @@ void    sSciTask(void)
 
     if( event == eInitEvent)
     {
-
+        sInitProtocol(SCI_PORT_A, true);
     }
 
     if(event & (TASK_EVENT)1 << eTimer)
@@ -23,7 +23,7 @@ void    sSciTask(void)
         sSciDeathAutoRest(SCI_PORT_A, 30, 15000);
         while(sSciRead(SCI_PORT_A, &bRxData) == eSci_Ready)
         {
-            // sSci_Main_RxTxDeal(SCI_PORT_A,bRxData);
+            sSci_RxTxDeal(SCI_PORT_A,bRxData);
         }
     }
 }
