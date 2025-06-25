@@ -29,7 +29,7 @@
 #define     eMsw_GridRest           10
 
 #define     eInv_InvZero            1
-#define     eInv_PfcZero            2
+#define     eInv_GridZero           2
 
 #define     eFun_InvZero            1
 #define     eFun_GridZero           2

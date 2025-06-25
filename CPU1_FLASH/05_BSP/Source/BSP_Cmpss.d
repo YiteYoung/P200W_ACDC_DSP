@@ -57,6 +57,8 @@
 05_BSP/Source/BSP_Cmpss.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_sysctrl_defines.h
 05_BSP/Source/BSP_Cmpss.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_epwm_defines.h
 05_BSP/Source/BSP_Cmpss.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_defaultisr.h
+05_BSP/Source/BSP_Cmpss.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Adc.h
+05_BSP/Source/BSP_Cmpss.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/07_Driver/Include/Driver_Adc.h
 
 ../05_BSP/Source/BSP_Cmpss.c:
 
@@ -171,4 +173,8 @@ D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_sysctr
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_epwm_defines.h:
 
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/06_CSP/Include/f280013x_defaultisr.h:
+
+D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_Adc.h:
+
+D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/07_Driver/Include/Driver_Adc.h:
 

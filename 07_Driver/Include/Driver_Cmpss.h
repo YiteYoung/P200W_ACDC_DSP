@@ -25,6 +25,13 @@ typedef enum
 
 typedef enum
 {
+    eREF_VDDA = 0,
+    eREF_VDAC,
+    eREF_DAC_END
+}DACREF_e;
+
+typedef enum
+{
     eCMP_INV_DIS = 0,
     eCMP_INV_EN,
 
@@ -115,19 +122,20 @@ typedef enum
 
 typedef struct
 {
-    unsigned int    CMP_CH;         // CMP CH
+    CMPCH_e         CMP_CH;         // CMP CH
 
     unsigned int    DAC_Hi_Value;   // Hi DAC Value
     unsigned int    DAC_Lo_Value;   // Lo DAC Value
 
+    DACREF_e        DAC_REF;
+
     CMPINV_e        CMP_Hi_INV;     // Hi CMP INV Enable/Disable
     CMPINV_e        CMP_Lo_INV;     // Lo CMO INV Enable/Disable
+
     CMPOUT_e        PWMXBAR_Hi_Sel; // Hi CMP Out to EPWM XBar
     CMPOUT_e        PWMXBAR_Lo_Sel; // Lo CMP Out to EPWM XBar
     CMPOUT_e        OUTXBAR_Hi_Sel; // Hi CMP Out to OutPut XBar        
     CMPOUT_e        OUTXBAR_Lo_Sel; // Lo CMP Out to OutPut XBar
-
-    CMPPHYS_e       CMP_PHYS;       // Set Hysteresis
 
     unsigned int    CMP_PIN_Hi_Sel; // CMP Hi Pos Input
     unsigned int    CMP_PIN_Lo_Sel; // CMP Lo Pos Input
@@ -135,6 +143,8 @@ typedef struct
     unsigned int    CLK_Prescale;   // Filiter sample clock prescale
     unsigned int    SAMP_WIN;       // Filiter sample window size
     unsigned int    Thre_SH;        // Filiter majority voting threshold
+
+    CMPPHYS_e       CMP_PHYS;       // Set Hysteresis
 }CMPCONFIG_t;
 
 DRIVER_CMPSS_FUNCTION   void            sDrv_InitCmpss          (CMPCONFIG_t t_CMPSS_Para);

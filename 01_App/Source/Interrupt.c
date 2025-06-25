@@ -15,9 +15,9 @@ void sInv_ISR(void)
 
     // sAdc_Fliter();
 
-    // sAdc_Cal();
+    sSample_Accumulate();
 
-    // sAcCrossDeal();
+    sSample_ZeroDeal(0,0,0,0);
 
     // sGridWaveLossDetect();
 

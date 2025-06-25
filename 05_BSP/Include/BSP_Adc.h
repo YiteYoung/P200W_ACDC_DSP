@@ -9,6 +9,10 @@
 #define BSP_ADC_FUNCTION
 #endif
 
+#define     cADCNUM_NTC             3
+#define     cADCNUM_CURR            5
+#define     cADCNUM_VOLT            5
+
 #define     cADC_RAIO               10.0f
 
 #define     cADC_REF                3.3f
@@ -20,8 +24,8 @@
 #define     cDAC_MID_RANGE          ((cADC_REF      * 0.5f * cDAC_MAX_RANGE) / (cDAC_REF))
 #define     cDAC_MID_RANGE_USER     ((cADC_REF_USER * 0.5f * cDAC_MAX_RANGE) / (cDAC_REF))
 
-#define     cLLC_IND_OCP_A          10.0f
-#define     cPFC_IND_OCP_A          10.0f
+#define     cLLC_RES_OCP_10A          10.0f
+#define     cPFC_IND_OCP_10A          10.0f
 
 #define     cV_Com_V_1V             (20.0f / (2200.0f * 3.0f + 0.1f))       // Com Volt
 #define     cV_Grid_V_1V            (20.0f / (2200.0f * 3.0f + 0.1f))       // Grid Volt
@@ -46,9 +50,34 @@
 #define     cIndCurr_ADC_Gain       ((cADC_REF * cADC_RAIO) / (cI_Ind_V_1A * cADC_MAX_RANGE))
 #define     cLLcCurr_ADC_Gain       ((cADC_REF * cADC_RAIO) / (cI_LLC_V_1A * cADC_MAX_RANGE))
 #define     cBatCurr_ADC_Gain       ((cADC_REF * cADC_RAIO) / (cI_Bat_V_1A * cADC_MAX_RANGE))
+
+#define     cLLC_RES_OCP_DAC_10A    ((cLLC_RES_OCP_10A * cI_LLC_V_1A * cDAC_MAX_RANGE) / cDAC_REF)
+#define     cPFC_IND_OCP_DAC_10A    ((cPFC_IND_OCP_10A * cI_Ind_V_1A * cDAC_MAX_RANGE) / cDAC_REF)
  
 #define     sADCSoftStart()         { AdcaRegs.ADCSOCFRC1.all = 0x0000; AdccRegs.ADCSOCFRC1.all = 0x0000; }
 
+
+typedef enum
+{
+    eAdc_Sample_Start       = 0,
+
+    eAdc_Sample_AC_Start    = 0,
+    GridVolt                = 0,
+    ComVolt                 = 1,
+    OutVolt                 = 2,
+    IndCurr                 = 3,    
+    OutCurr                 = 4,
+    GridCurr                = 5,
+    LLCCurr                 = 6,
+    eAdc_Sample_AC_End      = 7,
+
+    eAdc_Sample_DC_Start    = 7,
+    BusVolt                 = 7,
+    BatVolt                 = 8,
+    BatCurr                 = 9,
+    eAdc_Sample_DC_End      = 10,
+    eAdc_Sample_End         = 10
+}ADC_Sample_e;
 
 typedef struct
 {
@@ -63,20 +92,27 @@ typedef struct
 
 typedef struct
 {
-    ADC_Real_t    BatVolt;
-    ADC_Real_t    ComVolt;
-    ADC_Real_t    OutVolt;
-    ADC_Real_t    GridVolt;
-    ADC_Real_t    BusVolt;
+    ADC_Real_t      GridVolt;
+    ADC_Real_t      ComVolt;    
+    ADC_Real_t      OutVolt;    
+    ADC_Real_t      IndCurr;    
+    ADC_Real_t      OutCurr;    
+    ADC_Real_t      GridCurr;
+    ADC_Real_t      LLCCurr;
 
-    ADC_Real_t    BatCurr;
-    ADC_Real_t    IndCurr;
-    ADC_Real_t    OutCurr;
-    ADC_Real_t    GridCurr;
-    ADC_Real_t    LLCCurr;
+    ADC_Real_t      BusVolt;
+    ADC_Real_t      BatVolt;
+    ADC_Real_t      BatCurr;
+
+    unsigned int    NTC1;
+    unsigned int    NTC2;
+    unsigned int    NTC3;
 }ADC_t;
 
-BSP_ADC_FUNCTION    void    sInitAdc    (void);
-BSP_ADC_FUNCTION    void    sAdcSample  (void);
+BSP_ADC_FUNCTION    void            sInitAdc                (void);
+BSP_ADC_FUNCTION    void            sAdcSample              (void);
+BSP_ADC_FUNCTION    unsigned int    sGetAdc_Result          (ADC_Sample_e Goal);
+BSP_ADC_FUNCTION    float           sGetAdc_Real            (ADC_Sample_e Goal);
+BSP_ADC_FUNCTION    unsigned int    sGetAdc_NTCResult       (unsigned int NTC);
 
 #endif

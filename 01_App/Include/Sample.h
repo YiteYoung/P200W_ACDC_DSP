@@ -7,6 +7,8 @@
 #define SAMPLE_FUNCTION
 #endif
 
+#include "BSP_Adc.h"
+
 typedef struct
 {
     signed int      i16Rms;
@@ -20,31 +22,62 @@ typedef struct
 
 typedef struct
 {
-    Sample_Cal_t    BatVolt;
-    Sample_Cal_t    ComVolt;
-    Sample_Cal_t    OutVolt;
-    Sample_Cal_t    GridVolt;
-    Sample_Cal_t    BusVolt;
+    unsigned long   u32Watt100;
+    unsigned long   u32VA100;
+    unsigned long   u32Curr100;
 
-    Sample_Cal_t    BatCurr;
-    Sample_Cal_t    IndCurr;
-    Sample_Cal_t    OutCurr;
+    unsigned long   u32LoadVA_Pre;
+    unsigned long   u32LoadVA;
+    unsigned long   u32LoadVA_F;
+
+    unsigned long   u32LoadVar_Pre;
+    unsigned long   u32LoadVar;
+    unsigned long   u32LoadVar_F;
+
+      signed long   i32LoadWatt_Pre;
+      signed long   i32LoadWatt;
+      signed long   i32LoadWatt_F;
+    
+      signed int    i16PF;
+
+    unsigned int    u16PowerPercent;
+    unsigned int    u16CurrPercent;
+
+           float    f32LoadSum;
+           float    f32LoadSum_B;
+
+    unsigned int    u16LoadCnt;
+    unsigned int    u16LoadCnt_B;
+}Sample_Load_t;
+
+typedef struct
+{
+    Sample_Cal_t    GridVolt;
+    Sample_Cal_t    ComVolt;    
+    Sample_Cal_t    OutVolt;    
+    Sample_Cal_t    IndCurr;    
+    Sample_Cal_t    OutCurr;    
     Sample_Cal_t    GridCurr;
     Sample_Cal_t    LLCCurr;
+
+    Sample_Cal_t    BusVolt;
+    Sample_Cal_t    BatVolt;
+    Sample_Cal_t    BatCurr;
 }Sample_t;
 
+typedef struct
+{
+    Sample_Load_t   InvLoad;
+    Sample_Load_t   GridLoad;
 
-SAMPLE_FUNCTION void            sSample_CalSum      (void);
+    signed int      BatPower;
+}Load_t;
 
-SAMPLE_FUNCTION unsigned int    sSample_RmsCal      (float *SampleSum,unsigned int *SampleCnt);
-SAMPLE_FUNCTION unsigned int    sSample_AvgCal      (float *SampleSum,unsigned int *SampleCnt);
-
-SAMPLE_FUNCTION unsigned long   sSample_VACal       (unsigned int VoltRms,unsigned int CurrRms, unsigned long *VAPre);
-SAMPLE_FUNCTION   signed long   sSample_WattCal     (float *SampleSum,unsigned int *SampleCnt,signed long *WattPre);
-SAMPLE_FUNCTION unsigned long   sSample_VARCal      (signed long LoadWatt,unsigned long LoadVA);
-
-SAMPLE_FUNCTION          void   sSample_LoadFilter  (signed long Watt,signed long *Watt_F,unsigned long VA,unsigned long *VA_F,unsigned int Filter);
-SAMPLE_FUNCTION          void   sSample_PercentCal  (signed long LoadWatt,unsigned long LoadWatt100,unsigned long LoadVA,unsigned long LoadVA100,signed int *LoadPercent);
-SAMPLE_FUNCTION          void   sSample_PFCal       (signed long LoadWatt,unsigned long LoadVA,signed int *LoadPF);
-
+SAMPLE_FUNCTION void            sSample_Accumulate      (void);
+SAMPLE_FUNCTION void            sSample_ZeroDeal        (unsigned int GridN2P,unsigned int GridP2N, unsigned int InvN2P, unsigned int InvP2N);
+SAMPLE_FUNCTION void            sSample_Cal_DC          (void);
+SAMPLE_FUNCTION void            sSample_Cal_Inv         (void);
+SAMPLE_FUNCTION void            sSample_Cal_Grid        (void);
+SAMPLE_FUNCTION void            sSample_Cal_InvLoad     (void);
+SAMPLE_FUNCTION void            sSample_Cal_GridLoad    (void);
 #endif

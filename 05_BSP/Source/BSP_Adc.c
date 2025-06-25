@@ -37,6 +37,47 @@ void    sAdc_Sample()
     t_ADC.ComVolt.f32Real           =   f32ADSample * 1.0f;
 }
 
+unsigned int sGetAdc_Result(ADC_Sample_e Goal)
+{
+    ADC_Real_t *pAdcResult;
+
+    if(Goal >= eAdc_Sample_End)
+    {
+        return 0;
+    }
+
+    pAdcResult = &t_ADC.GridVolt + Goal;
+
+    return pAdcResult->u16AdcResult;
+}
+
+float sGetAdc_Real(ADC_Sample_e Goal)
+{
+    ADC_Real_t *pAdcReal;
+
+    if(Goal >= eAdc_Sample_End)
+    {
+        return 0.0f;
+    }
+
+    pAdcReal = &t_ADC.GridVolt + Goal;
+
+    return pAdcReal->f32Real;
+}
+
+unsigned int sGetAdc_NTCResult(unsigned int NTC)
+{
+    unsigned int *pNTC;
+    if(NTC > cADCNUM_NTC)
+    {
+        return 0;
+    }
+
+    pNTC = &t_ADC.NTC1 + NTC;
+
+    return *pNTC;
+}
+
 void    sAdc_Calibration(void)
 {
     volatile    unsigned int    *wP1;

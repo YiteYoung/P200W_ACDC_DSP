@@ -2,6 +2,7 @@
 #define _BSP_CMPSS_H
 
 #include "Driver_Cmpss.h"
+#include "BSP_Adc.h"
 
 #ifdef BSP_CMPSS_FUNCTION_G
 #define BSP_CMPSS_FUNCTION extern
