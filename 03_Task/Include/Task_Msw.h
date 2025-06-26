@@ -9,6 +9,7 @@
 
 #include "BSP_OS.h"
 
-TASK_MSW_FUNCTION       void    sMswTask        (void);
+TASK_MSW_FUNCTION       void            sMswTask        (void);
+TASK_MSW_FUNCTION       unsigned int    sGetPfcMode_EN  (void);
 
 #endif

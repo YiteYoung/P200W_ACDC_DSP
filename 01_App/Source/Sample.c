@@ -16,33 +16,43 @@ void            sSample_PFCal       (signed long LoadWatt,unsigned long LoadVA,s
 static          Sample_t            t_Sample;
 static          Load_t              t_Load;
 
-#if 0
 void    sSample_Filter(void)
 {
-    I16Filter(0,t_ADC.BatVolt.f32Real,t_ADC.un_BatVolt_F.dword);
-    t_ADC.BatVolt.f32Real_F = (float)t_ADC.un_BatVolt_F.half.hword;
+    ADC_Real_t  *pReal;
 
-    I16Filter(10,t_ADC.BatVolt.f32Real_F,t_ADC.un_BatVolt_AVG.dword);
-    t_ADC.BatVolt.f32Real_AVG = (float)t_ADC.un_BatVolt_AVG.half.hword;
+    pReal = sGetAdc_RealStr(BatVolt);
+    sI16Filter(0,pReal->f32Real_F,t_Sample.un_BatVolt_F.dword);
+    pReal->f32Real_F = (float)t_Sample.un_BatVolt_F.half.hword;
 
-    I16Filter(0,t_ADC.BatCurr.f32Real,t_ADC.un_BatCurr_F.dword);
-    t_ADC.BatCurrt.f32Real_F = (float)t_ADC.un_BatCurr_F.half.hword;
+    sI16Filter(10,pReal->f32Real_F,t_Sample.un_BatVolt_AVG.dword);
+    pReal->f32Real_AVG = (float)t_Sample.un_BatVolt_AVG.half.hword;
 
-    I16Filter(9,t_ADC.BatCurr.f32Real_F,t_ADC.un_BatCurr_AVG.dword);
-    t_ADC.BatCurr.f32Real_AVG = (float)t_ADC.un_BatCurr_AVG.half.hword;
+    pReal = sGetAdc_RealStr(BatCurr);
+    sI16Filter(0,pReal->f32Real,t_Sample.un_BatCurr_F.dword);
+    pReal->f32Real_F = (float)t_Sample.un_BatCurr_F.half.hword;
 
-    I16Filter(0,t_ADC.BusVolt.f32Real,t_ADC.un_BusVolt_F.dword);
-    t_ADC.BusVolt.f32Real_F = (float)t_ADC.un_BusVolt_F.half.hword;
+    sI16Filter(9,pReal->f32Real_F,t_Sample.un_BatCurr_AVG.dword);
+    pReal->f32Real_AVG = (float)t_Sample.un_BatCurr_AVG.half.hword;
 
-    I16Filter(9,t_ADC.BusVolt.f32Real_F,t_ADC.un_BusVolt_AVG.dword);
-    t_ADC.BusVolt.f32Real_AVG = (float)t_ADC.un_BusVolt_AVG.half.hword;
+    pReal = sGetAdc_RealStr(BusVolt);
+    sI16Filter(0,pReal->f32Real,t_Sample.un_BusVolt_F.dword);
+    pReal->f32Real_F = (float)t_Sample.un_BusVolt_F.half.hword;
 
-    F32LPFilter(0.1992,t_ADC.ComVolt.f32Real,t_ADC.ComVolt.f32Real_F );
-    F32LPFilter(0.1992,t_ADC.OutCurr.f32Real,t_ADC.OutCurr.f32Real_F );
-    F32LPFilter(0.1992,t_ADC.GridVolt.f32Real,t_ADC.GridVolt.f32Real_F );
-    F32LPFilter(0.1992,t_ADC.IndCurr.f32Real,t_ADC.IndCurr.f32Real_F );
+    sI16Filter(9,pReal->f32Real_F,t_Sample.un_BusVolt_AVG.dword);
+    pReal->f32Real_AVG = (float)t_Sample.un_BusVolt_AVG.half.hword;
+
+    pReal = sGetAdc_RealStr(ComVolt);
+    sF32LPFilter(0.1992,pReal->f32Real,pReal->f32Real_F );
+
+    pReal = sGetAdc_RealStr(OutCurr);
+    sF32LPFilter(0.1992,pReal->f32Real,pReal->f32Real_F );
+
+    pReal = sGetAdc_RealStr(GridVolt);
+    sF32LPFilter(0.1992,pReal->f32Real,pReal->f32Real_F );
+
+    pReal = sGetAdc_RealStr(IndCurr);
+    sF32LPFilter(0.1992,pReal->f32Real,pReal->f32Real_F );
 }
-#endif
 
 void    sSample_Accumulate(void)
 {
@@ -442,5 +452,37 @@ void    sSample_PFCal(long LoadWatt, unsigned long LoadVA, int *LoadPF)
             (*LoadPF) = -100;
         }
     }
-    
 }
+
+void    sSample_Cal_Freq(unsigned int PrdPoint,unsigned int SwitchFreq,signed int Volt,unsigned int *pFreq)
+{
+    if( Volt < 20 )
+    {
+        *pFreq = 0;
+        return;
+    }
+
+    if( PrdPoint < 100)
+    {
+        *pFreq = 0;
+    }
+    else 
+    {
+        *pFreq = ((long)SwitchFreq * 100) / PrdPoint;
+    }
+}
+
+signed int  sSample_Get_Rms(ADC_Sample_e Goal)
+{
+    Sample_Cal_t *pSample;
+    if( Goal >= eAdc_Sample_End ) 
+    {
+        return 0;
+    }
+
+    pSample = &t_Sample.GridVolt + Goal;
+
+    return pSample->i16Rms;
+}
+
+

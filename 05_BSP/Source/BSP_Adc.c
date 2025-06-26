@@ -24,7 +24,7 @@ void    sInitAdc(void)
     sDrv_IninAdc();
 }
 
-void    sAdc_Sample()
+void    sAdc_Convert()
 {
     float       f32ADSample;
     signed int  i16ADCData;
@@ -76,6 +76,16 @@ unsigned int sGetAdc_NTCResult(unsigned int NTC)
     pNTC = &t_ADC.NTC1 + NTC;
 
     return *pNTC;
+}
+
+ADC_Real_t* sGetAdc_RealStr(ADC_Sample_e Goal)
+{
+    if(Goal >= eAdc_Sample_End)
+    {
+        return &t_ADC.GridVolt;
+    }
+
+    return &t_ADC.GridVolt + Goal;
 }
 
 void    sAdc_Calibration(void)
@@ -229,5 +239,4 @@ void    sAdc_Calibration(void)
         // SOC Trid Ptr
         AdcSocCtlReg += 2;
     }    
-
 }

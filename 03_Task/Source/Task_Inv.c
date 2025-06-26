@@ -15,7 +15,7 @@ void sInvTask(void)
     {
         // sInv_PowerLimit();
 
-        // sInvFreqCal();
+        // sSample_Cal_Freq(sGetInvPrdPoint(),cSwitchFreq,sSample_Get_Rms(ComVolt),&t_InvPort.u16Freq);
 
         sSample_Cal_Inv();
         sSample_Cal_InvLoad();
@@ -23,10 +23,12 @@ void sInvTask(void)
 
     if( event & ((TASK_EVENT)1 << eInv_GridZero))
     {
-        // sGridFreqCal();
+        // sSample_Cal_Freq(sGetGridPrdPoint(),cSwitchFreq,sSample_Get_Rms(GridVolt),&t_GridPort.u16Freq);
 
+        sSample_Cal_DC();
         sSample_Cal_Grid();
         sSample_Cal_GridLoad();
+        
 
         // sGrid_PowerSoft();
         // sGrid_PowerLoop();

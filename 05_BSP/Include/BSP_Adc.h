@@ -110,9 +110,10 @@ typedef struct
 }ADC_t;
 
 BSP_ADC_FUNCTION    void            sInitAdc                (void);
-BSP_ADC_FUNCTION    void            sAdcSample              (void);
+BSP_ADC_FUNCTION    void            sAdc_Convert            (void);
 BSP_ADC_FUNCTION    unsigned int    sGetAdc_Result          (ADC_Sample_e Goal);
 BSP_ADC_FUNCTION    float           sGetAdc_Real            (ADC_Sample_e Goal);
 BSP_ADC_FUNCTION    unsigned int    sGetAdc_NTCResult       (unsigned int NTC);
+BSP_ADC_FUNCTION    ADC_Real_t*     sGetAdc_RealStr         (ADC_Sample_e Goal);
 
 #endif

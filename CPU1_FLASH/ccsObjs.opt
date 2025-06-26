@@ -10,6 +10,7 @@
 "./02_Ctr/Source/Config_LLc.obj"
 "./02_Ctr/Source/Ctr_Inv.obj"
 "./02_Ctr/Source/Ctr_LLc.obj"
+"./02_Ctr/Source/PLL.obj"
 "./02_Ctr/Source/Protect_Inv.obj"
 "./02_Ctr/Source/Protect_LLc.obj"
 "./03_Task/Source/Task_Fun.obj"

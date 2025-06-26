@@ -8,6 +8,9 @@
 #endif
 
 #include "BSP_Adc.h"
+#include "UserMath.h"
+
+
 
 typedef struct
 {
@@ -63,6 +66,17 @@ typedef struct
     Sample_Cal_t    BusVolt;
     Sample_Cal_t    BatVolt;
     Sample_Cal_t    BatCurr;
+
+    UNLONG          un_BusVolt_F;
+    UNLONG          un_BusVolt_AVG; 
+
+    UNLONG          un_BatVolt_F;
+    UNLONG          un_BatVolt_AVG;
+
+    UNLONG          un_BatCurr_F;
+    UNLONG          un_BatCurr_AVG;
+
+    UNLONG          un_LLCFreq_AVG;   
 }Sample_t;
 
 typedef struct
@@ -73,6 +87,7 @@ typedef struct
     signed int      BatPower;
 }Load_t;
 
+SAMPLE_FUNCTION void            sSample_Filter          (void);
 SAMPLE_FUNCTION void            sSample_Accumulate      (void);
 SAMPLE_FUNCTION void            sSample_ZeroDeal        (unsigned int GridN2P,unsigned int GridP2N, unsigned int InvN2P, unsigned int InvP2N);
 SAMPLE_FUNCTION void            sSample_Cal_DC          (void);
@@ -80,4 +95,7 @@ SAMPLE_FUNCTION void            sSample_Cal_Inv         (void);
 SAMPLE_FUNCTION void            sSample_Cal_Grid        (void);
 SAMPLE_FUNCTION void            sSample_Cal_InvLoad     (void);
 SAMPLE_FUNCTION void            sSample_Cal_GridLoad    (void);
+
+SAMPLE_FUNCTION void            sSample_Cal_Freq        (unsigned int PrdPoint,unsigned int SwitchFreq,signed int Volt,unsigned int *pFreq);
+SAMPLE_FUNCTION signed int      sSample_Get_Rms         (ADC_Sample_e Goal);
 #endif

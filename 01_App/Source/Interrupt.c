@@ -3,17 +3,18 @@
 void sInv_ISR(void)
 {
     static unsigned int u16ISRCnt;
+
     sADCSoftStart();
 
     // sHalfWavePointCal();
 
     // sSetSinCos();
 
-    // sAdc_Sample();
+    sAdc_Convert();
 
     // sInv_Control();
 
-    // sAdc_Fliter();
+    sSample_Filter();
 
     sSample_Accumulate();
 
