@@ -1,5 +1,5 @@
 #include "UserHeader.h"
-#include "PLL.h"
+// #include "PLL.h"
 
 static  PLL_t   t_PLL;
 
@@ -8,12 +8,12 @@ static  PLL_t   t_PLL;
 
 void    sSetSinCos(void)
 {
-    // float   f32TempA,f32TempB;
+    float   f32TempA,f32TempB;
     long    i32TempA,i32TempB,i32TempC;
     long    i32TempSin,i32TempCos;
     int     i16TempA;
     int     i16SaveCnt;
-    // int     volt_alfa,volt_beta;
+    int     volt_alfa,volt_beta;
 
     t_PLL.u16VbetaCnt++;
     UpDnLimit(t_PLL.u16VbetaCnt, 0, cMaxVitualSin - 1);
@@ -88,8 +88,188 @@ void    sSetSinCos(void)
     }
     else 
     {
+        t_PLL.i32InvAngleBak = t_PLL.i32InvAngle;
+        t_PLL.i32InvAngleStep = t_PLL.i32InvAngleBase + t_PLL.i32InvAnglePLL;
+        t_PLL.i32InvAngle += t_PLL.i32InvAngleStep;
+
+        if( t_PLL.i32InvAngle > t_PLL.i32TsPoint )
+        {
+            t_PLL.i32InvAngle -= t_PLL.i32TsPoint;
+        }
+        if (t_PLL.i32InvAngle < 0 ) 
+        {
+            t_PLL.i32InvAngle += t_PLL.i32TsPoint;
+        } 
+        
+        t_PLL.f32InvAnglePu = __divf32((float)t_PLL.i32InvAngle, (float)t_PLL.i32TsPoint);
+        f32TempA = __sinpuf32( t_PLL.f32InvAnglePu );
+        f32TempB = __cospuf32( t_PLL.f32InvAnglePu );
+
+        t_PLL.i16Sin = (int)(f32TempA * 16384);
+        t_PLL.i16Cos = (int)(f32TempB * 16384);
+
+        t_PLL.i32TsPoint1Inv2 = t_PLL.i32TsPoint >> 1;
+        t_PLL.i32TsPoint1Inv4 = t_PLL.i32TsPoint >> 2;
+        t_PLL.i32TsPoint3Inv4 = t_PLL.i32TsPoint - t_PLL.i32TsPoint1Inv4;
+
+        t_PLL.t_InvWave.t_Flag.VoltCrossN2P = false;
+        if( (t_PLL.i32InvAngle >= t_PLL.i32TsPoint3Inv4) && (t_PLL.i32InvAngleBak < t_PLL.i32TsPoint3Inv4) )
+        {
+            t_PLL.t_InvWave.t_Flag.u16PosWaveEn = true;
+            t_PLL.t_InvWave.t_Flag.VoltCrossN2P = true;
+            t_PLL.t_InvWave.t_Flag.VoltPosNow   = true;
+        }
+
+        t_PLL.t_InvWave.t_Flag.VoltCrossP2N = false;
+                if( (t_PLL.i32InvAngle >= t_PLL.i32TsPoint3Inv4) && (t_PLL.i32InvAngleBak < t_PLL.i32TsPoint3Inv4) )
+        {
+            t_PLL.t_InvWave.t_Flag.u16PosWaveEn = false;
+            t_PLL.t_InvWave.t_Flag.VoltCrossN2P = true;
+            t_PLL.t_InvWave.t_Flag.VoltPosNow   = false;
+        }
+
+        if( t_PLL.t_InvWave.t_Flag.u16PosWaveEn != t_PLL.t_InvWave.t_Flag.u16PosWaveEnPre )
+        {
+            t_PLL.t_InvWave.t_Flag.VoltCrossWave = true;
+        }
+        t_PLL.t_InvWave.t_Flag.u16PosWaveEnPre = t_PLL.t_InvWave.t_Flag.u16PosWaveEn;
+
+        // α = （2*A - B - C)/3
+        // β = (B - C)/sqrt(3)
+        // D = α * Cos + β * Sin
+        // Q = β * Cos - α * Sin
+        // Sin = β / sqrt(α^2 + β^2)
+        // Cos = α / sqrt(α^2 + β^2)
+        i32TempA = sGetAdc_Real(ComVolt);
+        sSOGI_Cal(i32TempA);
+
+        volt_alfa = i32TempA;
+        volt_beta = sSOGI_GetBeta() * 1.01f;
+
+        // Park变换
+        t_PLL.i16Volt_D = (int)(((long)volt_alfa * t_PLL.i16Cos + (long)volt_beta * t_PLL.i16Sin) >> 14);
+        t_PLL.i16Volt_Q = (int)(((long)volt_beta * t_PLL.i16Cos - (long)volt_alfa * t_PLL.i16Sin) >> 14);
+    }
+}
+
+void    sHalfWavePointCal(void)
+{
+    signed int  i16InputVolt;
     
+    t_PLL.t_GridWave.u16ISRPoint_P++;
+    t_PLL.t_GridWave.u16ISRPoint_N++;
+    UpLimit(t_PLL.t_GridWave.u16ISRPoint_P, 1000);
+    UpLimit(t_PLL.t_GridWave.u16ISRPoint_N, 1000);
+
+    i16InputVolt = sGetAdc_Real(GridVolt);
+    
+    if( t_PLL.t_GridWave.t_Flag.VoltPosWave == true )
+    {
+        if( i16InputVolt <= -cVac20V )
+        {
+            t_PLL.t_GridWave.u16PolarWaveCnt++;
+        }
+        else 
+        {
+            t_PLL.t_GridWave.u16PolarWaveCnt = 0;
+        }
+
+        if(t_PLL.t_GridWave.u16PolarWaveCnt >= 10)
+        {
+            t_PLL.t_GridWave.u16PolarWaveCnt        = 0;
+            t_PLL.t_GridWave.t_Flag.VoltPosWave     = false;
+            t_PLL.t_GridWave.u16ForceSwapPhaseCnt   = 0;
+        }
+    }
+    else 
+    {
+        if( i16InputVolt >= cVac20V)
+        {
+            t_PLL.t_GridWave.u16PolarWaveCnt++;
+        }
+        else 
+        {
+            t_PLL.t_GridWave.u16PolarWaveCnt = 0;
+        }
+
+        if(t_PLL.t_GridWave.u16PolarWaveCnt >= 10)
+        {
+            t_PLL.t_GridWave.u16PolarWaveCnt        = 0;
+            t_PLL.t_GridWave.t_Flag.VoltPosWave     = true;
+            t_PLL.t_GridWave.u16ForceSwapPhaseCnt   = 0;
+        }
     }
 
+    if( t_PLL.t_GridWave.t_Flag.VoltPosNow == true)
+    {
+        if( t_PLL.t_GridWave.t_Flag.VoltPosWave == false)
+        {
+            t_PLL.t_GridWave.u16PolarNowCnt++;
+            t_PLL.t_GridWave.u16ForceSwapPhaseCnt = 0;
+        }
+        else 
+        {
+            t_PLL.t_GridWave.u16PolarNowCnt = 0;
+            t_PLL.t_GridWave.u16ForceSwapPhaseCnt++;
+            UpLimit(t_PLL.t_GridWave.u16ForceSwapPhaseCnt, cISRCnt5ms);
+        }
+
+        if(  (t_PLL.t_GridWave.t_Flag.VoltPosWave == true && i16InputVolt <= cVac2V ) || t_PLL.t_GridWave.u16PolarNowCnt >= cISRCnt2ms )
+        {
+            t_PLL.t_GridWave.t_Flag.VoltPosNow      = false;
+            t_PLL.t_GridWave.u16PolarNowCnt         = 0;
+            t_PLL.t_GridWave.u16ForceSwapPhaseCnt   = 0;
+        }
+    }
+    else 
+    {
+        if(t_PLL.t_GridWave.t_Flag.VoltPosWave == true)
+        {
+            t_PLL.t_GridWave.u16PolarNowCnt++;
+            t_PLL.t_GridWave.u16ForceSwapPhaseCnt = 0;
+        }
+        else 
+        {
+            t_PLL.t_GridWave.u16PolarWaveCnt = 0;
+            t_PLL.t_GridWave.u16ForceSwapPhaseCnt++;
+            UpLimit(t_PLL.t_GridWave.u16ForceSwapPhaseCnt, cISRCnt5ms);
+        }
+
+        if( (t_PLL.t_GridWave.t_Flag.VoltPosWave == false && i16InputVolt >= -cVac2V) || t_PLL.t_GridWave.u16PolarNowCnt >= cISRCnt2ms)
+        {
+            t_PLL.t_GridWave.t_Flag.VoltPosNow      = true;
+            t_PLL.t_GridWave.u16PolarNowCnt         = 0;
+            t_PLL.t_GridWave.u16ForceSwapPhaseCnt   = 0;
+        }
+    }
+
+    t_PLL.t_GridWave.t_Flag.VoltCrossN2P = false;
+    if( t_PLL.t_GridWave.t_Flag.VoltPosNow == true && t_PLL.t_GridWave.t_Flag.VoltPosPre == false && t_PLL.t_GridWave.t_Flag.VoltPosWave == false && t_PLL.t_GridWave.u16ISRPoint_P >= cMaxHzPointFswCnst ||\
+        t_PLL.t_GridWave.u16ISRPoint_P >= cMinHzPointFswCnst )
+    {
+        t_PLL.t_GridWave.u16ISRPoint_P       = 0;
+        t_PLL.t_GridWave.t_Flag.VoltCrossN2P = true;
+    }
+
+    t_PLL.t_GridWave.t_Flag.VoltCrossP2N = false;
+    if( t_PLL.t_GridWave.t_Flag.VoltPosNow == false && t_PLL.t_GridWave.t_Flag.VoltPosPre == true && t_PLL.t_GridWave.t_Flag.VoltPosWave == true && t_PLL.t_GridWave.u16ISRPoint_N >= cMaxHzPointFswCnst ||\
+        t_PLL.t_GridWave.u16ISRPoint_N >= cMinHzPointFswCnst )
+    {
+        t_PLL.t_GridWave.u16T_ISRPoint       = t_PLL.t_GridWave.u16ISRPoint_N;
+        t_PLL.t_GridWave.u16ISRPoint_N       = 0;
+        t_PLL.t_GridWave.t_Flag.VoltCrossP2N = true;
+    }
+
+    t_PLL.t_GridWave.t_Flag.VoltPosPre = t_PLL.t_GridWave.t_Flag.VoltPosNow;
+
+    sI16Filter(8, t_PLL.t_GridWave.u16T_ISRPoint, t_PLL.t_GridWave.un_AcTpointMean.dword);
+    t_PLL.t_GridWave.i16PrdPoint             = t_PLL.t_GridWave.un_AcTpointMean.half.hword;
+
+    if( t_PLL.t_GridWave.i16PrdPoint < 10 )
+    {
+        t_PLL.t_GridWave.i16PrdPoint = 10;
+    }
+
+    // t_Inv.t_PfcCtrl.t_BandStop.f32RadResnant = __divf32((float)sSOGI_GetCalFs() * 12.5663848f,(float)t_PLL.t_GridWave.i16PrdPoint);
 }
 

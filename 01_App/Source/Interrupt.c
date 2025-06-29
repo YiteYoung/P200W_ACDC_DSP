@@ -6,9 +6,9 @@ void sInv_ISR(void)
 
     sADCSoftStart();
 
-    // sHalfWavePointCal();
+    sHalfWavePointCal();
 
-    // sSetSinCos();
+    sSetSinCos();
 
     sAdc_Convert();
 

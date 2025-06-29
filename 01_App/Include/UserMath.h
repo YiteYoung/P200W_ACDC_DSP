@@ -39,4 +39,37 @@ typedef union
 }UNLONG;
 #endif
 
+typedef struct
+{
+      signed int    i16WaveIn;
+      signed int    i16PLLFs;
+    unsigned long   u32CalFs;
+
+      signed int    i16Kp;
+
+            float   f32SOGI_In;
+            float   f32SOGI_InPre;
+            float   f32SOGI_In2nd;
+
+            float   f32SOGI_Alfa;
+            float   f32SOGI_AlfaPre;
+            float   f32SOGI_Alfa2nd;
+
+            float   f32SOGI_Beta;
+            float   f32SOGI_BetaPre;
+            float   f32SOGI_Beta2nd;
+
+            float   f32SOGI_A1;
+            float   f32SOGI_A2;
+            float   f32SOGI_B0;
+            float   f32SOGI_C0; 
+}SOGI_t;
+
+USERMATH_FUNCTION   void            sSOGI_Init      (void);
+USERMATH_FUNCTION   void            sSOGI_Cal       (float WaveIn);
+USERMATH_FUNCTION   void            sSOGI_Resh      (void);
+USERMATH_FUNCTION   float           sSOGI_GetAlfa   (void);
+USERMATH_FUNCTION   float           sSOGI_GetBeta   (void);
+USERMATH_FUNCTION   unsigned long   sSOGI_GetCalFs  (void);
+
 #endif

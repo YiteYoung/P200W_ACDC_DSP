@@ -55,11 +55,25 @@ typedef struct
 
       signed int    i16Sin;
       signed int    i16Cos;
-
       signed int    i16_2Sin;
       signed int    i16_2Cos;
-
       signed int    i16CosX;
+
+      signed long   i32InvAngle;
+      signed long   i32InvAngleBak;
+      signed long   i32InvAngleStep;
+      signed long   i32InvAngleBase;
+      signed long   i32InvAnglePLL;
+
+      signed long   i32TsPoint;
+      signed long   i32TsPoint1Inv2;
+      signed long   i32TsPoint1Inv4;
+      signed long   i32TsPoint3Inv4;
+
+            float   f32InvAnglePu;
+
+      signed int    i16Volt_D;
+      signed int    i16Volt_Q;
 }PLL_t;
 
 PLL_FUNCTION        void        sSetSinCos          (void);
