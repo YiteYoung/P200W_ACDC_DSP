@@ -96,6 +96,6 @@ SAMPLE_FUNCTION void            sSample_Cal_Grid        (void);
 SAMPLE_FUNCTION void            sSample_Cal_InvLoad     (void);
 SAMPLE_FUNCTION void            sSample_Cal_GridLoad    (void);
 
-SAMPLE_FUNCTION void            sSample_Cal_Freq        (unsigned int PrdPoint,unsigned int SwitchFreq,signed int Volt,unsigned int *pFreq);
-SAMPLE_FUNCTION signed int      sSample_Get_Rms         (ADC_Sample_e Goal);
+SAMPLE_FUNCTION unsigned int    sSample_Cal_Freq        (unsigned int PrdPoint,unsigned int SwitchFreq,signed int Volt);
+SAMPLE_FUNCTION signed int      sSample_GetRms          (ADC_Sample_e Goal);
 #endif

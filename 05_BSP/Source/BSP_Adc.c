@@ -37,7 +37,7 @@ void    sAdc_Convert()
     t_ADC.ComVolt.f32Real           =   f32ADSample * 1.0f;
 }
 
-unsigned int sGetAdc_Result(ADC_Sample_e Goal)
+unsigned int sAdc_GetResult(ADC_Sample_e Goal)
 {
     ADC_Real_t *pAdcResult;
 
@@ -51,7 +51,7 @@ unsigned int sGetAdc_Result(ADC_Sample_e Goal)
     return pAdcResult->u16AdcResult;
 }
 
-float sGetAdc_Real(ADC_Sample_e Goal)
+float sAdc_GetReal(ADC_Sample_e Goal)
 {
     ADC_Real_t *pAdcReal;
 
@@ -65,7 +65,7 @@ float sGetAdc_Real(ADC_Sample_e Goal)
     return pAdcReal->f32Real;
 }
 
-unsigned int sGetAdc_NTCResult(unsigned int NTC)
+unsigned int sAdc_GetNTCResult(unsigned int NTC)
 {
     unsigned int *pNTC;
     if(NTC > cADCNUM_NTC)
@@ -78,7 +78,7 @@ unsigned int sGetAdc_NTCResult(unsigned int NTC)
     return *pNTC;
 }
 
-ADC_Real_t* sGetAdc_RealStr(ADC_Sample_e Goal)
+ADC_Real_t* sAdc_GetRealStr(ADC_Sample_e Goal)
 {
     if(Goal >= eAdc_Sample_End)
     {

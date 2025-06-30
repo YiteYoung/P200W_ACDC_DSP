@@ -20,37 +20,37 @@ void    sSample_Filter(void)
 {
     ADC_Real_t  *pReal;
 
-    pReal = sGetAdc_RealStr(BatVolt);
+    pReal = sAdc_GetRealStr(BatVolt);
     sI16Filter(0,pReal->f32Real_F,t_Sample.un_BatVolt_F.dword);
     pReal->f32Real_F = (float)t_Sample.un_BatVolt_F.half.hword;
 
     sI16Filter(10,pReal->f32Real_F,t_Sample.un_BatVolt_AVG.dword);
     pReal->f32Real_AVG = (float)t_Sample.un_BatVolt_AVG.half.hword;
 
-    pReal = sGetAdc_RealStr(BatCurr);
+    pReal = sAdc_GetRealStr(BatCurr);
     sI16Filter(0,pReal->f32Real,t_Sample.un_BatCurr_F.dword);
     pReal->f32Real_F = (float)t_Sample.un_BatCurr_F.half.hword;
 
     sI16Filter(9,pReal->f32Real_F,t_Sample.un_BatCurr_AVG.dword);
     pReal->f32Real_AVG = (float)t_Sample.un_BatCurr_AVG.half.hword;
 
-    pReal = sGetAdc_RealStr(BusVolt);
+    pReal = sAdc_GetRealStr(BusVolt);
     sI16Filter(0,pReal->f32Real,t_Sample.un_BusVolt_F.dword);
     pReal->f32Real_F = (float)t_Sample.un_BusVolt_F.half.hword;
 
     sI16Filter(9,pReal->f32Real_F,t_Sample.un_BusVolt_AVG.dword);
     pReal->f32Real_AVG = (float)t_Sample.un_BusVolt_AVG.half.hword;
 
-    pReal = sGetAdc_RealStr(ComVolt);
+    pReal = sAdc_GetRealStr(ComVolt);
     sF32LPFilter(0.1992,pReal->f32Real,pReal->f32Real_F );
 
-    pReal = sGetAdc_RealStr(OutCurr);
+    pReal = sAdc_GetRealStr(OutCurr);
     sF32LPFilter(0.1992,pReal->f32Real,pReal->f32Real_F );
 
-    pReal = sGetAdc_RealStr(GridVolt);
+    pReal = sAdc_GetRealStr(GridVolt);
     sF32LPFilter(0.1992,pReal->f32Real,pReal->f32Real_F );
 
-    pReal = sGetAdc_RealStr(IndCurr);
+    pReal = sAdc_GetRealStr(IndCurr);
     sF32LPFilter(0.1992,pReal->f32Real,pReal->f32Real_F );
 }
 
@@ -63,7 +63,7 @@ void    sSample_Accumulate(void)
     for(i = eAdc_Sample_AC_Start; i < eAdc_Sample_AC_End; i++)
     {
         pSample = &t_Sample.GridVolt + i;
-        f32Real = sGetAdc_Real((ADC_Sample_e)i);
+        f32Real = sAdc_GetReal((ADC_Sample_e)i);
         pSample->f32Rms_Sum_B += (f32Real* f32Real * 0.01f);
         pSample->u16SampleCnt_B++;
     }
@@ -71,7 +71,7 @@ void    sSample_Accumulate(void)
     for(i = eAdc_Sample_DC_Start; i < eAdc_Sample_DC_End; i++)
     {
         pSample = &t_Sample.GridVolt + i;
-        f32Real = sGetAdc_Real((ADC_Sample_e)i);
+        f32Real = sAdc_GetReal((ADC_Sample_e)i);
         pSample->f32Avg_Sum += f32Real;
         pSample->u16SampleCnt_B++;
     }
@@ -454,25 +454,24 @@ void    sSample_PFCal(long LoadWatt, unsigned long LoadVA, int *LoadPF)
     }
 }
 
-void    sSample_Cal_Freq(unsigned int PrdPoint,unsigned int SwitchFreq,signed int Volt,unsigned int *pFreq)
+unsigned int    sSample_Cal_Freq(unsigned int PrdPoint,unsigned int SwitchFreq,signed int Volt)
 {
     if( Volt < 20 )
     {
-        *pFreq = 0;
-        return;
+        return 0;
     }
 
     if( PrdPoint < 100)
     {
-        *pFreq = 0;
+        return 0;
     }
     else 
     {
-        *pFreq = ((long)SwitchFreq * 100) / PrdPoint;
+        return (unsigned int)(((long)SwitchFreq * 100) / PrdPoint);
     }
 }
 
-signed int  sSample_Get_Rms(ADC_Sample_e Goal)
+signed int  sSample_GetRms(ADC_Sample_e Goal)
 {
     Sample_Cal_t *pSample;
     if( Goal >= eAdc_Sample_End ) 

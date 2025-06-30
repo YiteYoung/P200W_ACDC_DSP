@@ -76,7 +76,11 @@ typedef struct
       signed int    i16Volt_Q;
 }PLL_t;
 
-PLL_FUNCTION        void        sSetSinCos          (void);
-PLL_FUNCTION        void        sHalfWavePointCal   (void);
+PLL_FUNCTION        void        sSetSinCos                  (void);
+PLL_FUNCTION        void        sHalfWavePointCal           (void);
+
+PLL_FUNCTION        int         sPLL_GetGridPos             (void);
+PLL_FUNCTION        int         sPLL_GetGridPrdPoint        (void);
+PLL_FUNCTION        int         sPLL_GetInvPrdPoint         (void);
 
 #endif

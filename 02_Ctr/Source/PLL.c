@@ -39,11 +39,12 @@ void    sSetSinCos(void)
     UpDnLimit(i16SaveCnt, 0, cMaxVitualSin - 1);
 
     // 获取虚拟beta
-    t_PLL.i16Volt_Alfa = sSample_Get_Rms(ComVolt);
+    t_PLL.i16Volt_Alfa = sSample_GetRms(ComVolt);
     t_PLL.i16Volt_Beta = t_PLL.i16VbetaArray[i16SaveCnt];
 
     // 计算Sin/Cos及过零
-    if(sGetPfcMode_EN() == true)
+    // if(sGetPfcMode_EN() == true)
+    if(0)
     {
         // 计算mod
         i32TempA = t_PLL.i16Volt_Alfa;
@@ -140,7 +141,7 @@ void    sSetSinCos(void)
         // Q = β * Cos - α * Sin
         // Sin = β / sqrt(α^2 + β^2)
         // Cos = α / sqrt(α^2 + β^2)
-        i32TempA = sGetAdc_Real(ComVolt);
+        i32TempA = sAdc_GetReal(ComVolt);
         sSOGI_Cal(i32TempA);
 
         volt_alfa = i32TempA;
@@ -161,7 +162,7 @@ void    sHalfWavePointCal(void)
     UpLimit(t_PLL.t_GridWave.u16ISRPoint_P, 1000);
     UpLimit(t_PLL.t_GridWave.u16ISRPoint_N, 1000);
 
-    i16InputVolt = sGetAdc_Real(GridVolt);
+    i16InputVolt = sAdc_GetReal(GridVolt);
     
     if( t_PLL.t_GridWave.t_Flag.VoltPosWave == true )
     {
@@ -271,5 +272,20 @@ void    sHalfWavePointCal(void)
     }
 
     // t_Inv.t_PfcCtrl.t_BandStop.f32RadResnant = __divf32((float)sSOGI_GetCalFs() * 12.5663848f,(float)t_PLL.t_GridWave.i16PrdPoint);
+}
+
+int sPLL_GetGridPos(void)
+{
+    return t_PLL.t_GridWave.t_Flag.VoltPosNow;
+}
+
+int sPLL_GetGridPrdPoint(void)
+{
+    return t_PLL.t_GridWave.i16PrdPoint;
+}
+
+int sPLL_GetInvPrdPoint(void)
+{
+    return (int)(t_PLL.i32TsPoint / t_PLL.i32InvAngleStep);
 }
 

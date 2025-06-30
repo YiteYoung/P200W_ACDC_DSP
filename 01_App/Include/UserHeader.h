@@ -7,6 +7,7 @@
 #include "Interrupt.h"
 #include "Sample.h"
 #include "PLL.h"
+#include "Grid.h"
 #include "UserMath.h"
 #include "UserDefine.h"
 

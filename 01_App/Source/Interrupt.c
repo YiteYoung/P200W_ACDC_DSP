@@ -20,7 +20,7 @@ void sInv_ISR(void)
 
     sSample_ZeroDeal(0,0,0,0);
 
-    // sGridWaveLossDetect();
+    sGrid_WaveLossDetect();
 
     unsigned char u8RxData;
     sSCiRxISR(SCI_PORT_A, &u8RxData);
