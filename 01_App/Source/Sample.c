@@ -1,5 +1,4 @@
-#include "Sample.h"
-#include "UserMath.h"
+#include "UserHeader.h"
 
 static void     sClrSampleCnt       (ADC_Sample_e Goal);
 unsigned int    sSample_RmsCal      (float *SampleSum,unsigned int *SampleCnt);
@@ -97,12 +96,12 @@ void    sSample_ZeroDeal(unsigned int GridN2P,unsigned int GridP2N, unsigned int
         t_Load.GridLoad.f32LoadSum_B     = 0;
         t_Load.GridLoad.u16LoadCnt_B     = 0;
 
-        // OSEventSend(cPrioInv,eInvPfcZero);
+        OSEventSend(cPrioInv,eInv_GridZero);
     }
 
     if( GridP2N == true )
     {
-        // OSEventSend(cPrioFun,eFunGridZero);
+        OSEventSend(cPrioFun,eFun_GridZero);
     }
 
     if( InvN2P == true )
@@ -132,7 +131,7 @@ void    sSample_ZeroDeal(unsigned int GridN2P,unsigned int GridP2N, unsigned int
         t_Load.InvLoad.f32LoadSum_B     = 0;
         t_Load.InvLoad.u16LoadCnt_B     = 0;
 
-        // OSEventSend(cPrioInv,eInvInvZero);
+        OSEventSend(cPrioInv,eInv_InvZero);
     }
 
     if( InvP2N == true )
@@ -140,7 +139,7 @@ void    sSample_ZeroDeal(unsigned int GridN2P,unsigned int GridP2N, unsigned int
         EALLOW;
         EPwm5Regs.TZCLR.bit.CBCPULSE    = 0; // CBC恢复,0-ZERO,1-Prd,2-Zero_Prd,3-不恢复
         EDIS;
-        // OSEventSend(cPrioFun,eFunInvZero);
+        OSEventSend(cPrioFun,eFun_InvZero);
     }
 }
 

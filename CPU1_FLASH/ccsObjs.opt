@@ -20,6 +20,7 @@
 "./05_BSP/Source/BSP_Adc.obj"
 "./05_BSP/Source/BSP_Cmpss.obj"
 "./05_BSP/Source/BSP_EPwm.obj"
+"./05_BSP/Source/BSP_Fault.obj"
 "./05_BSP/Source/BSP_Gpio.obj"
 "./05_BSP/Source/BSP_Ntc.obj"
 "./05_BSP/Source/BSP_OS.obj"

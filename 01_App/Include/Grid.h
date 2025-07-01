@@ -1,7 +1,7 @@
 #ifndef _GRID_H
 #define _GRID_H
 
-#ifdef GRID_FUNCTION_H
+#ifdef GRID_FUNCTION_G
 #define GRID_FUNCTION extern
 #else
 #define GRID_FUNCTION

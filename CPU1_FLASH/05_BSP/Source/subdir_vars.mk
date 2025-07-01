@@ -9,6 +9,7 @@ C_SRCS += \
 ../05_BSP/Source/BSP_Adc.c \
 ../05_BSP/Source/BSP_Cmpss.c \
 ../05_BSP/Source/BSP_EPwm.c \
+../05_BSP/Source/BSP_Fault.c \
 ../05_BSP/Source/BSP_Gpio.c \
 ../05_BSP/Source/BSP_Ntc.c \
 ../05_BSP/Source/BSP_OS.c \
@@ -22,6 +23,7 @@ C_DEPS += \
 ./05_BSP/Source/BSP_Adc.d \
 ./05_BSP/Source/BSP_Cmpss.d \
 ./05_BSP/Source/BSP_EPwm.d \
+./05_BSP/Source/BSP_Fault.d \
 ./05_BSP/Source/BSP_Gpio.d \
 ./05_BSP/Source/BSP_Ntc.d \
 ./05_BSP/Source/BSP_OS.d \
@@ -35,6 +37,7 @@ OBJS += \
 ./05_BSP/Source/BSP_Adc.obj \
 ./05_BSP/Source/BSP_Cmpss.obj \
 ./05_BSP/Source/BSP_EPwm.obj \
+./05_BSP/Source/BSP_Fault.obj \
 ./05_BSP/Source/BSP_Gpio.obj \
 ./05_BSP/Source/BSP_Ntc.obj \
 ./05_BSP/Source/BSP_OS.obj \
@@ -48,6 +51,7 @@ OBJS__QUOTED += \
 "05_BSP\Source\BSP_Adc.obj" \
 "05_BSP\Source\BSP_Cmpss.obj" \
 "05_BSP\Source\BSP_EPwm.obj" \
+"05_BSP\Source\BSP_Fault.obj" \
 "05_BSP\Source\BSP_Gpio.obj" \
 "05_BSP\Source\BSP_Ntc.obj" \
 "05_BSP\Source\BSP_OS.obj" \
@@ -61,6 +65,7 @@ C_DEPS__QUOTED += \
 "05_BSP\Source\BSP_Adc.d" \
 "05_BSP\Source\BSP_Cmpss.d" \
 "05_BSP\Source\BSP_EPwm.d" \
+"05_BSP\Source\BSP_Fault.d" \
 "05_BSP\Source\BSP_Gpio.d" \
 "05_BSP\Source\BSP_Ntc.d" \
 "05_BSP\Source\BSP_OS.d" \
@@ -74,6 +79,7 @@ C_SRCS__QUOTED += \
 "../05_BSP/Source/BSP_Adc.c" \
 "../05_BSP/Source/BSP_Cmpss.c" \
 "../05_BSP/Source/BSP_EPwm.c" \
+"../05_BSP/Source/BSP_Fault.c" \
 "../05_BSP/Source/BSP_Gpio.c" \
 "../05_BSP/Source/BSP_Ntc.c" \
 "../05_BSP/Source/BSP_OS.c" \

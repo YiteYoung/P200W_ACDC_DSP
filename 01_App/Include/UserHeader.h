@@ -1,6 +1,6 @@
 
-#ifndef _USERHeader_H
-#define _USERHeader_H
+#ifndef _USERHEADER_H
+#define _USERHEADER_H
 
 // App
 #include "Init.h"
@@ -31,6 +31,7 @@
 #include "BSP_Ram.h"
 #include "BSP_OS.h"
 #include "BSP_Timer.h"
+#include "BSP_Fault.h"
 
 
 // Driver

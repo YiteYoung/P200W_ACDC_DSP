@@ -1,17 +1,17 @@
 #include "UserHeader.h"
 
-static GridProt_t  t_GridPort;
+static      GridProt_t          t_GridPort;
 
 void    sGrid_StatusDeal(void)
 {
     // Freq Err
     if( t_GridPort.t_Flag.FreqLoss == true )
     {
-        // sSetAlarm(eAlarm_GridFreqErr);
+        sFault_SetAlarm(eAlarm_GridFreqErr);
     }
     else 
     {
-        // sClrAlarm(eAlarm_GridFreqErr);
+        sFault_ClrAlarm(eAlarm_GridFreqErr);
     }
 
     // Grid Status Check
@@ -20,12 +20,12 @@ void    sGrid_StatusDeal(void)
         t_GridPort.t_Flag.Waveloss == true ) 
     {
         t_GridPort.t_Flag.InWorkNow = false;
-        // sSetAlarm(eAlarm_GridVoltErr);
+        sFault_SetAlarm(eAlarm_GridVoltErr);
     }
     else 
     {
         t_GridPort.t_Flag.InWorkNow = true;
-        // sClrAlarm(eAlarm_GridVoltErr);
+        sFault_ClrAlarm(eAlarm_GridVoltErr);
     }
 
     // Grid Ok
@@ -53,7 +53,7 @@ void    sGrid_StatusDeal(void)
         {
             t_GridPort.u16VoltRestDlyCnt    = 0;
             t_GridPort.t_Flag.VoltRestAct   = false;
-            // OSEventSend(cPrioMsw,  eMsw_GridRest);
+            OSEventSend(cPrioMsw,  eMsw_GridRest);
         }
     }
     else 
@@ -68,7 +68,7 @@ void    sGrid_StatusDeal(void)
         {
             t_GridPort.u16VoltLossDlyCnt    = 0;
             t_GridPort.t_Flag.VoltLossAct   = false;
-            // OSEventSend(cPrioMsw,  eMsw_GridLost);
+            OSEventSend(cPrioMsw,  eMsw_GridLost);
         }
     }
     else 
@@ -186,7 +186,7 @@ void    sGrid_ZeroRestDeal(void)
 
     t_GridPort.u16VoltRestDlyCnt    = 0;
     t_GridPort.t_Flag.VoltRestAct   = false;
-    // OSEventSend(cPrioMsw, eMsw_GridRest);
+    OSEventSend(cPrioMsw, eMsw_GridRest);
 }
 
 void    sGrid_ZeroLossDeal(void)
@@ -198,7 +198,7 @@ void    sGrid_ZeroLossDeal(void)
 
     t_GridPort.u16VoltLossDlyCnt    = 0;
     t_GridPort.t_Flag.VoltLossAct   = false;
-    // OSEventSend(cPrioMsw, eMsw_GridLost);
+    OSEventSend(cPrioMsw, eMsw_GridLost);
 }
 
 void    sGrid_WaveLossDetect(void)
@@ -367,11 +367,11 @@ void    sGrid_WaveLossDetect(void)
 
     if( t_GridPort.t_Flag.Waveloss == true )
     {
-        // sSetAlarm(eAlarm_GridVoltErr);
-        // if( sGetPfcMode_EN() == true)
-        // {
-        //     OSEventSend(cPrioMsw, eMsw_GridLost);
-        // }
+        sFault_SetAlarm(eAlarm_GridVoltErr);
+        if( sMsw_GetPfcMode() == true)
+        {
+            OSEventSend(cPrioMsw, eMsw_GridLost);
+        }
     }
 }
 

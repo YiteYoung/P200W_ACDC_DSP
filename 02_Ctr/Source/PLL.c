@@ -43,8 +43,7 @@ void    sSetSinCos(void)
     t_PLL.i16Volt_Beta = t_PLL.i16VbetaArray[i16SaveCnt];
 
     // 计算Sin/Cos及过零
-    // if(sGetPfcMode_EN() == true)
-    if(0)
+    if( sMsw_GetPfcMode() == true)
     {
         // 计算mod
         i32TempA = t_PLL.i16Volt_Alfa;

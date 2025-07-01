@@ -42,7 +42,7 @@ TASK_EVENT  OSEventGet(INTOS Prio)
     return event;
 }
 
-void    OSEvenSend(INTOS Prio, INTOS EventID)
+void    OSEventSend(INTOS Prio, INTOS EventID)
 {
     TASK_EVENT  event;
 
