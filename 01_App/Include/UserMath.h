@@ -65,6 +65,23 @@ typedef struct
             float   f32SOGI_C0; 
 }SOGI_t;
 
+typedef struct
+{
+    float       f32Kr;
+    float       f32RadWi;
+    float       f32RadResnant;
+
+    float       Q0;
+    float       Q1;
+    float       R0;
+    float       R1;
+    float       P0;
+    float       P1;
+    
+    float       Out0;
+    float       Out1;
+}BandStop_t;
+
 USERMATH_FUNCTION   void            sSOGI_Init      (void);
 USERMATH_FUNCTION   void            sSOGI_Cal       (float WaveIn);
 USERMATH_FUNCTION   void            sSOGI_Resh      (void);

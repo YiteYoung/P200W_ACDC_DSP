@@ -23,6 +23,6 @@ void sInitDspConfig(void)
 
 void sInitSysConfig(void)
 {
-
+    sGrid_InitDetectValue();
 }
 

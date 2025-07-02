@@ -83,4 +83,10 @@ PLL_FUNCTION        int         sPLL_GetGridPos             (void);
 PLL_FUNCTION        int         sPLL_GetGridPrdPoint        (void);
 PLL_FUNCTION        int         sPLL_GetInvPrdPoint         (void);
 
+PLL_FUNCTION        int         sPLL_GetInvCrossN2P         (void);
+PLL_FUNCTION        int         sPLL_GetInvCrossP2N         (void);
+
+PLL_FUNCTION        int         sPLL_GetInvVoltD            (void);
+PLL_FUNCTION        int         sPLL_GetInvVoltQ            (void);
+
 #endif

@@ -288,3 +288,23 @@ int sPLL_GetInvPrdPoint(void)
     return (int)(t_PLL.i32TsPoint / t_PLL.i32InvAngleStep);
 }
 
+int sPLL_GetInvCrossN2P(void)
+{
+    return t_PLL.t_InvWave.t_Flag.VoltCrossN2P;
+}
+
+int sPLL_GetInvCrossP2N(void)
+{
+    return t_PLL.t_InvWave.t_Flag.VoltCrossP2N;
+}
+
+int sPLL_GetInvVoltD(void)
+{
+    return t_PLL.i16Volt_D;
+}
+
+int sPLL_GetInvVoltQ(void)
+{
+    return t_PLL.i16Volt_Q;
+}
+

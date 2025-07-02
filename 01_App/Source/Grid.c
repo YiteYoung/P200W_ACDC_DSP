@@ -2,6 +2,24 @@
 
 static      GridProt_t          t_GridPort;
 
+void    sGrid_InitDetectValue(void)
+{
+    t_GridPort.i16RmsHiLossValue    = cVac270V;
+    t_GridPort.i16RmsLoLossValue    = cVac80V;
+    t_GridPort.i16RmsHiRestValue    = cVac265V;
+    t_GridPort.i16RmsLoRestValue    = cVac85V;
+
+    t_GridPort.i16WaveHiLossValue   = cVac380V;
+    t_GridPort.i16WaveLoLossValue   = cVac20V;
+    t_GridPort.i16WaveHiRestValue   = cVac270V;
+    t_GridPort.i16WaveLoRestValue   = cVac25V;
+
+    t_GridPort.i16FreqHiLossValue   = cFreq65Hz;
+    t_GridPort.i16FreqLoLossValue   = cFreq45Hz;
+    t_GridPort.i16FreqHiRestValue   = cFreq64Hz;
+    t_GridPort.i16FreqLoRestValue   = cFreq46Hz;
+}
+
 void    sGrid_StatusDeal(void)
 {
     // Freq Err
