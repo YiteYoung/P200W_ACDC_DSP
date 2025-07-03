@@ -483,4 +483,12 @@ signed int  sSample_GetRms(ADC_Sample_e Goal)
     return pSample->i16Rms;
 }
 
+signed int sSample_GetInvWatt(void)
+{
+    return t_Load.InvLoad.i32LoadWatt;
+}
 
+signed int sSample_GetPfcWatt(void)
+{
+    return t_Load.GridLoad.i32LoadWatt;
+}

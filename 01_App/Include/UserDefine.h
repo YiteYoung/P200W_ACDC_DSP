@@ -33,10 +33,32 @@
 #define cVac340V                3400
 #define cVac380V                3800
 
+#define cVdc0V                  0
+#define cVdc2V                  20
+#define cVdc5V                  50
+#define cVdc10V                 100
+#define cVdc20V                 200
+#define cVdc25V                 250
+#define cVdc30V                 300
+#define cVdc320V                3200
+#define cVdc400V                4000
+#define cVdc500V                5000
+#define cVdc490V                4900
+#define cVdc520V                5200
+
+#define cCurr1A                 10
+#define cCurr10A                100
+#define cCurr20A                200
+#define cCurr30A                300
+
 #define cFreq45Hz               4500
 #define cFreq46Hz               4600
 #define cFreq64Hz               6400
 #define cFreq65Hz               6500
+
+#define cPower0W                0
+#define cPower500W              500
+#define cPower1800W             1800
 
 
 

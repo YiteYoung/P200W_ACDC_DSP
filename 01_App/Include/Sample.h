@@ -98,4 +98,7 @@ SAMPLE_FUNCTION void            sSample_Cal_GridLoad    (void);
 
 SAMPLE_FUNCTION unsigned int    sSample_Cal_Freq        (unsigned int PrdPoint,unsigned int SwitchFreq,signed int Volt);
 SAMPLE_FUNCTION signed int      sSample_GetRms          (ADC_Sample_e Goal);
+
+SAMPLE_FUNCTION signed int      sSample_GetInvWatt      (void);
+SAMPLE_FUNCTION signed int      sSample_GetPfcWatt      (void);
 #endif

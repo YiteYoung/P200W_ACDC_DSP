@@ -7,6 +7,11 @@
 #define CTR_FUNCTION
 #endif
 
+#define cINV_TBPRD          2500
+#define cINV_CMPA_MIN       60
+#define cINV_CMPA_MAX       (cINV_TBPRD - cINV_CMPA_MIN)
+#define cINV_CMPA_DBT_MIN   38
+
 #ifndef UNION_TYPE
 #define UNION_TYPE
 typedef union 

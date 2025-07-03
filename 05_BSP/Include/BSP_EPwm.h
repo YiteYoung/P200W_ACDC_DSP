@@ -30,15 +30,15 @@
 #define sPwm_LLC_LFW_Shut()     {EALLOW;EPwm2Regs.TZFRC.bit.OST = 1;EDIS;}
 #define sPwm_LLC_HBH_Shut()     {EALLOW;EPwm3Regs.TZFRC.bit.OST = 1;EDIS;}
 #define sPwm_LLC_HFW_Shut()     {EALLOW;EPwm4Regs.TZFRC.bit.OST = 1;EDIS;}
-#define sPwm_INV_LF_Shut()      {EALLOW;EPwm5Regs.TZFRC.bit.OST = 1;EDIS;}
-#define sPwm_INV_HF_Shut()      {EALLOW;EPwm6Regs.TZFRC.bit.OST = 1;EDIS;}
+#define sPwm_INV_HF_Shut()      {EALLOW;EPwm5Regs.TZFRC.bit.OST = 1;EDIS;}
+#define sPwm_INV_LF_Shut()      {EALLOW;EPwm6Regs.TZFRC.bit.OST = 1;EDIS;}
 
 #define sPwm_LLC_LBH_Open()     {EALLOW;EPwm1Regs.TZCLR.bit.OST = 1;EDIS;}
 #define sPwm_LLC_LFW_Open()     {EALLOW;EPwm2Regs.TZCLR.bit.OST = 1;EDIS;}
 #define sPwm_LLC_HBH_Open()     {EALLOW;EPwm3Regs.TZCLR.bit.OST = 1;EDIS;}
 #define sPwm_LLC_HFW_Open()     {EALLOW;EPwm4Regs.TZCLR.bit.OST = 1;EDIS;}
-#define sPwm_INV_LF_Open()      {EALLOW;EPwm5Regs.TZCLR.bit.OST = 1;EDIS;}
-#define sPwm_INV_HF_Open()      {EALLOW;EPwm6Regs.TZCLR.bit.OST = 1;EDIS;}
+#define sPwm_INV_HF_Open()      {EALLOW;EPwm5Regs.TZCLR.bit.OST = 1;EDIS;}
+#define sPwm_INV_LF_Open()      {EALLOW;EPwm6Regs.TZCLR.bit.OST = 1;EDIS;}
 
 
 BSP_EPWM_FUNCTION       void        sInitEPwm       (void); 

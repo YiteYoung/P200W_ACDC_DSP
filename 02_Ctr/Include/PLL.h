@@ -80,13 +80,26 @@ PLL_FUNCTION        void        sSetSinCos                  (void);
 PLL_FUNCTION        void        sHalfWavePointCal           (void);
 
 PLL_FUNCTION        int         sPLL_GetGridPos             (void);
+PLL_FUNCTION        int         sPLL_GetPosWaveEn           (void);
+
+PLL_FUNCTION        int         sPLL_GetGridCrossN2P        (void);
+PLL_FUNCTION        int         sPLL_GetGridCrossP2N        (void);
+
 PLL_FUNCTION        int         sPLL_GetGridPrdPoint        (void);
 PLL_FUNCTION        int         sPLL_GetInvPrdPoint         (void);
+
+PLL_FUNCTION        int         sPLL_GetInvCrossWave        (void);
+PLL_FUNCTION        void        sPLL_ClrInvCrossWave        (void);
 
 PLL_FUNCTION        int         sPLL_GetInvCrossN2P         (void);
 PLL_FUNCTION        int         sPLL_GetInvCrossP2N         (void);
 
 PLL_FUNCTION        int         sPLL_GetInvVoltD            (void);
 PLL_FUNCTION        int         sPLL_GetInvVoltQ            (void);
+
+PLL_FUNCTION        int         sPLL_GetCos                 (void);
+PLL_FUNCTION        int         sPLL_GetSin                 (void);
+
+PLL_FUNCTION        int         sPLL_GetInvPos              (void);
 
 #endif

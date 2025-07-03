@@ -283,9 +283,34 @@ int sPLL_GetGridPrdPoint(void)
     return t_PLL.t_GridWave.i16PrdPoint;
 }
 
+int sPLL_GetPosWaveEn(void)
+{
+    return t_PLL.t_GridWave.t_Flag.u16PosWaveEn;
+}
+
+int sPLL_GetGridCrossN2P(void)
+{
+    return t_PLL.t_GridWave.t_Flag.VoltCrossN2P;
+}
+
+int sPLL_GetGridCrossP2N(void)
+{
+    return t_PLL.t_GridWave.t_Flag.VoltCrossP2N;
+}
+
 int sPLL_GetInvPrdPoint(void)
 {
     return (int)(t_PLL.i32TsPoint / t_PLL.i32InvAngleStep);
+}
+
+void sPLL_ClrInvCrossWave(void)
+{
+    t_PLL.t_InvWave.t_Flag.VoltCrossWave = false;
+}
+
+int sPLL_GetInvCrossWave(void)
+{
+    return t_PLL.t_InvWave.t_Flag.VoltCrossWave;
 }
 
 int sPLL_GetInvCrossN2P(void)
@@ -306,5 +331,20 @@ int sPLL_GetInvVoltD(void)
 int sPLL_GetInvVoltQ(void)
 {
     return t_PLL.i16Volt_Q;
+}
+
+int sPLL_GetCos(void)
+{
+    return t_PLL.i16Cos;
+}
+
+int sPLL_GetSin(void)
+{
+    return t_PLL.i16Sin;
+}
+
+int sPLL_GetInvPos(void)
+{
+    return t_PLL.t_InvWave.t_Flag.VoltPosNow;
 }
 
