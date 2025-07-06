@@ -27,7 +27,13 @@
 #define cVac50V                 500
 #define cVac80V                 800
 #define cVac85V                 850
+#define cVac100V                1000
+#define cVac110V                1100
+#define cVac120V                1200
 #define cVac150V                1500
+#define cVac220V                2200
+#define cVac230V                2300
+#define cVac240V                2400
 #define cVac265V                2650
 #define cVac270V                2700
 #define cVac340V                3400
@@ -53,10 +59,13 @@
 
 #define cFreq45Hz               4500
 #define cFreq46Hz               4600
+#define cFreq50Hz               5000
+#define cFreq60Hz               6000
 #define cFreq64Hz               6400
 #define cFreq65Hz               6500
 
 #define cPower0W                0
+#define cPower200W              200
 #define cPower500W              500
 #define cPower1800W             1800
 

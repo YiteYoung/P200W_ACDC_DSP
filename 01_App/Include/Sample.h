@@ -25,10 +25,6 @@ typedef struct
 
 typedef struct
 {
-    unsigned long   u32Watt100;
-    unsigned long   u32VA100;
-    unsigned long   u32Curr100;
-
     unsigned long   u32LoadVA_Pre;
     unsigned long   u32LoadVA;
     unsigned long   u32LoadVA_F;

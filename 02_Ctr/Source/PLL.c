@@ -270,7 +270,12 @@ void    sHalfWavePointCal(void)
         t_PLL.t_GridWave.i16PrdPoint = 10;
     }
 
-    // t_Inv.t_PfcCtrl.t_BandStop.f32RadResnant = __divf32((float)sSOGI_GetCalFs() * 12.5663848f,(float)t_PLL.t_GridWave.i16PrdPoint);
+    sBandStop_SetRadResnant(__divf32((float)sSOGI_GetCalFs() * 12.5663848f,(float)t_PLL.t_GridWave.i16PrdPoint));
+}
+
+PLL_t* sPLL_GetPtr(void)
+{
+    return &t_PLL;
 }
 
 int sPLL_GetGridPos(void)
@@ -343,8 +348,19 @@ int sPLL_GetSin(void)
     return t_PLL.i16Sin;
 }
 
-int sPLL_GetInvPos(void)
+int sPLL_GetInvPosNow(void)
 {
     return t_PLL.t_InvWave.t_Flag.VoltPosNow;
+}
+
+void sPLL_ClrInvPosWaveEn(void)
+{
+    t_PLL.t_InvWave.t_Flag.u16PosWaveEn     = false;
+    t_PLL.t_InvWave.t_Flag.u16PosWaveEnPre  = false;
+}
+
+void sPLL_SetInvAngle(long Angle)
+{
+    t_PLL.i32InvAngle = Angle;
 }
 

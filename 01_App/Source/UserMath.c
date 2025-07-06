@@ -1,10 +1,15 @@
 #include "UserMath.h"
 
-static SOGI_t   t_SOGI;
+static SOGI_t       t_SOGI;
+static BandStop_t   t_BandStop;
 
-void    sSOGI_Init()
+void    sSOGI_Init(int PLL_Freq,unsigned long Cal_Freq,int Kp)
 {
+    t_SOGI.i16PLLFs = PLL_Freq;
+    t_SOGI.u32CalFs = Cal_Freq;
+    t_SOGI.i16Kp    = Kp;
 
+    sSOGI_Resh();
 }
 
 void    sSOGI_Cal(float WaveIn)
@@ -84,3 +89,32 @@ unsigned long   sSOGI_GetCalFs(void)
 {
     return t_SOGI.u32CalFs;
 }
+
+// =================================================================== //
+void    sBandStop_Init(float Kr,float RadWi,float RadResnant)
+{
+    t_BandStop.f32Kr = Kr;
+    t_BandStop.f32RadWi = RadWi;
+    t_BandStop.f32RadResnant = RadResnant;
+}
+
+void    sBandStop_SetRadResnant(float RadResnant)
+{
+    t_BandStop.f32RadResnant = RadResnant;
+}
+
+float    sBandStop_Refresh(float Volt)
+{
+    t_BandStop.P0 = 2.0f * t_BandStop.f32Kr * t_BandStop.f32RadWi * Volt;
+    t_BandStop.Out0 = t_BandStop.Out1 + t_BandStop.Q1 * 0.0000416f;
+    t_BandStop.R0 = t_BandStop.R1 + t_BandStop.Out0 * 0.0000416f * t_BandStop.f32RadResnant * t_BandStop.f32RadResnant;
+    t_BandStop.Q0 = t_BandStop.P0 - t_BandStop.R0 - t_BandStop.Out0 * 2.0f *t_BandStop.f32RadWi;
+
+    t_BandStop.P1 = t_BandStop.P0;
+    t_BandStop.Out1 = t_BandStop.Out0;
+    t_BandStop.R1 = t_BandStop.R0;
+    t_BandStop.Q1 = t_BandStop.Q0;
+
+    return t_BandStop.Out0;
+}
+

@@ -13,4 +13,63 @@
 #define cCHG_BUS_VOLT_BURST_MAX     cVdc500V
 #define cCHG_BUS_VOLT_BURST_BACK    cVdc5V
 
+#define cCHG_AC_POWER_MAX           cPower1800W
+#define cCHG_BAT_POWER_MAX          cPower1800W
+
+#define cCHG_BAT_CURR_MAX           cCurr10A
+#define cCHG_AC_CURR_MAX            cCurr10A
+
+#define cDCG_AC_CURR_MAX            cCurr10A
+
+#define cDCG_AC_POWER_MAX           cPower500W
+// #define 
+
+
+typedef enum 
+{
+    Volt100V = 0,
+    Volt110V,
+    Volt120V,
+
+    Volt220V,
+    Volt230V,
+    Volt240V
+}VoltLevel_e;
+
+typedef enum 
+{
+    Freq50Hz = 0,
+    Freq60Hz,
+}FreqLevel_e;
+
+typedef struct 
+{
+    unsigned int i16VoltSet;
+    unsigned int i16FreqSet;
+
+    unsigned int i16CurrLimit;
+    unsigned int i16PowerLimit;
+}Inv_Config_t;
+
+typedef struct 
+{
+    unsigned int i16CurrLimit;
+    unsigned int i16PowerLimit;
+
+
+}Pfc_Config_t;
+
+typedef struct 
+{
+    Inv_Config_t t_Inv;
+    Pfc_Config_t t_Pfc;
+}Config_t;
+
+CONFIG_INV_FUNCTION void    sConfig_InitInv                 (void);
+CONFIG_INV_FUNCTION void    sConfig_InitInvControl          (void);
+CONFIG_INV_FUNCTION void    sConfig_InitPfcControl          (void);
+CONFIG_INV_FUNCTION void    sConfig_InvFreqResh             (void);
+CONFIG_INV_FUNCTION void    sConfig_InvResh                 (void);
+
+
 #endif

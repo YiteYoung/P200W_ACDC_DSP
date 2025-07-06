@@ -1,16 +1,20 @@
 #ifndef _CTR_INV_H
 #define _CTR_INV_H
 
-#ifdef CTR_FUNCTION_G
-#define CTR_FUNCTION extern
+#ifdef CTR_INV_FUNCTION_G
+#define CTR_INV_FUNCTION extern
 #else
-#define CTR_FUNCTION
+#define CTR_INV_FUNCTION
 #endif
 
+#define cSwitchFreq         24000
 #define cINV_TBPRD          2500
 #define cINV_CMPA_MIN       60
 #define cINV_CMPA_MAX       (cINV_TBPRD - cINV_CMPA_MIN)
 #define cINV_CMPA_DBT_MIN   38
+
+#define cInvAngleBase50Hz   0x300000    // （360 << 22） * 50 / 24K
+#define cInvAngleBase60Hz   0x39999A
 
 #ifndef UNION_TYPE
 #define UNION_TYPE
@@ -163,5 +167,8 @@ typedef struct
     Pfc_t           t_Pfc;
     Var_t           t_Var;
 }Control_t;
+
+CTR_INV_FUNCTION  Inv_t*      sInv_GetInvCtrPtr(void);
+CTR_INV_FUNCTION  Pfc_t*      sInv_GetPfcCtrPtr(void);
 
 #endif

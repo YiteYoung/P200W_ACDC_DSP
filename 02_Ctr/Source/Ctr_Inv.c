@@ -23,14 +23,17 @@ static  Control_t           t_Control;
 
 void    sInv_Control(void)
 {
-    if( sGetTZ1_OST_Act()   == true     ||\
-        sGetTZ2_OST_Act()   == true     ||\
-        sGetTrip4_OST_Act() == true     ||\
+    if( sProtect_GetTZFlag(TZ1)   == true     ||\
+        sProtect_GetTZFlag(TZ2)   == true     ||\
+        sProtect_GetTZFlag(Trip4) == true     ||\
         sMsw_GetInvCmd()    == false    )
     {
-        t_Control.t_Flag.InvFsm = eINV_FSM_OFF;
+        t_Control.t_Flag.InvFsm         = eINV_FSM_OFF;
+        t_Control.t_Var.u16IGBT_EN_DLY  = 0;
+
+        sPLL_ClrInvPosWaveEn();
+
         sPwm_Disable();
-        // sInv_PosWaveClr();
         sLoopClear();
     }
     else 
@@ -39,12 +42,12 @@ void    sInv_Control(void)
         {
             case eINV_FSM_OFF:
             {
-                sConfig_InvVolt_Resh();
-                sConfig_InvFreq_Resh();
+                sConfig_InvResh();
 
                 if( sMsw_GetInvCmd() == false )
                 {
-                    sConfig_InvAngle();
+                    sPLL_SetInvAngle(0x43000000);
+                    t_Control.t_Flag.InvFsm = eINV_FSM_INIT;
 
                     EALLOW;
                     EPwm6Regs.TZSEL.bit.OSHT1   = TZ_DISABLE;
@@ -98,9 +101,11 @@ void    sInv_Control(void)
 
             default:
                 t_Control.t_Flag.InvFsm = eINV_FSM_OFF;
+                
+                sPLL_ClrInvPosWaveEn();
                 sPwm_Disable();
-                // sInv_PosWaveClr();
                 sLoopClear();
+
                 break;
         }
     } 
@@ -219,7 +224,7 @@ void    sInvSpwm(void)
     i32TempA = (long)__divf32(i32TempA, (float)t_Control.t_Var.i16Spwm_Vbus);
     i16TempA = i32TempA + t_Control.t_Var.i16Spwm_DEAD;
 
-    if( sPLL_GetInvPos() == true )
+    if( sPLL_GetInvPosNow() == true )
     {
         t_Control.t_Var.i16Spwm_H_CMP = i16TempA;
         t_Control.t_Var.i16Spwm_L_CMP = 0;
@@ -651,12 +656,6 @@ void    sPfcSpwm(void)
     EPwm6Regs.CMPA.bit.CMPA = t_Control.t_Var.i16Spwm_L_CMP;
 }
 
-void    sInv_PosWaveClr(void)
-{
-    t_Control.t_Var.u16IGBT_EN_DLY      = 0;
-    // t_Control.
-}
-
 void    sLoopClear(void)
 {
     t_Control.t_Inv.t_PI.Volt_ID.i16Ref         = 0;
@@ -721,4 +720,15 @@ void    sLoopClear(void)
 
     t_Control.t_Pfc.u16Burst_EN                 = false;
     t_Control.t_Pfc.u16Burst_Act                = false;
+}
+
+
+Inv_t*    sInv_GetInvCtrPtr(void)
+{
+    return &t_Control.t_Inv;
+}
+
+Pfc_t*      sInv_GetPfcCtrPtr(void)
+{
+    return &t_Control.t_Pfc;
 }

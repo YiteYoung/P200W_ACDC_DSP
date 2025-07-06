@@ -68,6 +68,8 @@
 03_Task/Source/Task_Sci.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Config_LLc.h
 03_Task/Source/Task_Sci.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Ctr_Inv.h
 03_Task/Source/Task_Sci.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Ctr_LLc.h
+03_Task/Source/Task_Sci.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Protect_Inv.h
+03_Task/Source/Task_Sci.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Protect_LLc.h
 03_Task/Source/Task_Sci.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/PLL.h
 03_Task/Source/Task_Sci.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/03_Task/Include/Task_Fun.h
 03_Task/Source/Task_Sci.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/05_BSP/Include/BSP_OS.h
@@ -224,6 +226,10 @@ D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Config_LLc.h:
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Ctr_Inv.h:
 
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Ctr_LLc.h:
+
+D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Protect_Inv.h:
+
+D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Protect_LLc.h:
 
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/PLL.h:
 

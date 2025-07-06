@@ -82,11 +82,15 @@ typedef struct
     float       Out1;
 }BandStop_t;
 
-USERMATH_FUNCTION   void            sSOGI_Init      (void);
-USERMATH_FUNCTION   void            sSOGI_Cal       (float WaveIn);
-USERMATH_FUNCTION   void            sSOGI_Resh      (void);
-USERMATH_FUNCTION   float           sSOGI_GetAlfa   (void);
-USERMATH_FUNCTION   float           sSOGI_GetBeta   (void);
-USERMATH_FUNCTION   unsigned long   sSOGI_GetCalFs  (void);
+USERMATH_FUNCTION   void            sSOGI_Init                (int PLL_Freq,unsigned long Cal_Freq,int Kp);
+USERMATH_FUNCTION   void            sSOGI_Cal                 (float WaveIn);
+USERMATH_FUNCTION   void            sSOGI_Resh                (void);
+USERMATH_FUNCTION   float           sSOGI_GetAlfa             (void);
+USERMATH_FUNCTION   float           sSOGI_GetBeta             (void);
+USERMATH_FUNCTION   unsigned long   sSOGI_GetCalFs            (void);
+
+USERMATH_FUNCTION   void            sBandStop_Init            (float Kr,float RadWi,float RadResnant);
+USERMATH_FUNCTION   void            sBandStop_SetRadResnant   (float RadResnant);
+USERMATH_FUNCTION   float           sBandStop_Refresh         (float Volt);
 
 #endif

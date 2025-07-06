@@ -190,10 +190,10 @@ void    sSample_Cal_InvLoad(void)
     sSample_PFCal(t_Load.InvLoad.i32LoadWatt_F, t_Load.InvLoad.u32LoadVA_F, &t_Load.InvLoad.i16PF);
 
     // Power Percent
-    sSample_PercentCal(t_Load.InvLoad.i32LoadWatt_F,t_Load.InvLoad.u32Watt100,t_Load.InvLoad.u32LoadVA_F,t_Load.InvLoad.u32VA100,&t_Load.InvLoad.u16PowerPercent);
+    sSample_PercentCal(t_Load.InvLoad.i32LoadWatt_F,sProtect_GetInvLoad100(),t_Load.InvLoad.u32LoadVA_F,sProtect_GetInvLoad100(),&t_Load.InvLoad.u16PowerPercent);
     
     // Curr Percent
-    t_Load.InvLoad.u16CurrPercent = (unsigned int)labs(__divf32((float)t_Sample.OutCurr.i16Rms * 1000.0f, t_Load.InvLoad.u32Curr100));
+    t_Load.InvLoad.u16CurrPercent = (unsigned int)labs(__divf32((float)t_Sample.OutCurr.i16Rms * 1000.0f, sProtect_GetInvCurr100()));
 }
 
 void    sSample_Cal_GridLoad(void)
@@ -214,10 +214,10 @@ void    sSample_Cal_GridLoad(void)
     sSample_PFCal(t_Load.GridLoad.i32LoadWatt_F, t_Load.GridLoad.u32LoadVA_F, &t_Load.GridLoad.i16PF);
 
     // Power Percent
-    sSample_PercentCal(t_Load.GridLoad.i32LoadWatt_F,t_Load.GridLoad.u32Watt100,t_Load.GridLoad.u32LoadVA_F,t_Load.GridLoad.u32VA100,&t_Load.GridLoad.u16PowerPercent);
+    sSample_PercentCal(t_Load.GridLoad.i32LoadWatt_F,sProtect_GetPfcLoad100(),t_Load.GridLoad.u32LoadVA_F,sProtect_GetPfcLoad100(),&t_Load.GridLoad.u16PowerPercent);
     
     // Curr Percent
-    t_Load.GridLoad.u16CurrPercent = (unsigned int)labs(__divf32((float)t_Sample.OutCurr.i16Rms * 1000.0f, t_Load.GridLoad.u32Curr100));
+    t_Load.GridLoad.u16CurrPercent = (unsigned int)labs(__divf32((float)t_Sample.OutCurr.i16Rms * 1000.0f, sProtect_GetPfcCurr100()));
 }
 
 static void sClrSampleCnt(ADC_Sample_e Goal)
