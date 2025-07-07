@@ -137,3 +137,8 @@ void    sConfig_InvResh(void)
     sConfig_InvFreqResh();
 }
 
+
+int    sConfig_GetPfcGiv(void)
+{
+    return t_Config.t_Pfc.i16PfcVoltSet;
+}

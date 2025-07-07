@@ -56,7 +56,7 @@ typedef struct
     long    i32UiSum;
     
     int     i16PIOut;
-    int     i16PIOut_P;
+    int     i16PIOut_Pre;
     int     i16PIOutMax;
     int     i16PIOutMin;
 }PI_t;

@@ -20,22 +20,27 @@ typedef enum
     TZ2,
     TZ3,
     Trip4,
+    SoftWare,
+    Cmpss,
     TZ_END
 }TZ_ID_e;
 
 typedef struct 
 {
-    unsigned int    TZ1     :1;
-    unsigned int    TZ2     :1;
-    unsigned int    TZ3     :1;
-    unsigned int    Trip4   :1;
+    unsigned int    TZ1         :1;
+    unsigned int    TZ2         :1;
+    unsigned int    TZ3         :1;
+    unsigned int    Trip4       :1;
 
-    unsigned int    Resv    :12;
+    unsigned int    Cmpss       :1;
+    unsigned int    SoftWare    :1;
+
+    unsigned int    Resv        :11;
 }TZ_Flag_t;
 
 typedef union 
 {
-    unsigned int    TZFlag;
+    unsigned int    all;
     TZ_Flag_t       bit;
 }TZ_Flag_u;
 
@@ -59,6 +64,10 @@ PROTECT_INV_FUNCTION    unsigned long       sProtect_GetInvCurr100  (void);
 PROTECT_INV_FUNCTION    void                sProtect_SetPfcCurr100  (unsigned long Value);
 PROTECT_INV_FUNCTION    unsigned long       sProtect_GetPfcCurr100  (void);
 
+PROTECT_INV_FUNCTION    void                TZ_Deal                 (void);
+PROTECT_INV_FUNCTION    void                sProtect_DisableTZ      (void);
+PROTECT_INV_FUNCTION    void                sProtect_SetTZFlag      (TZ_ID_e Goal);
+PROTECT_INV_FUNCTION    void                sProtect_ClrTZFlag      (TZ_ID_e Goal);
 PROTECT_INV_FUNCTION    unsigned int        sProtect_GetTZFlag      (TZ_ID_e Goal);
 
 #endif

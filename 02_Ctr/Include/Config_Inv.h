@@ -44,17 +44,19 @@ typedef enum
 
 typedef struct 
 {
-    unsigned int i16VoltSet;
-    unsigned int i16FreqSet;
+    signed int i16VoltSet;
+    signed int i16FreqSet;
 
-    unsigned int i16CurrLimit;
-    unsigned int i16PowerLimit;
+    signed int i16CurrLimit;
+    signed int i16PowerLimit;
 }Inv_Config_t;
 
 typedef struct 
 {
-    unsigned int i16CurrLimit;
-    unsigned int i16PowerLimit;
+    signed int i16PfcVoltSet;
+
+    signed int i16CurrLimit;
+    signed int i16PowerLimit;
 
 
 }Pfc_Config_t;
@@ -70,6 +72,8 @@ CONFIG_INV_FUNCTION void    sConfig_InitInvControl          (void);
 CONFIG_INV_FUNCTION void    sConfig_InitPfcControl          (void);
 CONFIG_INV_FUNCTION void    sConfig_InvFreqResh             (void);
 CONFIG_INV_FUNCTION void    sConfig_InvResh                 (void);
+
+CONFIG_INV_FUNCTION int     sConfig_GetPfcGiv               (void);
 
 
 #endif

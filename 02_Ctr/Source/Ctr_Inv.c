@@ -285,164 +285,164 @@ void    sInvSpwm(void)
 
 void    sBatCCCVLoop(void)
 {
-    int i16BatCurrFed,i16BatVoltFed;
-    int i16BatCurrRef,i16BatVoltRef;
-    int i16BatCurrTemp;
-    int i16GridPowerGiv;
+    // int i16BatCurrFed,i16BatVoltFed;
+    // int i16BatCurrRef,i16BatVoltRef;
+    // int i16BatCurrTemp;
+    // int i16GridPowerGiv;
 
-    i16GridPowerGiv = sConfig_GetSelfPower();
+    // i16GridPowerGiv = sConfig_GetSelfPower();
 
-    if( i16GridPowerGiv >= 0 )
-    {
-        t_Control.t_Pfc.BatCCCVState        = eBat_CC_Mode;
-        t_Control.t_Pfc.i16BatCCCVPIOut     = 0;
+    // if( i16GridPowerGiv >= 0 )
+    // {
+    //     t_Control.t_Pfc.BatCCCVState        = eBat_CC_Mode;
+    //     t_Control.t_Pfc.i16BatCCCVPIOut     = 0;
 
-        t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum = 0; 
-        t_Control.t_Pfc.t_PI.Bat_CV.i32UpSum = 0;
+    //     t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum = 0; 
+    //     t_Control.t_Pfc.t_PI.Bat_CV.i32UpSum = 0;
 
-        return;
-    }
+    //     return;
+    // }
 
-    i16BatCurrFed = sSample_GetRms(BatCurr);
-    i16BatVoltFed = sSample_GetRms(BatVolt);
+    // i16BatCurrFed = sSample_GetRms(BatCurr);
+    // i16BatVoltFed = sSample_GetRms(BatVolt);
 
-    i16BatCurrRef = sConfig_GetBatCurrGiv();
-    i16BatVoltRef = sConfig_GetBatVoltGiv();
+    // i16BatCurrRef = sConfig_GetBatCurrGiv();
+    // i16BatVoltRef = sConfig_GetBatVoltGiv();
 
-    if( t_Control.t_Pfc.BatCCCVState == eBat_CC_Mode )
-    {
-        if(i16BatVoltFed > i16BatVoltRef)
-        {
-            t_Control.t_Pfc.u16BatCCCVSWCnt++;
-            if(t_Control.t_Pfc.u16BatCCCVSWCnt >= 2)
-            {
-                t_Control.t_Pfc.BatCCCVState    = eBat_CV_Mode;
-                t_Control.t_Pfc.u16BatCCCVSWCnt = 0;
+    // if( t_Control.t_Pfc.BatCCCVState == eBat_CC_Mode )
+    // {
+    //     if(i16BatVoltFed > i16BatVoltRef)
+    //     {
+    //         t_Control.t_Pfc.u16BatCCCVSWCnt++;
+    //         if(t_Control.t_Pfc.u16BatCCCVSWCnt >= 2)
+    //         {
+    //             t_Control.t_Pfc.BatCCCVState    = eBat_CV_Mode;
+    //             t_Control.t_Pfc.u16BatCCCVSWCnt = 0;
 
-                t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum = t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum;
-            }
-        }
-        else
-        {
-            t_Control.t_Pfc.u16BatCCCVSWCnt = 0;
-        }
-    }
-    else
-    {
-        if(i16BatCurrFed > i16BatCurrRef)
-        {
-            t_Control.t_Pfc.u16BatCCCVSWCnt++;
-            if(t_Control.t_Pfc.u16BatCCCVSWCnt >= 2)
-            {
-                t_Control.t_Pfc.BatCCCVState    = eBat_CC_Mode;
-                t_Control.t_Pfc.u16BatCCCVSWCnt = 0;
+    //             t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum = t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         t_Control.t_Pfc.u16BatCCCVSWCnt = 0;
+    //     }
+    // }
+    // else
+    // {
+    //     if(i16BatCurrFed > i16BatCurrRef)
+    //     {
+    //         t_Control.t_Pfc.u16BatCCCVSWCnt++;
+    //         if(t_Control.t_Pfc.u16BatCCCVSWCnt >= 2)
+    //         {
+    //             t_Control.t_Pfc.BatCCCVState    = eBat_CC_Mode;
+    //             t_Control.t_Pfc.u16BatCCCVSWCnt = 0;
 
-                t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum = t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum;
-            }
-        }
-        else
-        {
-            t_Control.t_Pfc.u16BatCCCVSWCnt = 0;
-        }
-    }
+    //             t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum = t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         t_Control.t_Pfc.u16BatCCCVSWCnt = 0;
+    //     }
+    // }
 
-    if( t_Control.t_Pfc.BatCCCVState == eBat_CC_Mode )
-    {
-        // CP
-        i16BatCurrTemp = ( labs(sConfig_GetBatPowerLimit()) * 100) / i16BatVoltFed;
+    // if( t_Control.t_Pfc.BatCCCVState == eBat_CC_Mode )
+    // {
+    //     // CP
+    //     i16BatCurrTemp = ( labs(sConfig_GetBatPowerLimit()) * 100) / i16BatVoltFed;
 
-        if(i16BatCurrTemp < i16BatCurrRef)
-        {
-            i16BatCurrRef = i16BatCurrTemp;
-        }
+    //     if(i16BatCurrTemp < i16BatCurrRef)
+    //     {
+    //         i16BatCurrRef = i16BatCurrTemp;
+    //     }
 
-        // CC
-        t_Control.t_Pfc.t_PI.Bat_CC.i16Ref = i16BatCurrRef;
+    //     // CC
+    //     t_Control.t_Pfc.t_PI.Bat_CC.i16Ref = i16BatCurrRef;
 
-        t_Control.t_Pfc.t_PI.Bat_CC.i16Fed = i16BatCurrFed;
+    //     t_Control.t_Pfc.t_PI.Bat_CC.i16Fed = i16BatCurrFed;
 
-        t_Control.t_Pfc.t_PI.Bat_CC.i16Err = t_Control.t_Pfc.t_PI.Bat_CC.i16Ref  - t_Control.t_Pfc.t_PI.Bat_CC.i16Fed;
-        UpDnLimit(t_Control.t_Pfc.t_PI.Bat_CC.i16Err, -cCurr30A, cCurr30A);
+    //     t_Control.t_Pfc.t_PI.Bat_CC.i16Err = t_Control.t_Pfc.t_PI.Bat_CC.i16Ref  - t_Control.t_Pfc.t_PI.Bat_CC.i16Fed;
+    //     UpDnLimit(t_Control.t_Pfc.t_PI.Bat_CC.i16Err, -cCurr30A, cCurr30A);
 
-        t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum += (long)t_Control.t_Pfc.t_PI.Bat_CC.i16Err * t_Control.t_Pfc.t_PI.Bat_CC.i16Ki;
-        UpDnLimit(t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum, ((long)-cPower1800W << 10), 0);
+    //     t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum += (long)t_Control.t_Pfc.t_PI.Bat_CC.i16Err * t_Control.t_Pfc.t_PI.Bat_CC.i16Ki;
+    //     UpDnLimit(t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum, ((long)-cPower1800W << 10), 0);
 
-        t_Control.t_Pfc.i16BatCCCVPIOut = (int)(t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum >> 10);
-    }
-    else 
-    {
-        // CV
-        t_Control.t_Pfc.t_PI.Bat_CV.i16Ref = i16BatVoltRef;
+    //     t_Control.t_Pfc.i16BatCCCVPIOut = (int)(t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum >> 10);
+    // }
+    // else 
+    // {
+    //     // CV
+    //     t_Control.t_Pfc.t_PI.Bat_CV.i16Ref = i16BatVoltRef;
 
-        t_Control.t_Pfc.t_PI.Bat_CV.i16Fed = i16BatVoltFed;
+    //     t_Control.t_Pfc.t_PI.Bat_CV.i16Fed = i16BatVoltFed;
 
-        t_Control.t_Pfc.t_PI.Bat_CV.i16Err = t_Control.t_Pfc.t_PI.Bat_CV.i16Ref  - t_Control.t_Pfc.t_PI.Bat_CV.i16Fed;
-        UpDnLimit(t_Control.t_Pfc.t_PI.Bat_CV.i16Err, -cVdc2V, cVdc2V);
+    //     t_Control.t_Pfc.t_PI.Bat_CV.i16Err = t_Control.t_Pfc.t_PI.Bat_CV.i16Ref  - t_Control.t_Pfc.t_PI.Bat_CV.i16Fed;
+    //     UpDnLimit(t_Control.t_Pfc.t_PI.Bat_CV.i16Err, -cVdc2V, cVdc2V);
 
-        t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum += (long)t_Control.t_Pfc.t_PI.Bat_CV.i16Err * t_Control.t_Pfc.t_PI.Bat_CV.i16Ki;
-        UpDnLimit(t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum, ((long)-cPower1800W << 10), 0);
+    //     t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum += (long)t_Control.t_Pfc.t_PI.Bat_CV.i16Err * t_Control.t_Pfc.t_PI.Bat_CV.i16Ki;
+    //     UpDnLimit(t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum, ((long)-cPower1800W << 10), 0);
 
-        t_Control.t_Pfc.i16BatCCCVPIOut = (int)(t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum >> 10);
-    }
+    //     t_Control.t_Pfc.i16BatCCCVPIOut = (int)(t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum >> 10);
+    // }
 }
 
 void    sPfcPowerLoop(void)
 {
-    int ForwardVolt,PowerRef;
-    int i16GridPowerGiv;
-    int LoadWatt;
+    // int ForwardVolt,PowerRef;
+    // int i16GridPowerGiv;
+    // int LoadWatt;
 
-    if( sMsw_Pfc2Grid() == true || sMsw_PfcSoftOk() == true )
-    {
-        t_Control.t_Pfc.BatCCCVState    = eBat_CC_Mode;
-        t_Control.t_Pfc.t_PI.GridPower.i16PIOut = 0;
+    // if( sMsw_Pfc2Grid() == true || sMsw_PfcSoftOk() == true )
+    // {
+    //     t_Control.t_Pfc.BatCCCVState    = eBat_CC_Mode;
+    //     t_Control.t_Pfc.t_PI.GridPower.i16PIOut = 0;
 
-        t_Control.t_Pfc.i16BatCCCVPIOut = 0;
+    //     t_Control.t_Pfc.i16BatCCCVPIOut = 0;
 
-        t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum = 0;
-        t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum = 0;
+    //     t_Control.t_Pfc.t_PI.Bat_CC.i32UiSum = 0;
+    //     t_Control.t_Pfc.t_PI.Bat_CV.i32UiSum = 0;
 
-        return;
-    }
+    //     return;
+    // }
 
-    i16GridPowerGiv = sConfig_GetSelfPower();
+    // i16GridPowerGiv = sConfig_GetSelfPower();
 
-    sBatCCCVLoop();
+    // sBatCCCVLoop();
 
-    PowerRef = sConfig_GetControlPower() - t_Control.t_Pfc.i16BatCCCVPIOut;
+    // PowerRef = sConfig_GetControlPower() - t_Control.t_Pfc.i16BatCCCVPIOut;
 
-    // 根据实际调试效果测量出的前馈电压，从而减小环路的运算
-    if( PowerRef >= 0)
-    {
-        ForwardVolt = -0.01111f * PowerRef; // (线性关系)
-    }
-    else 
-    {
-        ForwardVolt = -0.03055f * PowerRef;
-    }
-    UpDnLimit(ForwardVolt, -cVdc5V, cVdc5V);
+    // // 根据实际调试效果测量出的前馈电压，从而减小环路的运算
+    // if( PowerRef >= 0)
+    // {
+    //     ForwardVolt = -0.01111f * PowerRef; // (线性关系)
+    // }
+    // else 
+    // {
+    //     ForwardVolt = -0.03055f * PowerRef;
+    // }
+    // UpDnLimit(ForwardVolt, -cVdc5V, cVdc5V);
 
-    // 充电为负
-    if( i16GridPowerGiv >= cPower0W)
-    {
-        t_Control.t_Pfc.t_PI.GridPower.i16Ref = Min2(PowerRef, sConfig_GetGridPowerLiomit());
-    }
-    else
-    {
-        t_Control.t_Pfc.t_PI.GridPower.i16Ref = Max2(PowerRef, - sConfig_GetGridPowerLiomit());
-    }
-    UpDnLimit(t_Control.t_Pfc.t_PI.GridPower.i16Ref, -cPower1800W, cPower1800W);
+    // // 充电为负
+    // if( i16GridPowerGiv >= cPower0W)
+    // {
+    //     t_Control.t_Pfc.t_PI.GridPower.i16Ref = Min2(PowerRef, sConfig_GetGridPowerLiomit());
+    // }
+    // else
+    // {
+    //     t_Control.t_Pfc.t_PI.GridPower.i16Ref = Max2(PowerRef, - sConfig_GetGridPowerLiomit());
+    // }
+    // UpDnLimit(t_Control.t_Pfc.t_PI.GridPower.i16Ref, -cPower1800W, cPower1800W);
 
-    if( sRly_GetRlyOn(Rly_Out) == true )
-    {
-        LoadWatt = (int)(sSample_GetGridWatt() * 0.1f + sSample_GetInvWatt() * 0.1f);
-    }
-    else
-    {
-        LoadWatt = (int)(sSample_GetGridWatt() * 0.1f);
-    }
+    // if( sRly_GetRlyOn(Rly_Out) == true )
+    // {
+    //     LoadWatt = (int)(sSample_GetGridWatt() * 0.1f + sSample_GetInvWatt() * 0.1f);
+    // }
+    // else
+    // {
+    //     LoadWatt = (int)(sSample_GetGridWatt() * 0.1f);
+    // }
 
-    t_Control.t_Pfc.t_PI.GridPower.i16Fed = LoadWatt;
+    // t_Control.t_Pfc.t_PI.GridPower.i16Fed = LoadWatt;
 
     t_Control.t_Pfc.t_PI.GridPower.i16Err = t_Control.t_Pfc.t_PI.GridPower.i16Ref - t_Control.t_Pfc.t_PI.GridPower.i16Fed;
     UpDnLimit(t_Control.t_Pfc.t_PI.GridPower.i16Err, -cPower500W, cPower500W);
@@ -453,7 +453,7 @@ void    sPfcPowerLoop(void)
     UpDnLimit(t_Control.t_Pfc.t_PI.GridPower.i16Err, (long)- cVdc20V << 14, (long)cVdc20V << 14);
 
     t_Control.t_Pfc.t_PI.GridPower.i16PIOut = (int)((t_Control.t_Pfc.t_PI.GridPower.i32UpSum + t_Control.t_Pfc.t_PI.GridPower.i32UiSum) >> 14);
-    t_Control.t_Pfc.t_PI.GridPower.i16PIOut += ForwardVolt;
+    // t_Control.t_Pfc.t_PI.GridPower.i16PIOut += ForwardVolt;
     UpDnLimit(t_Control.t_Pfc.t_PI.GridPower.i16PIOut, t_Control.t_Pfc.t_PI.GridPower.i16PIOutMin, t_Control.t_Pfc.t_PI.GridPower.i16PIOutMax);
 }
 
@@ -530,15 +530,15 @@ void    sPfcCurrLoop(void)
 
 void    sPfcBurst_Check()
 {
-    if( sMsw_GetPfc2Grid() == true )
-    {
-        t_Control.t_Pfc.u16Burst_Act = false;
-        return;
-    }
+    // if( sMsw_GetPfc2Grid() == true )
+    // {
+    //     t_Control.t_Pfc.u16Burst_Act = false;
+    //     return;
+    // }
 
     int i16BusVoltSet,i16BusVolt;
 
-    i16BusVoltSet = sConfig_BusVoltGiv();
+    i16BusVoltSet = sConfig_GetPfcGiv();
     t_Control.t_Pfc.i16Burst_ValueHi = i16BusVoltSet + cVdc30V;
     t_Control.t_Pfc.i16Burst_VauleLo = i16BusVoltSet + cVdc25V;
 
@@ -654,6 +654,269 @@ void    sPfcSpwm(void)
 
     EPwm5Regs.CMPA.bit.CMPA = t_Control.t_Var.i16Spwm_H_CMP;
     EPwm6Regs.CMPA.bit.CMPA = t_Control.t_Var.i16Spwm_L_CMP;
+}
+
+void    sInv_InvLimit(void)
+{
+    int         i16Err;
+    signed long i32TempA;
+
+    if( sInv_GetLimitEn() == false )
+    {
+        t_Control.t_Inv.t_PI.InvLimit.i16Ref    = 0;
+        t_Control.t_Inv.t_PI.InvLimit.i16Fed    = 0;
+        t_Control.t_Inv.t_PI.InvLimit.i16Err    = 0;
+        t_Control.t_Inv.t_PI.InvLimit.i32UpSum  = 0;
+        t_Control.t_Inv.t_PI.InvLimit.i32UiSum  = 0;
+        t_Control.t_Inv.t_PI.InvLimit.i16PIOut  = 0;
+        t_Control.t_Flag.InvLimit_Act           = false;
+        return;
+    }
+
+    // Ref
+    t_Control.t_Inv.t_PI.InvLimit.i16Ref        = (int)sProtect_GetInvLoad100();
+
+    // Fed
+    t_Control.t_Inv.t_PI.InvLimit.i16Fed        = (int)sSample_GetInvWatt();
+
+    // Err
+    t_Control.t_Inv.t_PI.InvLimit.i16Err = t_Control.t_Inv.t_PI.InvLimit.i16Ref - t_Control.t_Inv.t_PI.InvLimit.i16Fed;
+    UpDnLimit(t_Control.t_Inv.t_PI.InvLimit.i16Err, -200, 200);
+
+    // P
+    t_Control.t_Inv.t_PI.InvLimit.i32UpSum = (long)t_Control.t_Inv.t_PI.InvLimit.i16Err * t_Control.t_Inv.t_PI.InvLimit.i16Kp;
+
+    // I
+    t_Control.t_Inv.t_PI.InvLimit.i32UiSum += (long)t_Control.t_Inv.t_PI.InvLimit.i16Err * t_Control.t_Inv.t_PI.InvLimit.i16Ki;
+    pDnLimit(t_Control.t_Inv.t_PI.InvLimit.i32UiSum, 0, ((long)t_Control.t_Inv.t_PI.InvLimit.i16PIOutMax << 10));
+
+    // Out
+    i32TempA = (int)((t_Control.t_Inv.t_PI.InvLimit.i32UpSum + t_Control.t_Inv.t_PI.InvLimit.i32UiSum ) >> 10);
+
+    // 调整步长
+    i16Err = i32TempA - t_Control.t_Inv.t_PI.InvLimit.i16PIOut;
+    UpDnLimit(i16Err, -cVac2V, cVac2V);
+
+    t_Control.t_Inv.t_PI.InvLimit.i16PIOut = t_Control.t_Inv.t_PI.InvLimit.i16PIOut_Pre + i16Err;
+    t_Control.t_Inv.t_PI.InvLimit.i16PIOut_Pre = t_Control.t_Inv.t_PI.InvLimit.i16PIOut;
+    UpDnLimit(t_Control.t_Inv.t_PI.InvLimit.i16PIOut, 0, t_Control.t_Inv.t_PI.InvLimit.i16PIOutMax);
+
+    // 限功率实际有效
+    if( t_Control.t_Inv.t_PI.InvLimit.i16PIOut > 0)
+    {
+        t_Control.t_Flag.InvLimit_Act = true;
+    }
+    else
+    {
+        t_Control.t_Flag.InvLimit_Act = false;
+    }
+}
+
+void    sISR_TZDeal(void)
+{
+    float   CheckVolt;
+    int     i16GridPowerGiv;
+
+    i16GridPowerGiv = sConfig_GetSelfPower();
+
+    CheckVolt = labs(sAdc_GetReal(GridVolt));
+
+    if( sMsw_GetPfcMode() == true && sMsw_GetPfc2Grid() == false )
+    {
+        t_Control.t_Var.u16LFIGBT_DelayCnt          = 0;
+        t_Control.t_Var.bLF_CBC_EN                  = true;
+
+        EALLOW;
+        EPwm6Regs.TZFRC.bit.OST                     = 1;
+        EDIS;       
+    }
+    else
+    {
+        t_Control.t_Var.bLF_CBC_EN                  = false;
+    }
+
+    if(t_Control.t_Pfc.u16Burst_Act == true)
+    {
+        sProtect_SetTZFlag(SoftWare);
+
+        EALLOW;
+        EPwm5Regs.TZFRC.bit.OST                     = 1;
+        EPwm6Regs.TZFRC.bit.OST                     = 1;
+        EDIS;  
+    }
+
+    // 工频管过零封1ms
+    if( sMsw_GetPfcMode() == true && CheckVolt < cVac15V )
+    {
+        if( sMsw_GetPfc2Grid() == false )
+        {
+            t_Control.t_Var.bLF_CBC_EN              = true;
+            t_Control.t_Var.u16LFIGBT_DelayCnt      = 0;
+
+            EALLOW;
+            EPwm6Regs.TZFRC.bit.OST                 = 1;
+            EDIS;  
+        }
+        else
+        {
+            if( i16GridPowerGiv <= -cPower100W )
+            {
+                t_Control.t_Var.bLF_CBC_EN          = true;
+                t_Control.t_Var.u16LFIGBT_DelayCnt  = 0;
+
+                EALLOW;
+                EPwm6Regs.TZFRC.bit.OST             = 1;
+                EDIS;  
+            }
+        }
+    }
+
+    // TZ3_OST 逐步限流硬件TZ3封工频管
+    if( EPwm6Regs.TZOSTFLG.bit.OST1 == true )
+    {
+        sProtect_SetTZFlag(TZ3);
+        sProtect_SetTZFlag(Cmpss);
+
+        t_Control.t_Var.bLF_CBC_EN              = true;
+        t_Control.t_Var.u16LFIGBT_DelayCnt      = 0;
+
+        EALLOW;
+        EPwm6Regs.TZOSTCLR.bit.OST3             = 1;
+        EDIS;  
+    }
+
+    // TZ3_CBC 逐波限流硬件TZ3封高频管
+    if( EPwm6Regs.TZCBCFLG.bit.CBC1 == true )
+    {
+        sProtect_SetTZFlag(TZ3);
+        sProtect_SetTZFlag(Cmpss);
+
+        t_Control.t_Var.bLF_CBC_EN              = true;
+        t_Control.t_Var.u16LFIGBT_DelayCnt      = 0;
+
+        EALLOW;
+        EPwm6Regs.TZCBCCLR.bit.CBC3            = 1;
+        EDIS;  
+    }
+
+    // CMPSS1 逐步限流软件封高频&低频
+    if(Cmpss1Regs.COMPSTS.bit.COMPHLATCH == true || Cmpss1Regs.COMPSTS.bit.COMPLLATCH == true)
+    {
+        sProtect_SetTZFlag(Cmpss);
+
+        // 高频管封1周期
+        t_Control.t_Var.bHF_CBC_EN              = true;
+        t_Control.t_Var.u16HFIGBT_DelayCnt      = 0;
+
+        // 低频管封1ms
+        t_Control.t_Var.bLF_CBC_EN              = true;
+        t_Control.t_Var.u16LFIGBT_DelayCnt      = 0;
+
+        EALLOW;
+        Cmpss1Regs.COMPSTSCLR.bit.HLATCHCLR     = 1;
+        Cmpss1Regs.COMPSTSCLR.bit.LLATCHCLR     = 1;
+        EDIS;
+    }
+
+    // Pfc高频管封波一周期计时
+    if( t_Control.t_Var.bHF_CBC_EN == true)
+    {
+        t_Control.t_Var.u16HFIGBT_DelayCnt++;
+        if(t_Control.t_Var.u16HFIGBT_DelayCnt >= 2)
+        {
+            t_Control.t_Var.u16HFIGBT_DelayCnt  = 0;
+            t_Control.t_Var.bHF_CBC_EN          = false;
+        }
+    }
+    else
+    {
+        t_Control.t_Var.u16HFIGBT_DelayCnt  = 0;
+    }
+
+    // Pfc工频管封波1ms计时
+    if( t_Control.t_Var.bLF_CBC_EN == true)
+    {
+        t_Control.t_Var.u16LFIGBT_DelayCnt++;
+        if(t_Control.t_Var.u16LFIGBT_DelayCnt >= 2)
+        {
+            t_Control.t_Var.u16LFIGBT_DelayCnt  = 0;
+            t_Control.t_Var.bLF_CBC_EN          = false;
+        }
+    }
+    else
+    {
+        t_Control.t_Var.u16LFIGBT_DelayCnt  = 0;
+    }
+
+    if( (EPwm5Regs.TZOSTFLG.all & 0x00FB) != 0x00 || (EPwm6Regs.TZOSTFLG.all & 0x00FB) != 0x00 )
+    {
+        sProtect_SetTZFlag(SoftWare);
+    }
+}
+
+void    sPwm_Enable(void)
+{
+    if( sProtect_GetTZFlag(SoftWare) == true)
+    {
+        return;
+    }
+
+    t_Control.t_Var.u16IGBT_EN_DLY++;
+    if(t_Control.t_Var.u16IGBT_EN_DLY >=2 )
+    {
+        t_Control.t_Var.u16IGBT_EN_DLY = 2;
+    }
+    else
+    {
+        return;
+    }
+
+    if(t_Control.t_Var.bHF_CBC_EN == false )
+    {
+        sPwm_INV_HF_Open();
+    }
+
+    if(t_Control.t_Var.bLF_CBC_EN == false )
+    {
+        sPwm_INV_LF_Open();
+    }
+}
+
+void    sPwm_Disable(void)
+{
+    sProtect_ClrTZFlag(SoftWare);
+    sProtect_ClrTZFlag(TZ3);
+    sProtect_ClrTZFlag(Cmpss);
+
+    t_Control.t_Var.bHF_CBC_EN          = false;
+    t_Control.t_Var.u16HFIGBT_DelayCnt  = 0;
+
+    t_Control.t_Var.bLF_CBC_EN          = false;
+    t_Control.t_Var.u16LFIGBT_DelayCnt  = 0;
+
+    sPwm_INV_HF_Shut();
+    sPwm_INV_LF_Shut();
+
+    EALLOW;
+
+    EPwm5Regs.TZCBCCLR.bit.CBC3         = 1;
+    EPwm6Regs.TZOSTCLR.bit.OST3         = 1;
+
+    EPwm5Regs.TZOSTCLR.bit.OST1         = 1;
+    EPwm5Regs.TZOSTCLR.bit.OST2         = 1;
+    EPwm5Regs.TZOSTCLR.bit.DCAEVT1      = 1;
+
+    EPwm6Regs.TZOSTCLR.bit.OST1         = 1;
+    EPwm6Regs.TZOSTCLR.bit.OST2         = 1;
+    EPwm6Regs.TZOSTCLR.bit.DCAEVT1      = 1;
+
+    Cmpss1Regs.COMPSTSCLR.bit.HLATCHCLR = 1;
+    Cmpss1Regs.COMPSTSCLR.bit.LLATCHCLR = 1;
+
+    EPwm5Regs.TZCBCCLR.bit.DCAEVT2      = 1;
+    EPwm6Regs.TZCBCCLR.bit.DCAEVT2      = 1;
+
+    EDIS;
 }
 
 void    sLoopClear(void)
