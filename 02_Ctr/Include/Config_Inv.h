@@ -14,9 +14,6 @@
 #define cCHG_BUS_VOLT_BURST_BACK    cVdc5V
 
 #define cCHG_AC_POWER_MAX           cPower1800W
-#define cCHG_BAT_POWER_MAX          cPower1800W
-
-#define cCHG_BAT_CURR_MAX           cCurr10A
 #define cCHG_AC_CURR_MAX            cCurr10A
 
 #define cDCG_AC_CURR_MAX            cCurr10A
@@ -65,7 +62,7 @@ typedef struct
 {
     Inv_Config_t t_Inv;
     Pfc_Config_t t_Pfc;
-}Config_t;
+}ConfigInv_t;
 
 CONFIG_INV_FUNCTION void    sConfig_InitInv                 (void);
 CONFIG_INV_FUNCTION void    sConfig_InitInvControl          (void);
@@ -73,7 +70,7 @@ CONFIG_INV_FUNCTION void    sConfig_InitPfcControl          (void);
 CONFIG_INV_FUNCTION void    sConfig_InvFreqResh             (void);
 CONFIG_INV_FUNCTION void    sConfig_InvResh                 (void);
 
-CONFIG_INV_FUNCTION int     sConfig_GetPfcGiv               (void);
+CONFIG_INV_FUNCTION int     sConfig_GetPfcSet               (void);
 
 
 #endif

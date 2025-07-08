@@ -41,12 +41,18 @@
 #define cVac380V                3800
 
 #define cVdc0V                  0
+#define cVdc0V5                 5
+#define cVdc1V                  10
 #define cVdc2V                  20
+#define cVdc3V                  30
 #define cVdc5V                  50
 #define cVdc10V                 100
 #define cVdc20V                 200
 #define cVdc25V                 250
 #define cVdc30V                 300
+#define cVdc40V                 400
+#define cVdc60V                 600
+#define cVdc200V                2000
 #define cVdc320V                3200
 #define cVdc400V                4000
 #define cVdc500V                5000
@@ -71,6 +77,14 @@
 #define cPower500W              500
 #define cPower1800W             1800
 
+#define cPWM_PRD_45K            1333
+#define cPWM_PRD_50K            1200
+#define cPWM_PRD_60K            1000
+#define cPWM_PRD_70K            857
+#define cPWM_PRD_80K            750
+#define cPWM_PRD_90K            667
+#define cPWM_PRD_100K           600
+#define cPWM_PRD_120K           500
 
 
 

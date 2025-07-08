@@ -21,7 +21,8 @@ typedef enum
     TZ3,
     Trip4,
     SoftWare,
-    Cmpss,
+    Cmpss1,
+    Cmpss4,
     TZ_END
 }TZ_ID_e;
 
@@ -32,10 +33,11 @@ typedef struct
     unsigned int    TZ3         :1;
     unsigned int    Trip4       :1;
 
-    unsigned int    Cmpss       :1;
+    unsigned int    Cmpss1      :1;
+    unsigned int    Cmpss4      :1;
     unsigned int    SoftWare    :1;
 
-    unsigned int    Resv        :11;
+    unsigned int    Resv        :9;
 }TZ_Flag_t;
 
 typedef union 

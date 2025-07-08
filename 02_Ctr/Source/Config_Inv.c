@@ -1,12 +1,12 @@
 #include "UserHeader.h"
 
-static  Config_t t_Config;
+static  ConfigInv_t t_InvConfig;
 
 void    sConfig_InitInv(void)
 {
-    t_Config.t_Inv.i16VoltSet = (int)((float)cVac120V * 1.4142f);
+    t_InvConfig.t_Inv.i16VoltSet = (int)((float)cVac120V * 1.4142f);
 
-    t_Config.t_Inv.i16FreqSet = Freq50Hz;
+    t_InvConfig.t_Inv.i16FreqSet = Freq50Hz;
 
     // Loop parameter set
     sConfig_InitInvControl();
@@ -24,7 +24,7 @@ void    sConfig_InitInvControl(void)
 
     pInv = sInv_GetInvCtrPtr();
 
-    pInv->i16InvVoltSet = t_Config.t_Inv.i16VoltSet;        // Ex:220 * 14.142
+    pInv->i16InvVoltSet = t_InvConfig.t_Inv.i16VoltSet;        // Ex:220 * 14.142
 
     pInv->t_PI.Volt_ID.i16Kp        = 1024;
     pInv->t_PI.Volt_ID.i16Ki        = 10;
@@ -81,7 +81,7 @@ void    sConfig_InvFreqResh(void)
     pInv = sInv_GetInvCtrPtr();
     pPLL = sPLL_GetPtr();
 
-    switch (t_Config.t_Inv.i16FreqSet) 
+    switch (t_InvConfig.t_Inv.i16FreqSet) 
     {
         case Freq50Hz:
             pPLL->i32TsPoint = 0x5A000000;
@@ -122,7 +122,7 @@ void    sConfig_InvResh(void)
 
     pInv = sInv_GetInvCtrPtr();
 
-    pInv->i16InvVoltSet = t_Config.t_Inv.i16VoltSet;        // Ex:220 * 14.142
+    pInv->i16InvVoltSet = t_InvConfig.t_Inv.i16VoltSet;        // Ex:220 * 14.142
 
     sProtect_SetInvLoad100(cDCG_AC_POWER_MAX);
     sProtect_SetPfcLoad100(cCHG_AC_POWER_MAX);
@@ -138,7 +138,7 @@ void    sConfig_InvResh(void)
 }
 
 
-int    sConfig_GetPfcGiv(void)
+int    sConfig_GetPfcSet(void)
 {
-    return t_Config.t_Pfc.i16PfcVoltSet;
+    return t_InvConfig.t_Pfc.i16PfcVoltSet;
 }

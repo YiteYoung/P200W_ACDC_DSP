@@ -166,9 +166,11 @@ typedef struct
     Inv_t           t_Inv;
     Pfc_t           t_Pfc;
     Var_t           t_Var;
-}Control_t;
+}InvControl_t;
 
-CTR_INV_FUNCTION  Inv_t*      sInv_GetInvCtrPtr(void);
-CTR_INV_FUNCTION  Pfc_t*      sInv_GetPfcCtrPtr(void);
+CTR_INV_FUNCTION  void        sInv_Control      (void);
+
+CTR_INV_FUNCTION  Inv_t*      sInv_GetInvCtrPtr (void);
+CTR_INV_FUNCTION  Pfc_t*      sInv_GetPfcCtrPtr (void);
 
 #endif

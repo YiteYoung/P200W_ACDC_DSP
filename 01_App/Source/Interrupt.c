@@ -12,7 +12,7 @@ void sInv_ISR(void)
 
     sAdc_Convert();
 
-    // sInv_Control();
+    sInv_Control();
 
     sSample_Filter();
 
