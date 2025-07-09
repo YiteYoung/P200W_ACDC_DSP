@@ -41,6 +41,7 @@
 #define cVac380V                3800
 
 #define cVdc0V                  0
+#define cVdc0V1                 1
 #define cVdc0V5                 5
 #define cVdc1V                  10
 #define cVdc2V                  20
@@ -54,6 +55,7 @@
 #define cVdc60V                 600
 #define cVdc200V                2000
 #define cVdc320V                3200
+#define cVdc360V                3600
 #define cVdc400V                4000
 #define cVdc500V                5000
 #define cVdc490V                4900

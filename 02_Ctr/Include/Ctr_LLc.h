@@ -74,9 +74,14 @@ typedef struct
     STD_2P2Z_F_VARS t_ChgCurrLoop;
     STD_2P2Z_F_VARS t_DcgVoltLoop;
     STD_2P2Z_F_VARS t_DcgCurrLoop;
+
+    unsigned int    DcgEN;
+    unsigned int    ChgEN;
 }LLcControl_t;
 
 CONTROL_LLC_FUNCTION    void    sLLC_Control        (void);
+CONTROL_LLC_FUNCTION    void    sLLC_SetDcgEN       (unsigned int EN);
+CONFIG_LLC_FUNCTION     void    sLLC_SetChgEN       (unsigned int EN);
 
 #endif
 

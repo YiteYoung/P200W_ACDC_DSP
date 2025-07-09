@@ -26,7 +26,7 @@ void    sInv_Control(void)
     if( sProtect_GetTZFlag(TZ1)   == true     ||\
         sProtect_GetTZFlag(TZ2)   == true     ||\
         sProtect_GetTZFlag(Trip4) == true     ||\
-        sMsw_GetInvCmd()    == false    )
+        t_InvControl.t_Flag.Inv_En      == false    )
     {
         t_InvControl.t_Flag.InvFsm         = eINV_FSM_OFF;
         t_InvControl.t_Var.u16IGBT_EN_DLY  = 0;
@@ -44,7 +44,7 @@ void    sInv_Control(void)
             {
                 sConfig_InvResh();
 
-                if( sMsw_GetInvCmd() == false )
+                if( sMsw_GetPfcMode() == false )
                 {
                     sPLL_SetInvAngle(0x43000000);
                     t_InvControl.t_Flag.InvFsm = eINV_FSM_INIT;
@@ -75,7 +75,7 @@ void    sInv_Control(void)
 
             case eINV_FSM_RUN:
             {
-                if( sMsw_GetInvCmd() == true )
+                if( sMsw_GetPfcMode() == true )
                 {
                     sPfcBurst_Check();
 
@@ -661,7 +661,7 @@ void    sInv_InvLimit(void)
     int         i16Err;
     signed long i32TempA;
 
-    if( sInv_GetLimitEn() == false )
+    if( t_InvControl.t_Flag.InvLimit_En == false )
     {
         t_InvControl.t_Inv.t_PI.InvLimit.i16Ref    = 0;
         t_InvControl.t_Inv.t_PI.InvLimit.i16Fed    = 0;
@@ -688,7 +688,7 @@ void    sInv_InvLimit(void)
 
     // I
     t_InvControl.t_Inv.t_PI.InvLimit.i32UiSum += (long)t_InvControl.t_Inv.t_PI.InvLimit.i16Err * t_InvControl.t_Inv.t_PI.InvLimit.i16Ki;
-    pDnLimit(t_InvControl.t_Inv.t_PI.InvLimit.i32UiSum, 0, ((long)t_InvControl.t_Inv.t_PI.InvLimit.i16PIOutMax << 10));
+    UpDnLimit(t_InvControl.t_Inv.t_PI.InvLimit.i32UiSum, 0, ((long)t_InvControl.t_Inv.t_PI.InvLimit.i16PIOutMax << 10));
 
     // Out
     i32TempA = (int)((t_InvControl.t_Inv.t_PI.InvLimit.i32UpSum + t_InvControl.t_Inv.t_PI.InvLimit.i32UiSum ) >> 10);
@@ -717,11 +717,11 @@ void    sISR_TZDeal(void)
     float   CheckVolt;
     int     i16GridPowerGiv;
 
-    i16GridPowerGiv = sConfig_GetSelfPower();
+    i16GridPowerGiv = 0;//sConfig_GetSelfPower();
 
     CheckVolt = labs(sAdc_GetReal(GridVolt));
 
-    if( sMsw_GetPfcMode() == true && sMsw_GetPfc2Grid() == false )
+    if( sMsw_GetPfcMode() == true /*&& sMsw_GetPfc2Grid() == false*/ )
     {
         t_InvControl.t_Var.u16LFIGBT_DelayCnt          = 0;
         t_InvControl.t_Var.bLF_CBC_EN                  = true;
@@ -994,4 +994,35 @@ Inv_t*    sInv_GetInvCtrPtr(void)
 Pfc_t*      sInv_GetPfcCtrPtr(void)
 {
     return &t_InvControl.t_Pfc;
+}
+
+void    sInv_SetInvEN(unsigned int EN)
+{
+    if(EN > 1)
+    {
+        t_InvControl.t_Flag.Inv_En = false;
+        return;
+    }
+    t_InvControl.t_Flag.Inv_En = EN;
+}
+
+
+void    sInv_SetInvOpenLoop(unsigned int EN)
+{
+    if(EN > 1)
+    {
+        t_InvControl.t_Flag.OpenLoop = false;
+        return;
+    }
+    t_InvControl.t_Flag.OpenLoop = EN;
+}
+
+void    sInv_SetInvRef(unsigned int Value)
+{
+    t_InvControl.t_Inv.i16InvVoltRef = Value;
+}
+
+void    sInv_SetPfcRef(unsigned int Value)
+{
+    t_InvControl.t_Pfc.i16PfcVoltRef = Value;
 }

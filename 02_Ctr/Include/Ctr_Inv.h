@@ -168,9 +168,15 @@ typedef struct
     Var_t           t_Var;
 }InvControl_t;
 
-CTR_INV_FUNCTION  void        sInv_Control      (void);
+CTR_INV_FUNCTION  void        sInv_Control        (void);
 
-CTR_INV_FUNCTION  Inv_t*      sInv_GetInvCtrPtr (void);
-CTR_INV_FUNCTION  Pfc_t*      sInv_GetPfcCtrPtr (void);
+CTR_INV_FUNCTION  Inv_t*      sInv_GetInvCtrPtr   (void);
+CTR_INV_FUNCTION  Pfc_t*      sInv_GetPfcCtrPtr   (void);
+
+CTR_INV_FUNCTION  void        sInv_SetInvEN       (unsigned int EN);
+CTR_INV_FUNCTION  void        sInv_SetInvOpenLoop (unsigned int EN);
+
+CTR_INV_FUNCTION  void        sInv_SetInvRef      (unsigned int Value);
+CTR_INV_FUNCTION  void        sInv_SetPfcRef      (unsigned int Value);
 
 #endif

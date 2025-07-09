@@ -36,7 +36,7 @@ unsigned char   sFault_GetFaultBit(unsigned int eFaultId)
     }
 }    
 
-unsigned char   sAlarm_GetAlarmBit(unsigned int eAlarmId)
+unsigned char   sFault_GetAlarmBit(unsigned int eAlarmId)
 {
     unsigned int u16TempA;
     if( (eAlarmId <= eAlarm_Start) || (eAlarmId >= eAlarm_End) )
