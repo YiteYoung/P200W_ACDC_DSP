@@ -137,6 +137,20 @@ void    sConfig_InvResh(void)
     sConfig_InvFreqResh();
 }
 
+void     sConfig_SetInvVolt(int Volt)
+{
+    t_InvConfig.t_Inv.i16VoltSet = (int)((float)Volt * 1.414f);
+}
+
+int     sConfig_GetInvSet(void)
+{
+    return t_InvConfig.t_Inv.i16VoltSet;
+}
+
+void     sConfig_SetPfcVolt(int Volt)
+{
+    t_InvConfig.t_Pfc.i16PfcVoltSet = Volt;
+}
 
 int    sConfig_GetPfcSet(void)
 {

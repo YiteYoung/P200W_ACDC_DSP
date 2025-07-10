@@ -63,7 +63,7 @@ typedef struct
     unsigned int    LLCSoftStart    :1;
     unsigned int    LLCSoftOk       :1;
     unsigned int    RlySoftStart    :1;
-    unsigned int    RltSoftOk       :1;
+    unsigned int    RlySoftOk       :1;
 
     unsigned int    InvSoftErr      :1;
     unsigned int    PfcSoftErr      :1;
@@ -95,7 +95,10 @@ typedef struct
     unsigned int    u16LLCSoftOkChkCnt;
     unsigned int    u16RltSoftOkChkCnt;
 
-    unsigned int    u16WaitCnt;
+    unsigned int    u16EvRlyWaitCnt;
+    unsigned int    u16OutRlyWaitCnt;
+    unsigned int    u16SoftRlyWaitCnt;
+    unsigned int    u16GridRlyWaitCnt;
 }Msw_Cnt_t;
 
 typedef struct 

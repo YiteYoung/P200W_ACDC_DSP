@@ -111,7 +111,7 @@ void    TZ_Deal(void)
     }
 }
 
-void    sProtect_DisableTZ(void)
+void    sProtect_DisableInvTZ(void)
 {
     EALLOW;
 

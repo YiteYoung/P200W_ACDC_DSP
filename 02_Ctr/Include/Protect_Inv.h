@@ -67,7 +67,7 @@ PROTECT_INV_FUNCTION    void                sProtect_SetPfcCurr100  (unsigned lo
 PROTECT_INV_FUNCTION    unsigned long       sProtect_GetPfcCurr100  (void);
 
 PROTECT_INV_FUNCTION    void                TZ_Deal                 (void);
-PROTECT_INV_FUNCTION    void                sProtect_DisableTZ      (void);
+PROTECT_INV_FUNCTION    void                sProtect_DisableInvTZ   (void);
 PROTECT_INV_FUNCTION    void                sProtect_SetTZFlag      (TZ_ID_e Goal);
 PROTECT_INV_FUNCTION    void                sProtect_ClrTZFlag      (TZ_ID_e Goal);
 PROTECT_INV_FUNCTION    unsigned int        sProtect_GetTZFlag      (TZ_ID_e Goal);

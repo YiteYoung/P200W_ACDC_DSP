@@ -879,3 +879,14 @@ void    sLLC_SetChgEN(unsigned int EN)
     t_LLcControl.ChgEN = EN;
 }
 
+
+void    sLLC_SetOpenLoop    (unsigned int EN)
+{
+    if(EN > 1)
+    {
+        t_LLcControl.u16OpenLoopEn = false;
+        return;
+    }
+
+    t_LLcControl.u16OpenLoopEn = EN;   
+}

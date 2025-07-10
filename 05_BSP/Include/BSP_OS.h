@@ -22,13 +22,14 @@
 #define     eMsw_ClrFault           3
 #define     eMsw_Alarm              4
 #define     eMsw_InvOn              5
-#define     eMsw_InvOff             6
-#define     eMsw_ChgOn              7
-#define     eMsw_ChgOff             8
-#define     eMsw_GridOn             9
-#define     eMsw_GridOff            10
-#define     eMsw_GridLost           11
-#define     eMsw_GridRest           12
+#define     eMsw_EvOn               6
+#define     eMsw_InvOff             7
+#define     eMsw_ChgOn              8
+#define     eMsw_ChgOff             9
+#define     eMsw_GridOn             10
+#define     eMsw_GridOff            11
+#define     eMsw_GridLost           12
+#define     eMsw_GridRest           13
 
 #define     eInv_InvZero            1
 #define     eInv_GridZero           2

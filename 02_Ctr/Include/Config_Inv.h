@@ -70,6 +70,10 @@ CONFIG_INV_FUNCTION void    sConfig_InitPfcControl          (void);
 CONFIG_INV_FUNCTION void    sConfig_InvFreqResh             (void);
 CONFIG_INV_FUNCTION void    sConfig_InvResh                 (void);
 
+CONFIG_INV_FUNCTION void     sConfig_SetInvVolt              (int Volt);
+CONFIG_INV_FUNCTION void     sConfig_SetPfcVolt              (int Volt);
+
+CONFIG_INV_FUNCTION int     sConfig_GetInvSet               (void);
 CONFIG_INV_FUNCTION int     sConfig_GetPfcSet               (void);
 
 
