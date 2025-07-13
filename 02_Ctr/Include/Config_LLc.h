@@ -31,5 +31,7 @@ CONFIG_LLC_FUNCTION int     sConfig_GetBatVoltSet        (void);
 CONFIG_LLC_FUNCTION void    sConfig_SetLLCTrancRaio      (float Value);
 CONFIG_LLC_FUNCTION float   sConfig_GetLLCTrancRaio      (void);
 
+CONFIG_LLC_FUNCTION int     sLLC_GetFastStartCnt         (void);
+
 #endif
 

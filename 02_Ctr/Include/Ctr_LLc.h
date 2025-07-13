@@ -83,6 +83,7 @@ CONTROL_LLC_FUNCTION    void    sLLC_Control        (void);
 CONTROL_LLC_FUNCTION    void    sLLC_SetDcgEN       (unsigned int EN);
 CONTROL_LLC_FUNCTION    void    sLLC_SetChgEN       (unsigned int EN);
 CONTROL_LLC_FUNCTION    void    sLLC_SetOpenLoop    (unsigned int EN);
+CONTROL_LLC_FUNCTION    int     sLLC_GetControlFsm  (void);
 
 #endif
 

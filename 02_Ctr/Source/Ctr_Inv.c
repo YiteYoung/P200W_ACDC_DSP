@@ -1022,7 +1022,22 @@ void    sInv_SetInvRef(unsigned int Value)
     t_InvControl.t_Inv.i16InvVoltRef = Value;
 }
 
+int    sInv_GetInvRef(void)
+{
+    return t_InvControl.t_Inv.i16InvVoltRef;
+}
+
 void    sInv_SetPfcRef(unsigned int Value)
 {
     t_InvControl.t_Pfc.i16PfcVoltRef = Value;
+}
+
+int     sInv_GetPfcRef(void)
+{
+    return t_InvControl.t_Pfc.i16PfcVoltRef;
+}
+
+int     sInv_GetControlFsm(void)
+{
+    return t_InvControl.t_Flag.InvFsm;
 }

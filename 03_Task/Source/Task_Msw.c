@@ -947,68 +947,517 @@ void    sRlySoft(void)
 
 void    sInvSoft(void)
 {
+    if(t_Msw.t_MswFlag.InvSoftOk == true)
+    {
+        i16SYSStauts = Inv_OK;
+        t_Msw.t_MswFlag.InvSoftStart = false;
+        return;
+    }
 
+    if(t_Msw.u_Cmd.bit.Fast_Inv == true)
+    {
+        sFast_Inv();
+        return;
+    }
+
+    if(t_Msw.t_MswFlag.InvSoftStart == false)
+    {
+        i16SYSStauts = Inv_Soft;
+        t_Msw.t_MswFlag.InvSoftStart = true;
+        t_Msw.t_Cnt.u16OutRlyWaitCnt = 0;
+
+        sInv_SetInvEN(true);
+    }
+
+    if(sGetTime_1ms() == true)
+    {
+        t_Msw.t_Cnt.u16InvSoftErrCnt++;
+        if(t_Msw.t_Cnt.u16InvSoftErrCnt >= 5000)
+        {
+            t_Msw.t_Cnt.u16InvSoftErrCnt = 0;
+
+            t_Msw.t_MswFlag.InvSoftOk = false;
+            t_Msw.t_MswFlag.InvSoftErr = true;
+            return;
+        }
+    }
+
+    if(t_Msw.t_MswFlag.InvRefOk == false)
+    {
+        if(sGetTime_1ms() == true)
+        {
+            // sInv_InvVoltSoft(sConfig_GetInvSet(),cVac1V);
+        }
+
+        if(sInv_GetInvRef() >= sConfig_GetInvSet())
+        {
+            t_Msw.t_MswFlag.InvRefOk = true;
+        }
+
+        return;
+    }
+
+    if(sInv_GetControlFsm() == eINV_FSM_RUN)
+    {
+        if(t_Msw.u_Cmd.bit.EvCmd == true)
+        {
+            sEvOutRly();
+        }
+
+        if(t_Msw.u_Cmd.bit.InvCmd == true)
+        {
+            sInvOutRly();
+        }
+
+        if(sGetTime_1ms() == true)
+        {
+            t_Msw.t_Cnt.u16OutRlyWaitCnt++;
+        }
+
+        // if(sRly_GetRlyOn(Rly_Out) == true && t_Msw.t_Cnt.u16OutRlyWaitCnt >= 800)
+        // {
+        //     t_Msw.t_Cnt.u16OutRlyWaitCnt = 0;
+
+        //     i16SYSStauts = Inv_OK;
+        //     t_Msw.t_MswFlag.InvSoftOk = true;
+        //     t_Msw.t_MswFlag.InvSoftStart = false;
+        // }
+    }
 }
 
 void    sPfcSoft(void)
 {
+    if( sGetTime_1ms() == false)
+    {
+        return;
+    }
 
+    if(t_Msw.t_MswFlag.RlySoftOk == true)
+    {
+        t_Msw.t_MswFlag.PfcSoftStart = false;
+        return;
+    }
+
+    if(t_Msw.t_MswFlag.RlySoftOk == false)
+    {
+        return;
+    }
+
+    if(t_Msw.t_MswFlag.PfcSoftStart == false)
+    {
+        i16SYSStauts = Pfc_Soft;
+        t_Msw.t_MswFlag.PfcSoftStart = true;
+
+        // sConfig_PfcVoltCal(sSample_GetRms(BatVolt),sSample_GetRms(GridVolt,sSample_GetRms(BatCurr)));
+
+        sInv_SetPfcRef(sSample_GetRms(BusVolt));
+
+        sInv_SetInvEN(true);
+    }
+
+    t_Msw.t_Cnt.u16PfcSoftErrCnt++;
+    if(t_Msw.t_Cnt.u16PfcSoftErrCnt >= 5000)
+    {
+        t_Msw.t_Cnt.u16PfcSoftOkChkCnt = 0;
+        t_Msw.t_Cnt.u16PfcSoftErrCnt = 0;
+
+        t_Msw.t_MswFlag.PfcSoftErr = true;
+        t_Msw.t_MswFlag.PfcSoftOk = false;
+        t_Msw.t_MswFlag.PfcSoftStart = false;
+        return;
+    }
+
+    if(t_Msw.t_MswFlag.PfcRefOk == false)
+    {
+        if(sMsw_GetPfc2Grid() == true)
+        {
+            // sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc5V);
+        }
+        else
+        {
+            // sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc1V);
+        }
+
+        if(sInv_GetPfcRef() == sConfig_GetPfcSet())
+        {
+            t_Msw.t_MswFlag.PfcRefOk = true;
+            t_Msw.t_Cnt.u16PfcSoftOkChkCnt = 0;
+        }
+        return;
+    }
+
+    if(sInv_GetControlFsm() == eINV_FSM_RUN)
+    {
+        if(sConfig_GetPfcSet() - sAdc_GetReal(BusVolt) < cVdc10V)
+        {
+            t_Msw.t_Cnt.u16PfcSoftOkChkCnt++;
+
+            if(sMsw_GetPfc2Grid() == true)
+            {
+                t_Msw.t_Cnt.u16PfcSoftOkChkCnt = 0;
+                t_Msw.t_Cnt.u16PfcSoftErrCnt = 0;
+
+                t_Msw.t_MswFlag.PfcSoftOk = true;
+                t_Msw.t_MswFlag.PfcSoftStart = false;
+                return;
+            }
+
+            if(t_Msw.t_Cnt.u16PfcSoftOkChkCnt >= 300)
+            {
+                t_Msw.t_Cnt.u16PfcSoftOkChkCnt = 0;
+                t_Msw.t_Cnt.u16PfcSoftErrCnt = 0;
+                
+                t_Msw.t_MswFlag.PfcSoftOk = true;
+                t_Msw.t_MswFlag.PfcSoftStart = false;
+                return;
+            }
+        }
+    }
+    else
+    {
+        t_Msw.t_Cnt.u16PfcSoftOkChkCnt = 0;
+    }
 }
 
 void    sChgSoft(void)
 {
+    if(sGetTime_1ms() == false)
+    {
+        return;
+    }
 
+    if(t_Msw.t_MswFlag.LLCSoftErr == true)
+    {
+        return;
+    }    
+
+    if(t_Msw.t_MswFlag.LLCSoftOk == true)
+    {
+        i16SYSStauts = Pfc_OK;
+        t_Msw.t_MswFlag.LLCSoftStart = false;
+        return;
+    }
+
+    if(t_Msw.t_MswFlag.LLCSoftStart == false)
+    {
+        i16SYSStauts = LLC_Soft;
+        t_Msw.t_MswFlag.LLCSoftStart = true;
+
+        t_Msw.t_Cnt.u16LLCSoftErrCnt = 0;
+        
+        sLLC_SetDcgEN(false);
+        sLLC_SetChgEN(true);
+
+        return;
+    }
+
+    // sConfig_PfcVotCal(sSample_GetRms(BatVolt),sSample_GetRms(GridVolt),sSample_GetRms(BatCurr));
+    // sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc5V);
+
+    // sLLC_BatVoltSoft(sConfig_GetBatVoltSet(),cVdc0V5);
+    // sConfig_BatCurrCal(sSample_GetRms(BatVolt));
+
+    t_Msw.t_Cnt.u16LLCSoftErrCnt++;
+    if(t_Msw.t_Cnt.u16LLCSoftErrCnt >= 5000)
+    {
+        t_Msw.t_Cnt.u16LLCSoftErrCnt = 0;
+        t_Msw.t_MswFlag.LLCSoftErr  = true;
+        t_Msw.t_MswFlag.LLCSoftStart = false;
+    }
+
+    if(sLLC_GetControlFsm() == eLLC_FSM_RUN)
+    {
+        if(sSample_GetRms(BatVolt) >= cVdc10V)
+        {
+            i16SYSStauts = Pfc_OK;
+
+            t_Msw.t_Cnt.u16LLCSoftErrCnt = 0;
+            t_Msw.t_MswFlag.LLCSoftStart = false;
+            t_Msw.t_MswFlag.LLCSoftOk = true;
+            return;
+        }
+    }
 }
 
 void    sDcgSoft(void)
 {
+    if(sGetTime_1ms() == false)
+    {
+        return;
+    }
 
+    if(t_Msw.t_MswFlag.LLCSoftErr == true)
+    {
+        return;
+    }    
+
+    if(t_Msw.t_MswFlag.LLCSoftOk == true)
+    {
+        t_Msw.t_MswFlag.LLCSoftStart = false;
+        return;
+    }
+
+    if(t_Msw.t_MswFlag.LLCSoftStart == false)
+    {
+        i16SYSStauts = LLC_Soft;
+        t_Msw.t_MswFlag.LLCSoftStart = true;
+
+        t_Msw.t_Cnt.u16LLCSoftErrCnt = 0;
+        t_Msw.t_Cnt.u16LLCSoftOkChkCnt = 0;
+
+        if(t_Msw.u_Cmd.bit.Fast_Inv == true)
+        {
+            t_Msw.WaitLLCTime = 4;
+        }
+        else
+        {
+            t_Msw.WaitLLCTime = 40;
+        }
+
+        t_Msw.t_Cnt.u16LLCSoftOkChkCnt = 0;
+        
+        sLLC_SetDcgEN(true);
+        sLLC_SetChgEN(false);
+
+        return;
+    }
+
+    t_Msw.t_Cnt.u16LLCSoftErrCnt++;
+    if(t_Msw.t_Cnt.u16LLCSoftErrCnt >= 5000)
+    {
+        t_Msw.t_Cnt.u16LLCSoftErrCnt = 0;
+        t_Msw.t_Cnt.u16LLCSoftOkChkCnt = 0;
+        t_Msw.WaitLLCTime = 0;
+
+        t_Msw.t_MswFlag.LLCSoftErr  = true;
+        t_Msw.t_MswFlag.LLCSoftStart = false;
+    }
+
+    t_Msw.t_Cnt.u16LLCSoftOkChkCnt++;
+    if( sLLC_GetControlFsm() == eLLC_FSM_RUN ||\
+        sLLC_GetControlFsm() == eLLC_FSM_SOFT && t_Msw.u_Cmd.bit.Fast_Inv == true && sLLC_GetFastStartCnt() >= 200)
+    {
+        if(sSample_GetRms(BusVolt) >= cVdc200V && t_Msw.t_Cnt.u16LLCSoftOkChkCnt >= t_Msw.WaitLLCTime)
+        {
+            t_Msw.t_Cnt.u16LLCSoftErrCnt = 0;
+            t_Msw.t_Cnt.u16LLCSoftOkChkCnt = 0;
+            t_Msw.WaitLLCTime = 0;
+
+            t_Msw.t_MswFlag.LLCSoftOk  = true;
+            t_Msw.t_MswFlag.LLCSoftStart = false;
+        }
+    }
 }
 
 void    sFast_Inv(void)
 {
+    if(t_Msw.u_Cmd.bit.Fast_Inv == false)
+    {
+        return;
+    }
 
+    // if(sRly_GetRlyOn(Rly_Grid) == true)
+    // {
+    //     if(t_Msw.RlyZero_Off == false)
+    //     {
+    //         return;
+    //     }
+
+    //     sRly_Break(Rly_Grid);
+    //     return;
+    // }
+
+    sInv_SetInvRef(sConfig_GetInvSet());
+
+    sInv_SetInvEN(true);
+
+    i16SYSStauts = Inv_Soft;
+
+    t_Msw.u_Cmd.bit.Fast_Inv = false;
+    t_Msw.t_MswFlag.InvRefOk = true;
+    t_Msw.t_MswFlag.InvSoftStart = true;
 }
 
 void    sFast_Pfc(void)
 {
+    int i16TempA,i16TempB;
 
+    if(t_Msw.u_Cmd.bit.Fast_Pfc == false)
+    {
+        return;
+    }
+
+    i16TempA = (int)((float)sSample_GetRms(GridVolt) * 1.414f);
+    i16TempB = sSample_GetRms(BusVolt) ;
+    if(i16TempB <= i16TempA || i16TempB >= cCHG_BUS_VOLT_PROTECT_HI)
+    {
+        // sRly_Break(Rly_Out);
+
+        t_Msw.u_Cmd.bit.Fast_Pfc = false;
+
+        t_Msw.t_Cnt.u16GridRlyWaitCnt = 0;
+        return;
+    }
+
+    // 由继电器过零触发市电恢复，无需等待继电器过零
+    // sRly_Close(Rly_Grid);
+
+    t_Msw.u_Cmd.bit.Fast_Pfc = false;
 }
 
 void    sByPass(void)
 {
+    // if(t_Msw.u_Cmd.bit.InvCmd == false)
+    // {
+    //     if(sRly_GetRlyOn(Rly_Out) == false)
+    //     {
+    //         return;
+    //     }
 
+    //     if(t_Msw.RlyZero_Off == false)
+    //     {
+    //         return;
+    //     }
+
+    //     sRly_Break(Rly_Out);
+    //     return;
+    // }
+
+    // if(sRly_GetRlyOn(Rly_Out) == true || sRly_GetRlyOn(Rly_Grid) == false)
+    // {
+    //     return;
+    // }
+
+    // if(sRly_GetRlyOn(Rly_Out) == false)
+    // {
+    //     if(t_Msw.RlyZero_On == false)
+    //     {
+    //         return;
+    //     }
+
+    //     sRly_Close(Rly_Out);
+    // }
 }
 
 unsigned char    sPfc_OnChk(void)
 {
-    return false;
+    if( sFault_GetFaultCode_All() != 0                              ||\
+        sFault_GetAlarmBit(eAlarm_WaitParaSet) == true      ||\
+        sFault_GetAlarmBit(eAlarm_BatVoltHi) == true        ||\
+        sFault_GetAlarmBit(eAlarm_GridVoltErr) == true      ||\
+        sFault_GetAlarmBit(eAlarm_TemperatureLo) == true    )
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 unsigned char    sInv_OnChk(void)
 {
-    return false;
+    if( sFault_GetFaultCode_All() != 0                      ||\
+        sFault_GetAlarmBit(eAlarm_WaitParaSet) == true      ||\
+        sFault_GetAlarmBit(eAlarm_BatVoltHi) == true        ||\
+        sFault_GetAlarmBit(eAlarm_BatVoltLo) == true        ||\
+        sFault_GetAlarmBit(eAlarm_TemperatureLo) == true    )
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 unsigned char    sEv_OnChk(void)
 {
-    return false;
+    if( sFault_GetFaultCode_All() != 0                      ||\
+    sFault_GetAlarmBit(eAlarm_WaitParaSet) == true      ||\
+    sFault_GetAlarmBit(eAlarm_BatVoltHi) == true        ||\
+    sFault_GetAlarmBit(eAlarm_BatVoltLo) == true        ||\
+    sFault_GetAlarmBit(eAlarm_TemperatureLo) == true    )
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 unsigned char    sBypass_OnChk(void)
 {
-    return false;
+    if( sFault_GetFaultCode_All() != 0                      ||\
+        sFault_GetAlarmBit(eAlarm_WaitParaSet) == true      ||\
+        sFault_GetAlarmBit(eAlarm_BatVoltHi) == true        ||\
+        sFault_GetAlarmBit(eAlarm_BatVoltLo) == true        ||\
+        sFault_GetAlarmBit(eAlarm_GridVoltErr) == true      ||\
+        sFault_GetAlarmBit(eAlarm_GridFreqErr) == true      ||\
+        sFault_GetAlarmBit(eAlarm_TemperatureLo) == true    )
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 
 void    sInvOutRly(void)
 {
+    if(t_Msw.u_Cmd.bit.EvCmd == true)
+    {
+        return;
+    }
 
+    // if(sRly_GetRlyOn(Rly_Out) == false)
+    // {
+    //     if(t_Msw.RlyZero_On)
+    //     {
+    //         return;
+    //     }
+
+    //     sRly_Close(Rly_Out);
+    // }
 }
+
 
 void    sEvOutRly(void)
 {
+    // if(sRly_GetRlyOn(Rly_EV) == false)
+    // {
+    //     sRly_Close(Rly_EV);
+    //     t_Msw.t_Cnt.u16EvRlyWaitCnt = 0;
+    //     return;
+    // }
 
+    // if(sRly_GetRlyOn(Rly_Out) == true)
+    // {
+    //     return;
+    // }
+
+    // if(t_Msw.t_Cnt.u16EvRlyWaitCnt < 15)
+    // {
+    //     if(sGetTime_1ms() == true)
+    //     {
+    //         t_Msw.t_Cnt.u16EvRlyWaitCnt++;
+    //     }
+    //     return;
+    // }
+
+    // if(t_Msw.RlyZero_On == false)
+    // {
+    //     return;
+    // }
+
+    // if(sRly_GetRlyOn(Rly_Out) == false)
+    // {
+    //     sRly_Close(Rly_Out);
+    //     t_Msw.t_Cnt.u16EvRlyWaitCnt = 0;
+    // }
 }
 
 void    sMsw_SysOff(void)

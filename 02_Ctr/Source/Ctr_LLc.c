@@ -890,3 +890,14 @@ void    sLLC_SetOpenLoop    (unsigned int EN)
 
     t_LLcControl.u16OpenLoopEn = EN;   
 }
+
+int     sLLC_GetControlFsm(void)
+{
+    return t_LLcControl.u16LLC_State;
+}
+
+int     sLLC_GetFastStartCnt(void)
+{
+    return t_LLcControl.u16FastStartCnt;
+}
+

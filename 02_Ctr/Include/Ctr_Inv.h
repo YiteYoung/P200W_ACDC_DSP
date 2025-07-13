@@ -177,6 +177,11 @@ CTR_INV_FUNCTION  void        sInv_SetInvEN       (unsigned int EN);
 CTR_INV_FUNCTION  void        sInv_SetInvOpenLoop (unsigned int EN);
 
 CTR_INV_FUNCTION  void        sInv_SetInvRef      (unsigned int Value);
+CTR_INV_FUNCTION  int         sInv_GetInvRef      (void);
+
 CTR_INV_FUNCTION  void        sInv_SetPfcRef      (unsigned int Value);
+CTR_INV_FUNCTION  int         sInv_GetPfcRef      (void);
+
+CTR_INV_FUNCTION  int         sInv_GetControlFsm  (void);
 
 #endif

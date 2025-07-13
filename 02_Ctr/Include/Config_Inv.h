@@ -21,6 +21,8 @@
 #define cDCG_AC_POWER_MAX           cPower500W
 // #define 
 
+#define cCHG_BUS_VOLT_PROTECT_HI    cVdc500V
+#define cCHG_BUS_VOLT_PEOTECT_LO    cVdc200V
 
 typedef enum 
 {

@@ -108,6 +108,8 @@ typedef struct
     Msw_Flag_t      t_MswFlag;
     Msw_Cnt_t       t_Cnt;
 
+    unsigned int    WaitLLCTime;
+
     unsigned int    PfcModeEn;
     
 }Msw_t;

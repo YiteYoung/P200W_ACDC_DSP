@@ -18,7 +18,7 @@
 #define cISRCnt1s               24000
 #define cISRCnt3s               72000
 
-
+#define cVac1V                  10
 #define cVac2V                  20
 #define cVac5V                  50
 #define cVac15V                 150
