@@ -62,8 +62,10 @@ typedef struct
 
 typedef struct 
 {
-    Inv_Config_t t_Inv;
-    Pfc_Config_t t_Pfc;
+    Inv_Config_t    t_Inv;
+    Pfc_Config_t    t_Pfc;
+
+    float           f32LLCTrancRaio;
 }ConfigInv_t;
 
 CONFIG_INV_FUNCTION void    sConfig_InitInv                 (void);
@@ -77,6 +79,8 @@ CONFIG_INV_FUNCTION void     sConfig_SetPfcVolt              (int Volt);
 
 CONFIG_INV_FUNCTION int     sConfig_GetInvSet               (void);
 CONFIG_INV_FUNCTION int     sConfig_GetPfcSet               (void);
+
+CONFIG_INV_FUNCTION void    sConfig_PfcVoltCal              (int BatVolt, int GridVolt, int BatCurr);
 
 
 #endif

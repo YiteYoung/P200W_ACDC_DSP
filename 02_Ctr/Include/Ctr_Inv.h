@@ -122,7 +122,6 @@ typedef struct
 {
         Inv_PI_t    t_PI;
 
-      signed int    i16InvVoltSet;
       signed int    i16InvVoltRef;
 
       signed int    i16InvPhaseSet;
@@ -169,6 +168,9 @@ typedef struct
 }InvControl_t;
 
 CTR_INV_FUNCTION  void        sInv_Control        (void);
+
+CTR_INV_FUNCTION  void        sInv_InvVoltSoft    (int SetValue, int Step);
+CTR_INV_FUNCTION  void        sInv_PfcVoltSoft    (int SetValue, int Step);
 
 CTR_INV_FUNCTION  Inv_t*      sInv_GetInvCtrPtr   (void);
 CTR_INV_FUNCTION  Pfc_t*      sInv_GetPfcCtrPtr   (void);

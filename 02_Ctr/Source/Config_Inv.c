@@ -24,8 +24,6 @@ void    sConfig_InitInvControl(void)
 
     pInv = sInv_GetInvCtrPtr();
 
-    pInv->i16InvVoltSet = t_InvConfig.t_Inv.i16VoltSet;        // Ex:220 * 14.142
-
     pInv->t_PI.Volt_ID.i16Kp        = 1024;
     pInv->t_PI.Volt_ID.i16Ki        = 10;
     pInv->t_PI.Volt_ID.i16PIOutMax  = 2000;
@@ -118,12 +116,6 @@ void    sConfig_InvFreqResh(void)
 
 void    sConfig_InvResh(void)
 {
-    Inv_t *pInv;
-
-    pInv = sInv_GetInvCtrPtr();
-
-    pInv->i16InvVoltSet = t_InvConfig.t_Inv.i16VoltSet;        // Ex:220 * 14.142
-
     sProtect_SetInvLoad100(cDCG_AC_POWER_MAX);
     sProtect_SetPfcLoad100(cCHG_AC_POWER_MAX);
 
@@ -132,7 +124,7 @@ void    sConfig_InvResh(void)
 
     sProtect_SetChgBatCurrLimit(cCHG_BAT_CURR_MAX);
     sProtect_SetChgBatPowerLimit(cPower200W);
-    sProtect_SetChgAcPowerLimit(cPower500W);
+    sLimit_SetChgAcPower(cPower500W);
 
     sConfig_InvFreqResh();
 }
@@ -145,6 +137,31 @@ void     sConfig_SetInvVolt(int Volt)
 int     sConfig_GetInvSet(void)
 {
     return t_InvConfig.t_Inv.i16VoltSet;
+}
+
+void sConfig_PfcVoltCal(int BatVolt, int GridVolt, int BatCurr)
+{
+    float f32TempA,f32DetaVolt;
+    signed int i16TempA,i16TempB;
+
+    // if(sMsw_GetPfc2Grid() == true)
+    // {
+    //     i16TempA = t_LLcConfig.f32LLCTrancRaio * (float)BatVolt - cVdc20V;
+    //     UpDnLimit(i16TempA, cCHG_BUS_VOLT_REF_MIN, cCHG_BUS_VOLT_REF_MAX);
+    // }
+    // else
+    {
+        f32DetaVolt = (float)(abs(BatCurr) * 0.1f + (float)cVdc5V);
+        UpDnLimit(f32DetaVolt, cVdc5V, cVdc15V);
+
+        f32TempA = t_InvConfig.f32LLCTrancRaio * (float)BatVolt + f32DetaVolt;
+        i16TempA = (signed int)f32TempA;
+        i16TempB = (signed int)((float)GridVolt * 1.414f);
+        DnLimit(i16TempB, cCHG_BUS_VOLT_REF_MIN);
+        UpDnLimit(i16TempA, i16TempB, cCHG_BUS_VOLT_REF_MAX);
+    }
+
+    t_InvConfig.t_Pfc.i16PfcVoltSet = i16TempA;
 }
 
 void     sConfig_SetPfcVolt(int Volt)

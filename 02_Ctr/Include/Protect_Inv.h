@@ -54,6 +54,14 @@ typedef struct
     TZ_Flag_u   u_TZFlag;
 }InvProtect_t;
 
+typedef struct 
+{
+    unsigned int    f32ChgAcCurrLimit;
+    unsigned int    f32ChgAcPowerLimit;
+}InvLimit_t;
+
+
+
 PROTECT_INV_FUNCTION    void                sProtect_SetInvLoad100  (unsigned long Value);
 PROTECT_INV_FUNCTION    unsigned long       sProtect_GetInvLoad100  (void);
 
@@ -62,6 +70,12 @@ PROTECT_INV_FUNCTION    unsigned long       sProtect_GetPfcLoad100  (void);
 
 PROTECT_INV_FUNCTION    void                sProtect_SetInvCurr100  (unsigned long Value);
 PROTECT_INV_FUNCTION    unsigned long       sProtect_GetInvCurr100  (void);
+
+PROTECT_INV_FUNCTION    void                sLimit_SetChgAcCurr     (unsigned long Value);
+PROTECT_INV_FUNCTION    unsigned long       sLimit_GetChgAcCurr     (void);
+
+PROTECT_INV_FUNCTION    void                sLimit_SetChgAcPower    (unsigned long Value);
+PROTECT_INV_FUNCTION    unsigned long       sLimit_GetChgAcPower    (void);
 
 PROTECT_INV_FUNCTION    void                sProtect_SetPfcCurr100  (unsigned long Value);
 PROTECT_INV_FUNCTION    unsigned long       sProtect_GetPfcCurr100  (void);

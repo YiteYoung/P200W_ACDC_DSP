@@ -1,10 +1,10 @@
 #ifndef _BSP_FAULT_H
 #define _BSP_FAULT_H
 
-#ifdef BSP_FUNCTION_G
-#define BSP_FUNCTION    extern
+#ifdef BSP_FAULT_FUNCTION_G
+#define BSP_FAULT_FUNCTION    extern
 #else
-#define BSP_FUNCTION
+#define BSP_FAULT_FUNCTION
 #endif
 
 #ifndef true
@@ -221,24 +221,24 @@ typedef struct
     Fault_u         u_Fault;
 }Alarm_Fault_t;
 
-BSP_FUNCTION    void            sFault_ClrAllFault              (void);
-BSP_FUNCTION    void            sFault_ClrAllAlarm              (void);
+BSP_FAULT_FUNCTION    void            sFault_ClrAllFault              (void);
+BSP_FAULT_FUNCTION    void            sFault_ClrAllAlarm              (void);
 
-BSP_FUNCTION    unsigned long   sFault_GetFaultCode_All         (void);
-BSP_FUNCTION    signed int      sFault_GetFaultCode_Lo          (void);
-BSP_FUNCTION    signed int      sFault_GetFaultCode_Hi          (void);
+BSP_FAULT_FUNCTION    unsigned long   sFault_GetFaultCode_All         (void);
+BSP_FAULT_FUNCTION    signed int      sFault_GetFaultCode_Lo          (void);
+BSP_FAULT_FUNCTION    signed int      sFault_GetFaultCode_Hi          (void);
 
-BSP_FUNCTION    unsigned long   sFault_GetAlarmCode_All         (void);
-BSP_FUNCTION    signed int      sFault_GetAlarmCode_Lo          (void);
-BSP_FUNCTION    signed int      sFault_GetAlarmCode_Hi          (void);
+BSP_FAULT_FUNCTION    unsigned long   sFault_GetAlarmCode_All         (void);
+BSP_FAULT_FUNCTION    signed int      sFault_GetAlarmCode_Lo          (void);
+BSP_FAULT_FUNCTION    signed int      sFault_GetAlarmCode_Hi          (void);
 
-BSP_FUNCTION    unsigned char   sFault_GetFaultBit              (unsigned int eFualtId);
-BSP_FUNCTION    unsigned char   sFault_GetAlarmBit              (unsigned int eAlarmId);
+BSP_FAULT_FUNCTION    unsigned char   sFault_GetFaultBit              (unsigned int eFualtId);
+BSP_FAULT_FUNCTION    unsigned char   sFault_GetAlarmBit              (unsigned int eAlarmId);
 
-BSP_FUNCTION    void            sFault_SetFault                 (unsigned int eFaultId);
-BSP_FUNCTION    void            sFault_ClrFault                 (unsigned int eFaultId);
+BSP_FAULT_FUNCTION    void            sFault_SetFault                 (unsigned int eFaultId);
+BSP_FAULT_FUNCTION    void            sFault_ClrFault                 (unsigned int eFaultId);
 
-BSP_FUNCTION    void            sFault_SetAlarm                 (unsigned int eAlarmId);
-BSP_FUNCTION    void            sFault_ClrAlarm                 (unsigned int eAlarmId);
+BSP_FAULT_FUNCTION    void            sFault_SetAlarm                 (unsigned int eAlarmId);
+BSP_FAULT_FUNCTION    void            sFault_ClrAlarm                 (unsigned int eAlarmId);
 
 #endif

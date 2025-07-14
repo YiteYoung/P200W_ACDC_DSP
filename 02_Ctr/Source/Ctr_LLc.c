@@ -197,7 +197,7 @@ void    sLLC_ChgSoftStart(void)
 {
     float f32TempA;
 
-    f32TempA = sConfig_GetBatCurrSet();
+    f32TempA = sConfig_GetBatCurrControlSet();
 
     // 充电电流给定软启动
     if( t_LLcControl.f32BatCurrRef < f32TempA - 0.01f )
@@ -235,7 +235,6 @@ void    sLLC_ChgSoftStart(void)
 void    sLLC_ChgControlLoop(void)
 {
     float f32TempA;
-    float f32TempB;
     // 并网部分
     // To Be Continute
     // if( )
@@ -245,10 +244,9 @@ void    sLLC_ChgControlLoop(void)
     // else
     {
         // 获取BMS的电压，从而进入CV环
-        f32TempB= 0.0f;    // sGetBmsChgLimitOut();
+        f32TempA= 0.0f;    // sGetBmsChgLimitOut();
 
-        f32TempA = sConfig_GetBatVoltSet();
-        t_LLcControl.t_ChgVoltLoop.f32Ref = f32TempA + f32TempB;
+        t_LLcControl.t_ChgVoltLoop.f32Ref = t_LLcControl.f32BatVoltRef + f32TempA;
         UpDnLimit(t_LLcControl.t_ChgVoltLoop.f32Ref, 0.0f, cVdc60V);
 
         t_LLcControl.t_ChgVoltLoop.f32Fed = sAdc_GetReal(BatVolt);
@@ -855,6 +853,44 @@ void    sLLC_SetPwmDcgMode(void)
     AdccRegs.ADCSOC5CTL.bit.TRIGSEL = 5;
     
     EDIS;
+}
+
+void    sLLC_BatVoltSoft(int SetValue,int Step)
+{
+    if(Step < 1)
+    {
+        Step = 1;
+    }
+
+    if( t_LLcControl.f32BatVoltRef < SetValue)
+    {
+        t_LLcControl.f32BatVoltRef += Step;
+        UpLimit(t_LLcControl.f32BatVoltRef, SetValue);
+    }
+    else if(t_LLcControl.f32BatVoltRef > SetValue)
+    {
+        t_LLcControl.f32BatVoltRef -= Step;
+        DnLimit(t_LLcControl.f32BatVoltRef, SetValue);
+    }
+}
+
+void    sLLC_BatCurrSoft(int SetValue,int Step)
+{
+    if(Step < 1)
+    {
+        Step = 1;
+    }
+
+    if( t_LLcControl.f32BatCurrRef < SetValue)
+    {
+        t_LLcControl.f32BatCurrRef += Step;
+        UpLimit(t_LLcControl.f32BatCurrRef, SetValue);
+    }
+    else if(t_LLcControl.f32BatCurrRef > SetValue)
+    {
+        t_LLcControl.f32BatCurrRef -= Step;
+        DnLimit(t_LLcControl.f32BatCurrRef, SetValue);
+    }
 }
 
 void    sLLC_SetDcgEN(unsigned int EN)

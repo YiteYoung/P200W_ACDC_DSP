@@ -422,7 +422,7 @@ void    sInvMode(void)
         {
             if(sGetTime_10ms() == true)
             {
-                // sInv_InvVoltSoft(sConfig_GetInvSet(),cVdc1V);
+                sInv_InvVoltSoft(sConfig_GetInvSet(),cVdc1V);
             }
 
             if( t_Msw.u_Cmd.bit.EvCmd == true)
@@ -475,7 +475,7 @@ void    sPfcMode(void)
         t_Msw.t_MswFlag.PfcRefOk = false;
         t_Msw.u_Cmd.bit.Fast_Inv = false;
 
-        // sRly_Break(EV);
+        sRly_Break(Rly_EV);
 
         t_Msw.u_Cmd.bit.EvCmd = false;
         t_Msw.u_Cmd.bit.DcgCmd = false;
@@ -687,15 +687,15 @@ void    sPfcMode(void)
         {
             if(sGetTime_4ms() == true)
             {
-                // sConfig_PfcVotCal(sSample_GetRms(BatVolt),sSample_GetRms(GridVolt),sSample_GetRms(BatCurr));
-                // sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc5V);
+                sConfig_PfcVoltCal(sSample_GetRms(BatVolt),sSample_GetRms(GridVolt),sSample_GetRms(BatCurr));
+                sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc5V);
 
                 // sGrid_CurrCal(sProtect_GetChgAcPowerLimit());
                 // sGrid_CurrSoft(set,cCurr1A);
                 // sGrid_CurrLimit();
 
-                // sLLC_BatVoltSoft(sConfig_GetBatVoltSet(),cVdc0V5);
-                // sConfig_BatCurrCal(sSample_GetRms(BatVolt));
+                sLLC_BatVoltSoft(sConfig_GetBatVoltSet(),cVdc0V5);
+                sConfig_BatCurrCal(sSample_GetRms(BatVolt));
             }
         }
         else
@@ -878,25 +878,25 @@ void    sRlySoft(void)
         return;
     }
 
-    // if(sRly_GetRlyOn(Rly_Grid) == true && sRly_GetRlyOn(Rly_SoftR) == false)
-    // {
-    //     i16SYSStauts = Rly_OK;
-    //     t_Msw.t_MswFlag.RlySoftStart = false;
-    //     t_Msw.t_MswFlag.RlySoftOk    = true;
+    if(sRly_GetRlyOn(Rly_Grid) == true && sRly_GetRlyOn(Rly_SoftR) == false)
+    {
+        i16SYSStauts = Rly_OK;
+        t_Msw.t_MswFlag.RlySoftStart = false;
+        t_Msw.t_MswFlag.RlySoftOk    = true;
 
-    //     t_Msw.t_Cnt.u16SoftRlyWaitCnt = 0;
-    //     t_Msw.t_Cnt.u16GridRlyWaitCnt = 0;
-    //     return;
-    // }
+        t_Msw.t_Cnt.u16SoftRlyWaitCnt = 0;
+        t_Msw.t_Cnt.u16GridRlyWaitCnt = 0;
+        return;
+    }
 
-    // if(sRly_GetRlyOn(Rly_SoftR) == false)
-    // {
-    //     sRly_Close(Rly_SoftR);
+    if(sRly_GetRlyOn(Rly_SoftR) == false)
+    {
+        sRly_Close(Rly_SoftR);
 
-    //     t_Msw.t_Cnt.u16SoftRlyWaitCnt = 0;
-    //     t_Msw.t_Cnt.u16GridRlyWaitCnt = 0;
-    //     return;
-    // }
+        t_Msw.t_Cnt.u16SoftRlyWaitCnt = 0;
+        t_Msw.t_Cnt.u16GridRlyWaitCnt = 0;
+        return;
+    }
 
     if(sGetTime_1ms() == false)     {return;}
 
@@ -908,11 +908,11 @@ void    sRlySoft(void)
         i16TempA = (int)((float)i16TempA * 1.10f);
         if(sSample_GetRms(BusVolt) > i16TempA && sSample_GetRms(BusVolt) < cCHG_BUS_VOLT_BURST_MAX)
         {
-            // if( sRly_GetRlyOn(Rly_Grid) == false)
-            // {
-            //     sRly_Close(Rly_Grid);
-            //     t_Msw.t_Cnt.u16SoftRlyWaitCnt = 0;
-            // }
+            if( sRly_GetRlyOn(Rly_Grid) == false)
+            {
+                sRly_Close(Rly_Grid);
+                t_Msw.t_Cnt.u16SoftRlyWaitCnt = 0;
+            }
         }
         else
         {
@@ -932,7 +932,7 @@ void    sRlySoft(void)
         t_Msw.t_Cnt.u16SoftRlyWaitCnt++;
         if(t_Msw.t_Cnt.u16SoftRlyWaitCnt >= 30)
         {
-            // sRly_Break(Rly_SoftR);
+            sRly_Break(Rly_SoftR);
 
             i16SYSStauts = Rly_OK;
 
@@ -986,7 +986,7 @@ void    sInvSoft(void)
     {
         if(sGetTime_1ms() == true)
         {
-            // sInv_InvVoltSoft(sConfig_GetInvSet(),cVac1V);
+            sInv_InvVoltSoft(sConfig_GetInvSet(),cVac1V);
         }
 
         if(sInv_GetInvRef() >= sConfig_GetInvSet())
@@ -1014,14 +1014,14 @@ void    sInvSoft(void)
             t_Msw.t_Cnt.u16OutRlyWaitCnt++;
         }
 
-        // if(sRly_GetRlyOn(Rly_Out) == true && t_Msw.t_Cnt.u16OutRlyWaitCnt >= 800)
-        // {
-        //     t_Msw.t_Cnt.u16OutRlyWaitCnt = 0;
+        if(sRly_GetRlyOn(Rly_Out) == true && t_Msw.t_Cnt.u16OutRlyWaitCnt >= 800)
+        {
+            t_Msw.t_Cnt.u16OutRlyWaitCnt = 0;
 
-        //     i16SYSStauts = Inv_OK;
-        //     t_Msw.t_MswFlag.InvSoftOk = true;
-        //     t_Msw.t_MswFlag.InvSoftStart = false;
-        // }
+            i16SYSStauts = Inv_OK;
+            t_Msw.t_MswFlag.InvSoftOk = true;
+            t_Msw.t_MswFlag.InvSoftStart = false;
+        }
     }
 }
 
@@ -1048,7 +1048,7 @@ void    sPfcSoft(void)
         i16SYSStauts = Pfc_Soft;
         t_Msw.t_MswFlag.PfcSoftStart = true;
 
-        // sConfig_PfcVoltCal(sSample_GetRms(BatVolt),sSample_GetRms(GridVolt,sSample_GetRms(BatCurr)));
+        sConfig_PfcVoltCal(sSample_GetRms(BatVolt),sSample_GetRms(GridVolt),sSample_GetRms(BatCurr));
 
         sInv_SetPfcRef(sSample_GetRms(BusVolt));
 
@@ -1071,11 +1071,11 @@ void    sPfcSoft(void)
     {
         if(sMsw_GetPfc2Grid() == true)
         {
-            // sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc5V);
+            sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc5V);
         }
         else
         {
-            // sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc1V);
+            sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc1V);
         }
 
         if(sInv_GetPfcRef() == sConfig_GetPfcSet())
@@ -1151,11 +1151,11 @@ void    sChgSoft(void)
         return;
     }
 
-    // sConfig_PfcVotCal(sSample_GetRms(BatVolt),sSample_GetRms(GridVolt),sSample_GetRms(BatCurr));
-    // sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc5V);
+    sConfig_PfcVoltCal(sSample_GetRms(BatVolt),sSample_GetRms(GridVolt),sSample_GetRms(BatCurr));
+    sInv_PfcVoltSoft(sConfig_GetPfcSet(),cVdc5V);
 
-    // sLLC_BatVoltSoft(sConfig_GetBatVoltSet(),cVdc0V5);
-    // sConfig_BatCurrCal(sSample_GetRms(BatVolt));
+    sLLC_BatVoltSoft(sConfig_GetBatVoltSet(),cVdc0V5);
+    sConfig_BatCurrCal(sSample_GetRms(BatVolt));
 
     t_Msw.t_Cnt.u16LLCSoftErrCnt++;
     if(t_Msw.t_Cnt.u16LLCSoftErrCnt >= 5000)
@@ -1256,16 +1256,16 @@ void    sFast_Inv(void)
         return;
     }
 
-    // if(sRly_GetRlyOn(Rly_Grid) == true)
-    // {
-    //     if(t_Msw.RlyZero_Off == false)
-    //     {
-    //         return;
-    //     }
+    if(sRly_GetRlyOn(Rly_Grid) == true)
+    {
+        // if(t_Msw.RlyZero_Off == false)
+        // {
+        //     return;
+        // }
 
-    //     sRly_Break(Rly_Grid);
-    //     return;
-    // }
+        sRly_Break(Rly_Grid);
+        return;
+    }
 
     sInv_SetInvRef(sConfig_GetInvSet());
 
@@ -1291,7 +1291,7 @@ void    sFast_Pfc(void)
     i16TempB = sSample_GetRms(BusVolt) ;
     if(i16TempB <= i16TempA || i16TempB >= cCHG_BUS_VOLT_PROTECT_HI)
     {
-        // sRly_Break(Rly_Out);
+        sRly_Break(Rly_Out);
 
         t_Msw.u_Cmd.bit.Fast_Pfc = false;
 
@@ -1300,43 +1300,43 @@ void    sFast_Pfc(void)
     }
 
     // 由继电器过零触发市电恢复，无需等待继电器过零
-    // sRly_Close(Rly_Grid);
+    sRly_Close(Rly_Grid);
 
     t_Msw.u_Cmd.bit.Fast_Pfc = false;
 }
 
 void    sByPass(void)
 {
-    // if(t_Msw.u_Cmd.bit.InvCmd == false)
-    // {
-    //     if(sRly_GetRlyOn(Rly_Out) == false)
-    //     {
-    //         return;
-    //     }
+    if(t_Msw.u_Cmd.bit.InvCmd == false)
+    {
+        if(sRly_GetRlyOn(Rly_Out) == false)
+        {
+            return;
+        }
 
-    //     if(t_Msw.RlyZero_Off == false)
-    //     {
-    //         return;
-    //     }
+        // if(t_Msw.RlyZero_Off == false)
+        // {
+        //     return;
+        // }
 
-    //     sRly_Break(Rly_Out);
-    //     return;
-    // }
+        sRly_Break(Rly_Out);
+        return;
+    }
 
-    // if(sRly_GetRlyOn(Rly_Out) == true || sRly_GetRlyOn(Rly_Grid) == false)
-    // {
-    //     return;
-    // }
+    if(sRly_GetRlyOn(Rly_Out) == true || sRly_GetRlyOn(Rly_Grid) == false)
+    {
+        return;
+    }
 
-    // if(sRly_GetRlyOn(Rly_Out) == false)
-    // {
-    //     if(t_Msw.RlyZero_On == false)
-    //     {
-    //         return;
-    //     }
+    if(sRly_GetRlyOn(Rly_Out) == false)
+    {
+        // if(t_Msw.RlyZero_On == false)
+        // {
+        //     return;
+        // }
 
-    //     sRly_Close(Rly_Out);
-    // }
+        sRly_Close(Rly_Out);
+    }
 }
 
 unsigned char    sPfc_OnChk(void)
@@ -1413,51 +1413,51 @@ void    sInvOutRly(void)
         return;
     }
 
-    // if(sRly_GetRlyOn(Rly_Out) == false)
-    // {
-    //     if(t_Msw.RlyZero_On)
-    //     {
-    //         return;
-    //     }
+    if(sRly_GetRlyOn(Rly_Out) == false)
+    {
+        // if(t_Msw.RlyZero_On)
+        // {
+        //     return;
+        // }
 
-    //     sRly_Close(Rly_Out);
-    // }
+        sRly_Close(Rly_Out);
+    }
 }
 
 
 void    sEvOutRly(void)
 {
-    // if(sRly_GetRlyOn(Rly_EV) == false)
-    // {
-    //     sRly_Close(Rly_EV);
-    //     t_Msw.t_Cnt.u16EvRlyWaitCnt = 0;
-    //     return;
-    // }
+    if(sRly_GetRlyOn(Rly_EV) == false)
+    {
+        sRly_Close(Rly_EV);
+        t_Msw.t_Cnt.u16EvRlyWaitCnt = 0;
+        return;
+    }
 
-    // if(sRly_GetRlyOn(Rly_Out) == true)
-    // {
-    //     return;
-    // }
+    if(sRly_GetRlyOn(Rly_Out) == true)
+    {
+        return;
+    }
 
-    // if(t_Msw.t_Cnt.u16EvRlyWaitCnt < 15)
-    // {
-    //     if(sGetTime_1ms() == true)
-    //     {
-    //         t_Msw.t_Cnt.u16EvRlyWaitCnt++;
-    //     }
-    //     return;
-    // }
+    if(t_Msw.t_Cnt.u16EvRlyWaitCnt < 15)
+    {
+        if(sGetTime_1ms() == true)
+        {
+            t_Msw.t_Cnt.u16EvRlyWaitCnt++;
+        }
+        return;
+    }
 
     // if(t_Msw.RlyZero_On == false)
     // {
     //     return;
     // }
 
-    // if(sRly_GetRlyOn(Rly_Out) == false)
-    // {
-    //     sRly_Close(Rly_Out);
-    //     t_Msw.t_Cnt.u16EvRlyWaitCnt = 0;
-    // }
+    if(sRly_GetRlyOn(Rly_Out) == false)
+    {
+        sRly_Close(Rly_Out);
+        t_Msw.t_Cnt.u16EvRlyWaitCnt = 0;
+    }
 }
 
 void    sMsw_SysOff(void)
@@ -1470,13 +1470,13 @@ void    sMsw_SysOff(void)
 
     sInv_SetInvOpenLoop(false);
 
-    // sRly_Break(Soft);
-    // sRly_Break(Grid);
-    // sRly_Break(EV);
+    sRly_Break(Rly_SoftR);
+    sRly_Break(Rly_Grid);
+    sRly_Break(Rly_EV);
 
     if( t_Msw.u_Cmd.bit.Fast_Inv == false && t_Msw.u_Cmd.bit.Fast_Pfc == false )
     {
-        // sRly_Break(Out);
+        sRly_Break(Rly_Out);
     }
 
     sInv_SetInvRef(0);
@@ -1537,8 +1537,8 @@ void    sMsw_IgbtOff(void)
 
 void    sMsw_InvOff(void)
 {
-    // sRly_Break(Out);
-    // sRly_Break(EV);
+    sRly_Break(Rly_Out);
+    sRly_Break(Rly_EV);
 }
 
 void    sMsw_SysOff_ISR(void)

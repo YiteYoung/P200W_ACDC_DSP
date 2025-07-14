@@ -9,7 +9,6 @@
 #define BSP_GPIO_FUNCTION
 #endif
 
-
 BSP_GPIO_FUNCTION   void    sInitGpio      (void);
 
 

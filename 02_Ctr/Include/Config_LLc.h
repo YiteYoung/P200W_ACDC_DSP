@@ -19,19 +19,33 @@
 
 typedef struct  
 {
-    signed int  i16BatCurrSet;
+    signed int  i16BatCurrSet;              // 上位机设置
+    float       f32BatCurrSet;              // 控制使用
+
     signed int  i16BatVoltSet;
 
+    float       f32ChgAcCurrLimit;          // 充电电流限制
+
     float       f32LLCTrancRaio;
+
+    float       f32MainDcPowerLimit;        //主控限电池侧功率
+    float       f32ChgDcPowerLimit;         //默认限电池侧功率
+    float       f32LimitDcPowerLimit;       //功率环限电池侧功率 
 }ConfigLLC_t;
 
-CONFIG_LLC_FUNCTION int     sConfig_GetBatCurrSet        (void);
-CONFIG_LLC_FUNCTION int     sConfig_GetBatVoltSet        (void);
+CONFIG_LLC_FUNCTION void    sConfig_SetBatCurr                  (int Value);
+CONFIG_LLC_FUNCTION void    sConfig_SetBatVolt                  (int Value);
 
-CONFIG_LLC_FUNCTION void    sConfig_SetLLCTrancRaio      (float Value);
-CONFIG_LLC_FUNCTION float   sConfig_GetLLCTrancRaio      (void);
+CONFIG_LLC_FUNCTION void    sConfig_BatCurrCal                  (int BatVolt);
+CONFIG_LLC_FUNCTION float   sConfig_GetBatCurrControlSet        (void);
 
-CONFIG_LLC_FUNCTION int     sLLC_GetFastStartCnt         (void);
+CONFIG_LLC_FUNCTION int     sConfig_GetBatCurrUserSet           (void);
+CONFIG_LLC_FUNCTION int     sConfig_GetBatVoltSet               (void);
+
+CONFIG_LLC_FUNCTION void    sConfig_SetLLCTrancRaio             (float Value);
+CONFIG_LLC_FUNCTION float   sConfig_GetLLCTrancRaio             (void);
+
+CONFIG_LLC_FUNCTION int     sLLC_GetFastStartCnt                (void);
 
 #endif
 

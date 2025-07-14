@@ -26,6 +26,11 @@ void sFunTask(void)
     {
         // sRun_UartData();
 
+        if (sGetTime_1ms() == true)
+        {
+            sRly_Task();
+        }
+
         if (sGetTime_4ms() == false) 
         {
             return;

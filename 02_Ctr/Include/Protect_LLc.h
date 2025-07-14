@@ -10,7 +10,6 @@
 typedef struct 
 {
     float   f32ChgBatCurrLimit;
-    float   f32ChgAcPowerLimit;
     float   f32ChgBatPowerLimit;
 }LLCProtect_t;
 
@@ -18,9 +17,6 @@ PROTECT_LLC_FUNCTION    void                sProtect_DisableLLcTZ           (voi
 
 PROTECT_LLC_FUNCTION    void                sProtect_SetChgBatCurrLimit     (unsigned long Value);
 PROTECT_LLC_FUNCTION    unsigned long       sProtect_GetChgBatCurrLimit     (void);
-
-PROTECT_LLC_FUNCTION    void                sProtect_SetChgAcPowerLimit     (unsigned long Value);
-PROTECT_LLC_FUNCTION    unsigned long       sProtect_GetChgAcPowerLimit     (void);
 
 PROTECT_LLC_FUNCTION    void                sProtect_SetChgBatPowerLimit    (unsigned long Value);
 PROTECT_LLC_FUNCTION    unsigned long       sProtect_GetChgBatPowerLimit    (void);

@@ -24,6 +24,25 @@ void    sInitAdc(void)
     sDrv_IninAdc();
 }
 
+void    sAdc_InitGain(void)
+{
+    t_ADC.GridVolt.f32Gain  = cGridVolt_ADC_Gain;
+    t_ADC.GridCurr.f32Gain  = cGridCurr_ADC_Gain;
+
+    t_ADC.ComVolt.f32Gain   = cComVolt_ADC_Gain;
+    t_ADC.IndCurr.f32Gain   = cIndCurr_ADC_Gain;
+
+    t_ADC.OutVolt.f32Gain   = cInvVolt_ADC_Gain;
+    t_ADC.OutCurr.f32Gain   = cInvCurr_ADC_Gain;
+
+    t_ADC.BatVolt.f32Gain   = cBatVolt_ADC_Gain;
+    t_ADC.BatCurr.f32Gain   = cBatCurr_ADC_Gain;
+
+    t_ADC.BusVolt.f32Gain   = cBusVolt_ADC_Gain;
+    t_ADC.LLCCurr.f32Gain   = cLLcCurr_ADC_Gain;
+
+}
+
 void    sAdc_Convert()
 {
     float       f32ADSample;

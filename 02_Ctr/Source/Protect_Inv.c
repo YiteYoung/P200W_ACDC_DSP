@@ -1,6 +1,7 @@
 #include "UserHeader.h"
 
 static InvProtect_t t_InvProtect;
+static InvLimit_t   t_InvLimit;
 
 void    sProtect_SetInvLoad100(unsigned long Value)
 {
@@ -32,7 +33,29 @@ void    sProtect_SetInvCurr100(unsigned long Value)
 unsigned long sProtect_GetInvCurr100(void)
 {
     return     t_InvProtect.t_Inv.u32Curr100;
-}    
+}
+
+
+// ========================================================================= //
+void    sLimit_SetChgAcPower(unsigned long Value)
+{
+    t_InvLimit.f32ChgAcPowerLimit = Value;
+}
+
+unsigned long    sLimit_GetChgAcPower(void)
+{
+    return t_InvLimit.f32ChgAcPowerLimit;
+}
+
+void    sLimit_SetChgAcCurr(unsigned long Value)
+{
+    t_InvLimit.f32ChgAcCurrLimit = Value;
+}
+
+unsigned long    sLimit_GetChgAcCurr(void)
+{
+    return t_InvLimit.f32ChgAcCurrLimit;
+}
 
 void    sProtect_SetPfcCurr100(unsigned long Value)
 {

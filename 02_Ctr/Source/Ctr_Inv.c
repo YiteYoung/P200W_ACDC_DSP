@@ -214,7 +214,9 @@ void    sInvSpwm(void)
         t_InvControl.t_Var.u16Spwm_TBPRD = 30000;
     }
 
-    i16FeedForward = (int)((t_InvControl.t_Inv.i16InvVoltSet * CosX) >> 14);
+    i16TempA = sConfig_GetInvSet();
+
+    i16FeedForward = (int)((i16TempA * CosX) >> 14);
     t_InvControl.t_Var.i16Spwm_Ref = i16FeedForward + t_InvControl.t_Inv.t_PI.IndCurr.i16PIOut;
 
     t_InvControl.t_Var.i16Spwm_Set = abs(t_InvControl.t_Var.i16Spwm_Ref);
@@ -983,6 +985,44 @@ void    sLoopClear(void)
 
     t_InvControl.t_Pfc.u16Burst_EN                 = false;
     t_InvControl.t_Pfc.u16Burst_Act                = false;
+}
+
+void    sInv_InvVoltSoft(int SetValue, int Step)
+{
+    if(Step < 1)
+    {
+        Step = 1;
+    }
+
+    if( t_InvControl.t_Inv.i16InvVoltRef < SetValue)
+    {
+        t_InvControl.t_Inv.i16InvVoltRef += Step;
+        UpLimit(t_InvControl.t_Inv.i16InvVoltRef, SetValue);
+    }
+    else if(t_InvControl.t_Inv.i16InvVoltRef > SetValue)
+    {
+        t_InvControl.t_Inv.i16InvVoltRef -= Step;
+        DnLimit(t_InvControl.t_Inv.i16InvVoltRef, SetValue);
+    }
+}
+
+void    sInv_PfcVoltSoft(int SetValue,int Step)
+{
+    if(Step < 1)
+    {
+        Step = 1;
+    }
+
+    if( t_InvControl.t_Pfc.i16PfcVoltRef < SetValue)
+    {
+        t_InvControl.t_Pfc.i16PfcVoltRef += Step;
+        UpLimit(t_InvControl.t_Pfc.i16PfcVoltRef, SetValue);
+    }
+    else if(t_InvControl.t_Pfc.i16PfcVoltRef > SetValue)
+    {
+        t_InvControl.t_Pfc.i16PfcVoltRef -= Step;
+        DnLimit(t_InvControl.t_Pfc.i16PfcVoltRef, SetValue);
+    }
 }
 
 

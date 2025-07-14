@@ -57,7 +57,9 @@ typedef struct
     float           f32ILoopK2_Ref;
     float           f32ILoopK3_Ref;
 
+    float           f32BatVoltRef;
     float           f32BatCurrRef;
+
     float           f32ChgPiOutLimitUp;
     float           f32ChgPiOutLimitDn;
 
@@ -80,6 +82,8 @@ typedef struct
 }LLcControl_t;
 
 CONTROL_LLC_FUNCTION    void    sLLC_Control        (void);
+CONTROL_LLC_FUNCTION    void    sLLC_BatVoltSoft    (int SetValue,int Step);
+
 CONTROL_LLC_FUNCTION    void    sLLC_SetDcgEN       (unsigned int EN);
 CONTROL_LLC_FUNCTION    void    sLLC_SetChgEN       (unsigned int EN);
 CONTROL_LLC_FUNCTION    void    sLLC_SetOpenLoop    (unsigned int EN);
