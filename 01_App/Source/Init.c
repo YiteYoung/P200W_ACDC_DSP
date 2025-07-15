@@ -5,7 +5,9 @@ void sInitDspConfig(void)
     InitSysCtrl();
     DELAY_US(50);
 
-    sInitRam();
+    // Device_cal();
+
+    // sInitRam();
     // memcpy(&RamfuncsRunStart, &RamfuncsLoadStart, (size_t)&RamfuncsLoadSize);
     // InitFlash();
 
@@ -30,10 +32,12 @@ void sInitSysConfig(void)
     sLimit_SetChgAcPower(cPower500W);
 
     sConfig_InitInv();
-    // sConfig_InitLLC();
+    sConfig_InitLLC();
 
-    sGrid_InitDetectValue();
-    // sProtect_InitBusVoltValue();
+    sGrid_InitThreshold();
+    
+    sProtect_InitBatVoltThreshold();
+    sProtect_InitBusVoltThreshold();
 
     sRly_Init();
 }

@@ -184,12 +184,17 @@ ConfigCpuTimer(struct CPUTIMER_VARS *Timer, float Freq, float Period)
     //
     // 0 = Disable 1 = Enable Timer Interrupt
     //
-    Timer->RegsAddr->TCR.bit.TIE = 1;
+    Timer->RegsAddr->TCR.bit.TIE = 0;
 
     //
     // Reset interrupt counter
     //
     Timer->InterruptCount = 0;
+
+    // 
+    // 1 = Stop timer, 0 = Start/Restart Timer
+    //
+    Timer->RegsAddr->TCR.bit.TSS = 0;
 }
 
 //

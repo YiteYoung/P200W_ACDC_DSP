@@ -35,18 +35,21 @@ void    sInitTimer(void)
     InitCpuTimers();
 
     ConfigCpuTimer(&CpuTimer1, 120, 1000);
-    ConfigCpuTimer(&CpuTimer2, 120, 1000);
+    ConfigCpuTimer(&CpuTimer2, 120, 2000);
 }
 
-static void sIncTime(unsigned int *TimeFlag,unsigned int *TimeCnt,unsigned int Gain)
+static unsigned char sIncTime(unsigned int *TimeCnt,unsigned int Gain)
 {
-    *TimeFlag = false;
-    *TimeCnt++;
+    (*TimeCnt)++;
 
     if(*TimeCnt >= Gain)
     {
         *TimeCnt = 0;
-        *TimeFlag = true;
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
@@ -80,11 +83,11 @@ void    sSYS_Time(void)
 
     if(t_Time.t_Flag.Time_2ms == true)
     {
-        sIncTime(&t_Time.u16Nor_4msCnt,&t_Time.u16Nor_4msCnt,(unsigned int) (4 / 2));
-        sIncTime(&t_Time.u16Nor_10msCnt,&t_Time.u16Nor_10msCnt,(unsigned int) (10 / 2));
-        sIncTime(&t_Time.u16Nor_20msCnt,&t_Time.u16Nor_20msCnt,(unsigned int) (20 / 2));
-        sIncTime(&t_Time.u16Nor_100msCnt,&t_Time.u16Nor_100msCnt,(unsigned int) (100 / 2));
-        sIncTime(&t_Time.u16Nor_1sCnt,&t_Time.u16Nor_1sCnt,(unsigned int) (1000 / 2));
+        t_Time.t_Flag.Time_4ms      = sIncTime(&t_Time.u16Nor_4msCnt,(unsigned int) (4 / 2));
+        t_Time.t_Flag.Time_10ms     = sIncTime(&t_Time.u16Nor_10msCnt,(unsigned int) (10 / 2));
+        t_Time.t_Flag.Time_20ms     = sIncTime(&t_Time.u16Nor_20msCnt,(unsigned int) (20 / 2));
+        t_Time.t_Flag.Time_100ms    = sIncTime(&t_Time.u16Nor_100msCnt,(unsigned int) (100 / 2));
+        t_Time.t_Flag.Time_1s       = sIncTime(&t_Time.u16Nor_1sCnt,(unsigned int) (1000 / 2));
     }
 
     if( t_Time.t_Flag.PowerOnOk == false)

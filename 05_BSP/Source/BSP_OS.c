@@ -2,7 +2,7 @@
 
 TASK_EVENT  OS_TASK_EVEN[TASK_MAX_NUM];
 
-void    sOSInit(void)
+void    OSInit(void)
 {
     unsigned int i;
 

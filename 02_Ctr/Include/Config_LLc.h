@@ -25,6 +25,7 @@ typedef struct
     signed int  i16BatVoltSet;
 
     float       f32ChgAcCurrLimit;          // 充电电流限制
+    float       f32ChgDcCurrLimit;          // 电池电流限制
 
     float       f32LLCTrancRaio;
 
@@ -32,6 +33,8 @@ typedef struct
     float       f32ChgDcPowerLimit;         //默认限电池侧功率
     float       f32LimitDcPowerLimit;       //功率环限电池侧功率 
 }ConfigLLC_t;
+
+CONFIG_LLC_FUNCTION void    sConfig_InitLLC                     (void);
 
 CONFIG_LLC_FUNCTION void    sConfig_SetBatCurr                  (int Value);
 CONFIG_LLC_FUNCTION void    sConfig_SetBatVolt                  (int Value);

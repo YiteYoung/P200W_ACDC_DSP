@@ -46,6 +46,7 @@ static signed int   i16SYSStauts;
 void    sMswTask(void)
 {
     static unsigned int MswInit_Ok;
+
     if(MswInit_Ok == false)
     {
         MswInit_Ok = true;

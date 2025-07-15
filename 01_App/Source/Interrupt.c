@@ -3,6 +3,13 @@
 void sInv_ISR(void)
 {
     static unsigned int u16ISRCnt;
+    static unsigned int u16TestCnt;
+
+    if(u16TestCnt++ > 24000)
+    {
+        u16TestCnt = 0;
+        sDebugLed5_Run();
+    }
 
     sADCSoftStart();
 

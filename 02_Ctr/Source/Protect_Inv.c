@@ -5,34 +5,34 @@ static InvLimit_t   t_InvLimit;
 
 void    sProtect_SetInvLoad100(unsigned long Value)
 {
-    t_InvProtect.t_Inv.u32Watt100 = Value;
-    t_InvProtect.t_Inv.u32VA100 = Value;
+    t_InvLimit.t_Inv.u32Watt100 = Value;
+    t_InvLimit.t_Inv.u32VA100 = Value;
 }
 
 unsigned long sProtect_GetInvLoad100(void)
 {
-    return     t_InvProtect.t_Inv.u32Watt100;
+    return     t_InvLimit.t_Inv.u32Watt100;
 }    
 
 void    sProtect_SetPfcLoad100(unsigned long Value)
 {
-    t_InvProtect.t_Pfc.u32Watt100 = Value;
-    t_InvProtect.t_Pfc.u32VA100 = Value;
+    t_InvLimit.t_Pfc.u32Watt100 = Value;
+    t_InvLimit.t_Pfc.u32VA100 = Value;
 }
 
 unsigned long sProtect_GetPfcLoad100(void)
 {
-    return     t_InvProtect.t_Pfc.u32Watt100;
+    return     t_InvLimit.t_Pfc.u32Watt100;
 }
 
 void    sProtect_SetInvCurr100(unsigned long Value)
 {
-    t_InvProtect.t_Inv.u32Curr100 = Value;
+    t_InvLimit.t_Inv.u32Curr100 = Value;
 }
 
 unsigned long sProtect_GetInvCurr100(void)
 {
-    return     t_InvProtect.t_Inv.u32Curr100;
+    return     t_InvLimit.t_Inv.u32Curr100;
 }
 
 
@@ -59,12 +59,19 @@ unsigned long    sLimit_GetChgAcCurr(void)
 
 void    sProtect_SetPfcCurr100(unsigned long Value)
 {
-    t_InvProtect.t_Pfc.u32Curr100 = Value;
+    t_InvLimit.t_Pfc.u32Curr100 = Value;
 }
 
 unsigned long sProtect_GetPfcCurr100(void)
 {
-    return     t_InvProtect.t_Pfc.u32Curr100;
+    return     t_InvLimit.t_Pfc.u32Curr100;
+}
+
+// ========================================================================= //
+void    sProtect_InitBusVoltThreshold(void)
+{
+    t_InvProtect.i16BusProtectVoltH = cVdc500V;
+    t_InvProtect.i16BusProtectVoltL = cVdc100V;
 }
 
 // ========================================================================= //

@@ -53,7 +53,9 @@
 #define cVdc25V                 250
 #define cVdc30V                 300
 #define cVdc40V                 400
+#define cVdc50V                 500
 #define cVdc60V                 600
+#define cVdc100V                1000
 #define cVdc200V                2000
 #define cVdc320V                3200
 #define cVdc360V                3600

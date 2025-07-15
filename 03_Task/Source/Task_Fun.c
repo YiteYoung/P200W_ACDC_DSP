@@ -24,6 +24,11 @@ void sFunTask(void)
 
     if( event & ((TASK_EVENT)1 << eTimer))
     {
+        if (sGetTime_1s() == true)
+        {
+            sDebugLed_Run();
+        }
+        
         // sRun_UartData();
 
         if (sGetTime_1ms() == true)
@@ -35,6 +40,8 @@ void sFunTask(void)
         {
             return;
         }
+
+
 
         u16LoopCnt++;
         if( u16LoopCnt >= 5)

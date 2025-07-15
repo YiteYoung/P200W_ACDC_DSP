@@ -2,7 +2,7 @@
 
 static      GridProt_t          t_GridPort;
 
-void    sGrid_InitDetectValue(void)
+void    sGrid_InitThreshold(void)
 {
     t_GridPort.i16RmsHiLossValue    = cVac270V;
     t_GridPort.i16RmsLoLossValue    = cVac80V;

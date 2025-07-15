@@ -40,6 +40,15 @@ void    sProtect_DisableLLcTZ(void)
     EDIS;
 }
 
+void    sProtect_InitBatVoltThreshold(void)
+{
+    t_LLCProtect.i16BatVoltHLoss = cCHG_BAT_VOLT_MAX + cVdc1V;
+    t_LLCProtect.i16BatVoltHBack = t_LLCProtect.i16BatVoltHLoss - cVdc2V;
+
+    t_LLCProtect.i16BatVoltLLoss = cCHG_BAT_VOLT_MIN - cVdc1V;
+    t_LLCProtect.i16BatVoltLBack = t_LLCProtect.i16BatVoltLLoss + cVdc2V;
+}
+
 void    sProtect_SetChgBatCurrLimit(unsigned long Value)
 {
     t_LLCProtect.f32ChgBatCurrLimit = Value;

@@ -9,6 +9,21 @@
 #define BSP_GPIO_FUNCTION
 #endif
 
+// P200W
+#define sDebugLed_Hi()        GpioDataRegs.GPACLEAR.bit.GPIO20 = 1;
+#define sDebugLed_Lo()        GpioDataRegs.GPASET.bit.GPIO20 = 1;
+#define sDebugLed_Run()       GpioDataRegs.GPATOGGLE.bit.GPIO20 = 1;
+
+// Launch
+#define sDebugLed4_Hi()        GpioDataRegs.GPACLEAR.bit.GPIO20 = 1;
+#define sDebugLed4_Lo()        GpioDataRegs.GPASET.bit.GPIO20 = 1;
+#define sDebugLed4_Run()       GpioDataRegs.GPATOGGLE.bit.GPIO20 = 1;
+
+// Launch
+#define sDebugLed5_Hi()        GpioDataRegs.GPACLEAR.bit.GPIO22 = 1;
+#define sDebugLed5_Lo()        GpioDataRegs.GPASET.bit.GPIO22 = 1;
+#define sDebugLed5_Run()       GpioDataRegs.GPATOGGLE.bit.GPIO22 = 1;
+
 BSP_GPIO_FUNCTION   void    sInitGpio      (void);
 
 

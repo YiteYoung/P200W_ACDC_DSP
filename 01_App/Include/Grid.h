@@ -66,7 +66,7 @@ typedef struct
     unsigned int    u16VoltLossDlyCnt;      //
     unsigned int    u16VoltRestDlyCnt;      //    
 }GridProt_t;
-GRID_FUNCTION   void            sGrid_InitDetectValue   (void);
+GRID_FUNCTION   void            sGrid_InitThreshold     (void);
 GRID_FUNCTION   void            sGrid_StatusDeal        (void);
 GRID_FUNCTION   void            sGrid_RmsCheck          (void);
 GRID_FUNCTION   void            sGrid_FreqCheck         (void);

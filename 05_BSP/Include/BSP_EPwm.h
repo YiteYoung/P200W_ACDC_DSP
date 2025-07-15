@@ -15,7 +15,7 @@
 #define cTBCLK                  120000000
 #endif
 
-#define cLSPCLK                 30000000
+#define cLSPCLK                 30000000   
 
 #define DBCOUNT_us(x)           (unsigned int)((float)(x) * 120)
 
@@ -23,8 +23,13 @@
 #define sFreq2Prd_Dn(Freq)      ((unsigned int)((unsigned long)(cTBCLK    ) / ((unsigned long)((Freq) * 1000))))
 #define sFreq2Prd_UpDn(Freq)    ((unsigned int)((unsigned long)(cTBCLK / 2) / ((unsigned long)((Freq) * 1000))))
 
-#define LLC_Freq                10.0f   // KHz
-#define INV_Freq                24.0f   // KHz
+#define LLC_Freq                100.0f      // KHz
+#define INV_Freq                24.0f       // KHz
+#define cLLCDBT_RED             0.6         // us
+#define cLLCDBT_FED             0.6         // us
+#define cInvInitDBT             0.7         // us
+#define cSwPrdDiff              60
+
 
 #define sPwm_LLC_LBH_Shut()     {EALLOW;EPwm1Regs.TZFRC.bit.OST = 1;EDIS;}
 #define sPwm_LLC_LFW_Shut()     {EALLOW;EPwm2Regs.TZFRC.bit.OST = 1;EDIS;}

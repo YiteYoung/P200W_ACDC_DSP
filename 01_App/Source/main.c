@@ -8,10 +8,12 @@
 void main(void)
 {
     sInitDspConfig();
-    DELAY_US(5000);
+    DELAY_US(200000);
 
     sInitSysConfig();
     DELAY_US(5000);
+
+    OSInit();
 
     while (true) 
     {

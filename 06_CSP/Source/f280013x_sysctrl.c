@@ -171,11 +171,11 @@ void InitPeripheralClocks(void)
 {
     EALLOW;
 
-    CpuSysRegs.PCLKCR0.bit.CPUTIMER0 = 1;
+    CpuSysRegs.PCLKCR0.bit.CPUTIMER0 = 0;
     CpuSysRegs.PCLKCR0.bit.CPUTIMER1 = 1;
     CpuSysRegs.PCLKCR0.bit.CPUTIMER2 = 1;
-    CpuSysRegs.PCLKCR0.bit.HRCAL = 1;
-    CpuSysRegs.PCLKCR0.bit.TBCLKSYNC = 1;
+    CpuSysRegs.PCLKCR0.bit.HRCAL = 0;
+    CpuSysRegs.PCLKCR0.bit.TBCLKSYNC = 0;
 
     CpuSysRegs.PCLKCR2.bit.EPWM1 = 1;
     CpuSysRegs.PCLKCR2.bit.EPWM2 = 1;
@@ -183,35 +183,35 @@ void InitPeripheralClocks(void)
     CpuSysRegs.PCLKCR2.bit.EPWM4 = 1;
     CpuSysRegs.PCLKCR2.bit.EPWM5 = 1;
     CpuSysRegs.PCLKCR2.bit.EPWM6 = 1;
-    CpuSysRegs.PCLKCR2.bit.EPWM7 = 1;
+    CpuSysRegs.PCLKCR2.bit.EPWM7 = 0;
 
-    CpuSysRegs.PCLKCR3.bit.ECAP1 = 1;
-    CpuSysRegs.PCLKCR3.bit.ECAP2 = 1;
+    CpuSysRegs.PCLKCR3.bit.ECAP1 = 0;
+    CpuSysRegs.PCLKCR3.bit.ECAP2 = 0;
 
-    CpuSysRegs.PCLKCR4.bit.EQEP1 = 1;
+    CpuSysRegs.PCLKCR4.bit.EQEP1 = 0;
 
     CpuSysRegs.PCLKCR7.bit.SCI_A = 1;
     CpuSysRegs.PCLKCR7.bit.SCI_B = 1;
-    CpuSysRegs.PCLKCR7.bit.SCI_C = 1;
+    CpuSysRegs.PCLKCR7.bit.SCI_C = 0;
 
-    CpuSysRegs.PCLKCR8.bit.SPI_A = 1;
+    CpuSysRegs.PCLKCR8.bit.SPI_A = 0;
 
-    CpuSysRegs.PCLKCR9.bit.I2C_A = 1;
-    CpuSysRegs.PCLKCR9.bit.I2C_B = 1;
+    CpuSysRegs.PCLKCR9.bit.I2C_A = 0;
+    CpuSysRegs.PCLKCR9.bit.I2C_B = 0;
 
-    CpuSysRegs.PCLKCR10.bit.CAN_A = 1;
+    CpuSysRegs.PCLKCR10.bit.CAN_A = 0;
 
-    CpuSysRegs.PCLKCR13.bit.ADC_A = 1;
-    CpuSysRegs.PCLKCR13.bit.ADC_C = 1;
+    CpuSysRegs.PCLKCR13.bit.ADC_A = 0;
+    CpuSysRegs.PCLKCR13.bit.ADC_C = 0;
 
     CpuSysRegs.PCLKCR14.bit.CMPSS1 = 1;
-    CpuSysRegs.PCLKCR14.bit.CMPSS2 = 1;
-    CpuSysRegs.PCLKCR14.bit.CMPSS3 = 1;
+    CpuSysRegs.PCLKCR14.bit.CMPSS2 = 0;
+    CpuSysRegs.PCLKCR14.bit.CMPSS3 = 0;
     CpuSysRegs.PCLKCR14.bit.CMPSS4 = 1;
 
-    CpuSysRegs.PCLKCR21.bit.DCC0 = 1;
+    CpuSysRegs.PCLKCR21.bit.DCC0 = 0;
 
-    CpuSysRegs.PCLKCR27.bit.EPG1 = 1;
+    CpuSysRegs.PCLKCR27.bit.EPG1 = 0;
 
     EDIS;
 }

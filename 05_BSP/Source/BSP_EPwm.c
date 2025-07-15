@@ -35,31 +35,44 @@ void  sInitEPwm(void)
     EDIS;
 
     // Sync Output Select
-    EPwm1Regs.EPWMSYNCOUTEN.all             = 0;
-    EPwm2Regs.EPWMSYNCOUTEN.all             = 0;
-    EPwm3Regs.EPWMSYNCOUTEN.all             = 0;
-    EPwm4Regs.EPWMSYNCOUTEN.all             = 0;
-    EPwm5Regs.EPWMSYNCOUTEN.all             = 0;
-    EPwm6Regs.EPWMSYNCOUTEN.all             = 0;
-    EPwm7Regs.EPWMSYNCOUTEN.all             = 0;
+    EPwm1Regs.EPWMSYNCOUTEN.bit.SWEN        = SYNC_OUT_SRC_ENABLE;
+    EPwm1Regs.EPWMSYNCOUTEN.bit.ZEROEN      = SYNC_OUT_SRC_ENABLE;
+    EPwm1Regs.EPWMSYNCOUTEN.bit.CMPBEN      = SYNC_OUT_SRC_DISABLE;
+    EPwm1Regs.EPWMSYNCOUTEN.bit.CMPCEN      = SYNC_OUT_SRC_DISABLE;
+    EPwm1Regs.EPWMSYNCOUTEN.bit.DCAEVT1EN   = SYNC_OUT_SRC_DISABLE;
+    EPwm1Regs.EPWMSYNCOUTEN.bit.DCBEVT1EN   = SYNC_OUT_SRC_DISABLE;
+
+    EPwm2Regs.EPWMSYNCOUTEN.all             = SYNC_OUT_SRC_DISABLE;
+    EPwm3Regs.EPWMSYNCOUTEN.all             = SYNC_OUT_SRC_DISABLE;
+    EPwm4Regs.EPWMSYNCOUTEN.all             = SYNC_OUT_SRC_DISABLE;
+    EPwm5Regs.EPWMSYNCOUTEN.all             = SYNC_OUT_SRC_DISABLE;
+
+    EPwm6Regs.EPWMSYNCOUTEN.bit.SWEN        = SYNC_OUT_SRC_ENABLE;
+    EPwm6Regs.EPWMSYNCOUTEN.bit.ZEROEN      = SYNC_OUT_SRC_ENABLE;
+    EPwm6Regs.EPWMSYNCOUTEN.bit.CMPBEN      = SYNC_OUT_SRC_DISABLE;
+    EPwm6Regs.EPWMSYNCOUTEN.bit.CMPCEN      = SYNC_OUT_SRC_DISABLE;
+    EPwm6Regs.EPWMSYNCOUTEN.bit.DCAEVT1EN   = SYNC_OUT_SRC_DISABLE;
+    EPwm6Regs.EPWMSYNCOUTEN.bit.DCBEVT1EN   = SYNC_OUT_SRC_DISABLE;
+
+    EPwm7Regs.EPWMSYNCOUTEN.all             = SYNC_OUT_SRC_DISABLE;
 
     // Sync Input Select
-    EPwm1Regs.EPWMSYNCINSEL.bit.SEL         = 0;
-    EPwm2Regs.EPWMSYNCINSEL.bit.SEL         = 0;
-    EPwm3Regs.EPWMSYNCINSEL.bit.SEL         = 0;
-    EPwm4Regs.EPWMSYNCINSEL.bit.SEL         = 0;
-    EPwm5Regs.EPWMSYNCINSEL.bit.SEL         = 0;
-    EPwm6Regs.EPWMSYNCINSEL.bit.SEL         = 0;
-    EPwm7Regs.EPWMSYNCINSEL.bit.SEL         = 0;
+    EPwm1Regs.EPWMSYNCINSEL.bit.SEL         = SYNC_IN_SRC_DISABLE_ALL;
+    EPwm2Regs.EPWMSYNCINSEL.bit.SEL         = SYNC_IN_SRC_SYNCOUT_EPWM1;
+    EPwm3Regs.EPWMSYNCINSEL.bit.SEL         = SYNC_IN_SRC_SYNCOUT_EPWM1;
+    EPwm4Regs.EPWMSYNCINSEL.bit.SEL         = SYNC_IN_SRC_SYNCOUT_EPWM1;
+    EPwm5Regs.EPWMSYNCINSEL.bit.SEL         = SYNC_IN_SRC_SYNCOUT_EPWM6;
+    EPwm6Regs.EPWMSYNCINSEL.bit.SEL         = SYNC_IN_SRC_DISABLE_ALL;
+    EPwm7Regs.EPWMSYNCINSEL.bit.SEL         = SYNC_IN_SRC_DISABLE_ALL;
 
     // PHSCounter Reg Load from Phase Reg Enable
-    EPwm1Regs.TBCTL.bit.PHSEN               = 0;
-    EPwm2Regs.TBCTL.bit.PHSEN               = 0;
-    EPwm3Regs.TBCTL.bit.PHSEN               = 0;
-    EPwm4Regs.TBCTL.bit.PHSEN               = 0;
-    EPwm5Regs.TBCTL.bit.PHSEN               = 0;
-    EPwm6Regs.TBCTL.bit.PHSEN               = 0;
-    EPwm7Regs.TBCTL.bit.PHSEN               = 0;
+    EPwm1Regs.TBCTL.bit.PHSEN               = TB_DISABLE;
+    EPwm2Regs.TBCTL.bit.PHSEN               = TB_ENABLE;
+    EPwm3Regs.TBCTL.bit.PHSEN               = TB_ENABLE;
+    EPwm4Regs.TBCTL.bit.PHSEN               = TB_ENABLE;
+    EPwm5Regs.TBCTL.bit.PHSEN               = TB_ENABLE;
+    EPwm6Regs.TBCTL.bit.PHSEN               = TB_DISABLE;
+    EPwm7Regs.TBCTL.bit.PHSEN               = TB_DISABLE;
 
     // Shadow to Active Period Register Load on SYNC event
     // 00: Shadow to Active Load of TBPRD occurs only when TBCTR = 0 (same as legacy).
@@ -67,10 +80,10 @@ void  sInitEPwm(void)
     // 10: Shadow to Active Load of TBPRD occurs only when a SYNC is received.
     // 11: Reserved
     EPwm1Regs.TBCTL2.bit.PRDLDSYNC          = 0;
-    EPwm2Regs.TBCTL2.bit.PRDLDSYNC          = 0;
-    EPwm3Regs.TBCTL2.bit.PRDLDSYNC          = 0;
-    EPwm4Regs.TBCTL2.bit.PRDLDSYNC          = 0;
-    EPwm5Regs.TBCTL2.bit.PRDLDSYNC          = 0;
+    EPwm2Regs.TBCTL2.bit.PRDLDSYNC          = 2;
+    EPwm3Regs.TBCTL2.bit.PRDLDSYNC          = 2;
+    EPwm4Regs.TBCTL2.bit.PRDLDSYNC          = 2;
+    EPwm5Regs.TBCTL2.bit.PRDLDSYNC          = 2;
     EPwm6Regs.TBCTL2.bit.PRDLDSYNC          = 0;
     EPwm7Regs.TBCTL2.bit.PRDLDSYNC          = 0;
 
@@ -79,17 +92,17 @@ void  sInitEPwm(void)
     EPwm1Regs.EPWMXLINK.bit.CMPALINK        = 0;
     EPwm1Regs.EPWMXLINK.bit.CMPBLINK        = 0;
     EPwm2Regs.EPWMXLINK.bit.TBPRDLINK       = 0;
-    EPwm2Regs.EPWMXLINK.bit.CMPALINK        = 0;
-    EPwm2Regs.EPWMXLINK.bit.CMPBLINK        = 0;
+    EPwm2Regs.EPWMXLINK.bit.CMPALINK        = 1;
+    EPwm2Regs.EPWMXLINK.bit.CMPBLINK        = 1;
     EPwm3Regs.EPWMXLINK.bit.TBPRDLINK       = 0;
-    EPwm3Regs.EPWMXLINK.bit.CMPALINK        = 0;
-    EPwm3Regs.EPWMXLINK.bit.CMPBLINK        = 0;
+    EPwm3Regs.EPWMXLINK.bit.CMPALINK        = 2;
+    EPwm3Regs.EPWMXLINK.bit.CMPBLINK        = 2;
     EPwm4Regs.EPWMXLINK.bit.TBPRDLINK       = 0;
-    EPwm4Regs.EPWMXLINK.bit.CMPALINK        = 0;
-    EPwm4Regs.EPWMXLINK.bit.CMPBLINK        = 0;
-    EPwm5Regs.EPWMXLINK.bit.TBPRDLINK       = 0;
-    EPwm5Regs.EPWMXLINK.bit.CMPALINK        = 0;
-    EPwm5Regs.EPWMXLINK.bit.CMPBLINK        = 0;
+    EPwm4Regs.EPWMXLINK.bit.CMPALINK        = 3;
+    EPwm4Regs.EPWMXLINK.bit.CMPBLINK        = 3;
+    EPwm5Regs.EPWMXLINK.bit.TBPRDLINK       = 5;
+    EPwm5Regs.EPWMXLINK.bit.CMPALINK        = 4;
+    EPwm5Regs.EPWMXLINK.bit.CMPBLINK        = 4;
     EPwm6Regs.EPWMXLINK.bit.TBPRDLINK       = 0;
     EPwm6Regs.EPWMXLINK.bit.CMPALINK        = 0;
     EPwm6Regs.EPWMXLINK.bit.CMPBLINK        = 0;
@@ -124,7 +137,7 @@ inline  static  void    sInitEPwm1(void)
     // 101: /10
     // 110: /12
     // 111: /14
-    EPwm1Regs.TBCTL.bit.HSPCLKDIV           = 0;
+    EPwm1Regs.TBCTL.bit.HSPCLKDIV           = TB_DIV1;
 
     // Time Base Clock Pre-Scale Bits
     // These bits select the time base clock pre-scale value (TBCLK = EPWMCLK/(HSPCLKDIV * CLKDIV):
@@ -136,7 +149,7 @@ inline  static  void    sInitEPwm1(void)
     // 101: /32
     // 110: /64
     // 111: /128
-    EPwm1Regs.TBCTL.bit.CLKDIV              = 0;
+    EPwm1Regs.TBCTL.bit.CLKDIV              = TB_DIV1;
 
     // Clear TB Counter
     EPwm1Regs.TBCTR                         = 0;
@@ -154,7 +167,7 @@ inline  static  void    sInitEPwm1(void)
     // The PHSDIR bit indicates the direction the time-base counter (TBCTR) will count after a synchronization
     // event occurs and a new phase value is loaded from the phase (TBPHS) register. 
     // This is irrespective of the direction of the counter before the synchronization event.. 
-    EPwm1Regs.TBCTL.bit.PHSDIR              = 1;
+    EPwm1Regs.TBCTL.bit.PHSDIR              = TB_UP;
 
     // The time-base counter mode is normally configured once and not changed during normal operation. If you change the mode of the counter, 
     // the change will take effect at the next TBCLK edge and the current counter value shall increment or decrement from the value before the mode change. 
@@ -163,18 +176,18 @@ inline  static  void    sInitEPwm1(void)
     // 01: Down-count mode
     // 10: Up-down count mode
     // 11: Freeze counter operation (default on reset)
-    EPwm1Regs.TBCTL.bit.CTRMODE             = 2;
+    EPwm1Regs.TBCTL.bit.CTRMODE             = TB_COUNT_UPDOWN;
 
     //
-    EPwm1Regs.TBCTL.bit.PRDLD               = 0;
+    EPwm1Regs.TBCTL.bit.PRDLD               = TB_SHADOW;
 
     //
-    EPwm1Regs.CMPCTL.bit.SHDWAMODE          = 0;
-    EPwm1Regs.CMPCTL.bit.SHDWBMODE          = 0;
+    EPwm1Regs.CMPCTL.bit.SHDWAMODE          = CC_SHADOW;
+    EPwm1Regs.CMPCTL.bit.SHDWBMODE          = CC_SHADOW;
 
     //
-    EPwm1Regs.CMPCTL.bit.LOADAMODE          = 0;
-    EPwm1Regs.CMPCTL.bit.LOADBMODE          = 0;
+    EPwm1Regs.CMPCTL.bit.LOADAMODE          = CC_CTR_ZERO;
+    EPwm1Regs.CMPCTL.bit.LOADBMODE          = CC_CTR_ZERO;
 
     //
     EPwm1Regs.AQCTL.bit.SHDWAQAMODE         = 0;
@@ -189,19 +202,19 @@ inline  static  void    sInitEPwm1(void)
     // 01: Clear: force EPWMxA output low.
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, and a high signal will be forced low.
-    EPwm1Regs.AQCTLA.bit.CAU                = 0;
-    EPwm1Regs.AQCTLA.bit.CAD                = 0;
-    EPwm1Regs.AQCTLA.bit.CBU                = 0;
-    EPwm1Regs.AQCTLA.bit.CBD                = 0;
-    EPwm1Regs.AQCTLA.bit.ZRO                = 2;
-    EPwm1Regs.AQCTLA.bit.PRD                = 1;
+    EPwm1Regs.AQCTLA.bit.CAU                = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLA.bit.CAD                = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLA.bit.CBU                = AQ_CLEAR;
+    EPwm1Regs.AQCTLA.bit.CBD                = AQ_SET;
+    EPwm1Regs.AQCTLA.bit.ZRO                = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLA.bit.PRD                = AQ_NO_ACTION;
 
-    EPwm1Regs.AQCTLB.bit.CAU                = 0;
-    EPwm1Regs.AQCTLB.bit.CAD                = 0;
-    EPwm1Regs.AQCTLB.bit.CBU                = 0;
-    EPwm1Regs.AQCTLB.bit.CBD                = 0;
-    EPwm1Regs.AQCTLB.bit.ZRO                = 2;
-    EPwm1Regs.AQCTLB.bit.PRD                = 1;
+    EPwm1Regs.AQCTLB.bit.CAU                = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLB.bit.CAD                = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLB.bit.CBU                = AQ_CLEAR;
+    EPwm1Regs.AQCTLB.bit.CBD                = AQ_SET;
+    EPwm1Regs.AQCTLB.bit.ZRO                = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLB.bit.PRD                = AQ_NO_ACTION;
 
     // T1/T2 Event Source Select Bits
     // 0000: DCAEVT1
@@ -223,15 +236,15 @@ inline  static  void    sInitEPwm1(void)
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, 
     // and a high signal will be forced low.
-    EPwm1Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm1Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm1Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm1Regs.AQCTLA2.bit.T1U               = 0;
+    EPwm1Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
 
-    EPwm1Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm1Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm1Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm1Regs.AQCTLB2.bit.T1U               = 0;
+    EPwm1Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm1Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
 
     // Continuous Software Force on Output A/B
     // In immediate mode, a continuous force takes effect on the next TBCLK edge. 
@@ -240,8 +253,8 @@ inline  static  void    sInitEPwm1(void)
     // 01: Forces a continuous low on Output
     // 10: Forces a continuous high on Output
     // 11: Software forcing is disabled and has no effect
-    EPwm1Regs.AQCSFRC.bit.CSFA              = 0;
-    EPwm1Regs.AQCSFRC.bit.CSFB              = 0;
+    EPwm1Regs.AQCSFRC.bit.CSFA              = AQ_NO_ACTION;
+    EPwm1Regs.AQCSFRC.bit.CSFB              = AQ_NO_ACTION;
 
     // This allows you to select the input source to the falling-edge and rising-edge delay. 
     // To produce classical dead-band waveforms the default is EPWMxA In is the source for both falling and rising-edge delays.
@@ -249,7 +262,7 @@ inline  static  void    sInitEPwm1(void)
     // 01: EPWMxB In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxA In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 10: EPWMxA In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxB In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 11: EPWMxB In (from the action-qualifier) is the source for both rising-edge delay and falling-edge delayed signal.
-    EPwm1Regs.DBCTL.bit.IN_MODE             = 0;
+    EPwm1Regs.DBCTL.bit.IN_MODE             = DBA_RED_DBB_FED;
 
     // RED Dead-Band Load Mode
     // 0: Immediate mode. Only the active DBRED register is used. All writes/reads via the CPU directly access the active register for immediate 'RED dead-band action.'
@@ -291,10 +304,10 @@ inline  static  void    sInitEPwm1(void)
     // 01: Active low complementary (ALC) mode. EPWMxA is inverted.
     // 10: Active high complementary (AHC). EPWMxB is inverted.
     // 11: Active low (AL) mode. Both EPWMxA and EPWMxB are inverted.
-    EPwm1Regs.DBCTL.bit.POLSEL              = 2;
+    EPwm1Regs.DBCTL.bit.POLSEL              = DB_ACTV_HIC;
 
     // 
-    EPwm1Regs.DBCTL.bit.OUT_MODE            = 3;
+    EPwm1Regs.DBCTL.bit.OUT_MODE            = DB_FULL_ENABLE;
 
     // Dead Band Output Swap Control
     // Bit 13 controls the S6 switch and bit 12 controls the S7 switch.
@@ -305,12 +318,19 @@ inline  static  void    sInitEPwm1(void)
     // (rising edge delay or delay-bypassed A signal path)
     EPwm1Regs.DBCTL.bit.OUTSWAP             = 0;
 
+    EPwm1Regs.DBFED.all                     = DBCOUNT_us(cLLCDBT_RED);
+    EPwm1Regs.DBRED.all                     = DBCOUNT_us(cLLCDBT_RED);
+
+    EPwm1Regs.CMPA.bit.CMPA                 = 10;
+    EPwm1Regs.CMPB.bit.CMPB                 = 650;
+
+
     EALLOW;
     // Digital Compare
     // Digital Compare AH/AL Combination Trip Select
-    EPwm1Regs.DCAHTRIPSEL.all               = 0;
+    EPwm1Regs.DCAHTRIPSEL.all               = 0x98;
     EPwm1Regs.DCALTRIPSEL.all               = 0;
-    EPwm1Regs.DCBHTRIPSEL.all               = 0;
+    EPwm1Regs.DCBHTRIPSEL.all               = 0x98;
     EPwm1Regs.DCALTRIPSEL.all               = 0;
 
     // Digital Compare Trip Select
@@ -351,16 +371,16 @@ inline  static  void    sInitEPwm1(void)
     EALLOW;
     EPwm1Regs.TZSEL.bit.OSHT1               = TZ_ENABLE;
     EPwm1Regs.TZSEL.bit.OSHT2               = TZ_ENABLE;
-    EPwm1Regs.TZSEL.bit.OSHT3               = TZ_ENABLE;
+    EPwm1Regs.TZSEL.bit.OSHT3               = TZ_DISABLE;
 
     EPwm1Regs.TZSEL.bit.CBC1                = TZ_DISABLE;
     EPwm1Regs.TZSEL.bit.CBC2                = TZ_DISABLE;
     EPwm1Regs.TZSEL.bit.CBC3                = TZ_DISABLE;
 
-    EPwm1Regs.TZSEL.bit.DCAEVT1             = TZ_DISABLE;
-    EPwm1Regs.TZSEL.bit.DCAEVT2             = TZ_DISABLE;
-    EPwm1Regs.TZSEL.bit.DCBEVT1             = TZ_DISABLE;
-    EPwm1Regs.TZSEL.bit.DCBEVT2             = TZ_DISABLE;
+    EPwm1Regs.TZSEL.bit.DCAEVT1             = TZ_ENABLE;
+    EPwm1Regs.TZSEL.bit.DCAEVT2             = TZ_ENABLE;
+    EPwm1Regs.TZSEL.bit.DCBEVT1             = TZ_ENABLE;
+    EPwm1Regs.TZSEL.bit.DCBEVT2             = TZ_ENABLE;
 
     //
     EPwm1Regs.TZCTL.bit.TZA                 = TZ_FORCE_LO;
@@ -400,7 +420,7 @@ inline  static  void    sInitEPwm1(void)
     EPwm1Regs.ETPS.bit.INTPRD               = ET_1ST;
 
     //
-    EPwm1Regs.ETSEL.bit.SOCAEN              = 1;
+    EPwm1Regs.ETSEL.bit.SOCAEN              = 0;
     EPwm1Regs.ETSEL.bit.SOCASEL             = ET_CTRU_CMPB;
     EPwm1Regs.ETPS.bit.SOCAPRD              = ET_1ST;
 
@@ -425,7 +445,7 @@ inline  static  void    sInitEPwm2(void)
     // 101: /10
     // 110: /12
     // 111: /14
-    EPwm2Regs.TBCTL.bit.HSPCLKDIV           = 0;
+    EPwm2Regs.TBCTL.bit.HSPCLKDIV           = TB_DIV1;
 
     // Time Base Clock Pre-Scale Bits
     // These bits select the time base clock pre-scale value (TBCLK = EPWMCLK/(HSPCLKDIV * CLKDIV):
@@ -437,7 +457,7 @@ inline  static  void    sInitEPwm2(void)
     // 101: /32
     // 110: /64
     // 111: /128
-    EPwm2Regs.TBCTL.bit.CLKDIV              = 0;
+    EPwm2Regs.TBCTL.bit.CLKDIV              = TB_DIV1;
 
     // Clear TB Counter
     EPwm2Regs.TBCTR                         = 0;
@@ -455,7 +475,7 @@ inline  static  void    sInitEPwm2(void)
     // The PHSDIR bit indicates the direction the time-base counter (TBCTR) will count after a synchronization
     // event occurs and a new phase value is loaded from the phase (TBPHS) register. 
     // This is irrespective of the direction of the counter before the synchronization event.. 
-    EPwm2Regs.TBCTL.bit.PHSDIR              = 1;
+    EPwm2Regs.TBCTL.bit.PHSDIR              = TB_UP;
 
     // The time-base counter mode is normally configured once and not changed during normal operation. If you change the mode of the counter, 
     // the change will take effect at the next TBCLK edge and the current counter value shall increment or decrement from the value before the mode change. 
@@ -464,18 +484,18 @@ inline  static  void    sInitEPwm2(void)
     // 01: Down-count mode
     // 10: Up-down count mode
     // 11: Freeze counter operation (default on reset)
-    EPwm2Regs.TBCTL.bit.CTRMODE             = 2;
+    EPwm2Regs.TBCTL.bit.CTRMODE             = TB_COUNT_UPDOWN;
 
     //
-    EPwm2Regs.TBCTL.bit.PRDLD               = 0;
+    EPwm2Regs.TBCTL.bit.PRDLD               = TB_SHADOW;
 
     //
-    EPwm2Regs.CMPCTL.bit.SHDWAMODE          = 0;
-    EPwm2Regs.CMPCTL.bit.SHDWBMODE          = 0;
+    EPwm2Regs.CMPCTL.bit.SHDWAMODE          = CC_SHADOW;
+    EPwm2Regs.CMPCTL.bit.SHDWBMODE          = CC_SHADOW;
 
     //
-    EPwm2Regs.CMPCTL.bit.LOADAMODE          = 0;
-    EPwm2Regs.CMPCTL.bit.LOADBMODE          = 0;
+    EPwm2Regs.CMPCTL.bit.LOADAMODE          = CC_CTR_ZERO;
+    EPwm2Regs.CMPCTL.bit.LOADBMODE          = CC_CTR_ZERO;
 
     //
     EPwm2Regs.AQCTL.bit.SHDWAQAMODE         = 0;
@@ -490,19 +510,19 @@ inline  static  void    sInitEPwm2(void)
     // 01: Clear: force EPWMxA output low.
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, and a high signal will be forced low.
-    EPwm2Regs.AQCTLA.bit.CAU                = 0;
-    EPwm2Regs.AQCTLA.bit.CAD                = 0;
-    EPwm2Regs.AQCTLA.bit.CBU                = 0;
-    EPwm2Regs.AQCTLA.bit.CBD                = 0;
-    EPwm2Regs.AQCTLA.bit.ZRO                = 2;
-    EPwm2Regs.AQCTLA.bit.PRD                = 1;
+    EPwm2Regs.AQCTLA.bit.CAU                = AQ_SET;
+    EPwm2Regs.AQCTLA.bit.CAD                = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLA.bit.CBU                = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLA.bit.CBD                = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLA.bit.ZRO                = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLA.bit.PRD                = AQ_CLEAR;
 
-    EPwm2Regs.AQCTLB.bit.CAU                = 0;
-    EPwm2Regs.AQCTLB.bit.CAD                = 0;
-    EPwm2Regs.AQCTLB.bit.CBU                = 0;
-    EPwm2Regs.AQCTLB.bit.CBD                = 0;
-    EPwm2Regs.AQCTLB.bit.ZRO                = 2;
-    EPwm2Regs.AQCTLB.bit.PRD                = 1;
+    EPwm2Regs.AQCTLB.bit.CAU                = AQ_SET;
+    EPwm2Regs.AQCTLB.bit.CAD                = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLB.bit.CBU                = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLB.bit.CBD                = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLB.bit.ZRO                = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLB.bit.PRD                = AQ_CLEAR;
 
     // T1/T2 Event Source Select Bits
     // 0000: DCAEVT1
@@ -524,15 +544,15 @@ inline  static  void    sInitEPwm2(void)
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, 
     // and a high signal will be forced low.
-    EPwm2Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm2Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm2Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm2Regs.AQCTLA2.bit.T1U               = 0;
+    EPwm2Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
 
-    EPwm2Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm2Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm2Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm2Regs.AQCTLB2.bit.T1U               = 0;
+    EPwm2Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm2Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
 
     // Continuous Software Force on Output A/B
     // In immediate mode, a continuous force takes effect on the next TBCLK edge. 
@@ -541,8 +561,8 @@ inline  static  void    sInitEPwm2(void)
     // 01: Forces a continuous low on Output
     // 10: Forces a continuous high on Output
     // 11: Software forcing is disabled and has no effect
-    EPwm2Regs.AQCSFRC.bit.CSFA              = 0;
-    EPwm2Regs.AQCSFRC.bit.CSFB              = 0;
+    EPwm2Regs.AQCSFRC.bit.CSFA              = AQ_NO_ACTION;
+    EPwm2Regs.AQCSFRC.bit.CSFB              = AQ_NO_ACTION;
 
     // This allows you to select the input source to the falling-edge and rising-edge delay. 
     // To produce classical dead-band waveforms the default is EPWMxA In is the source for both falling and rising-edge delays.
@@ -550,7 +570,7 @@ inline  static  void    sInitEPwm2(void)
     // 01: EPWMxB In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxA In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 10: EPWMxA In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxB In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 11: EPWMxB In (from the action-qualifier) is the source for both rising-edge delay and falling-edge delayed signal.
-    EPwm2Regs.DBCTL.bit.IN_MODE             = 0;
+    EPwm2Regs.DBCTL.bit.IN_MODE             = DBA_RED_DBB_FED;
 
     // RED Dead-Band Load Mode
     // 0: Immediate mode. Only the active DBRED register is used. All writes/reads via the CPU directly access the active register for immediate 'RED dead-band action.'
@@ -592,10 +612,10 @@ inline  static  void    sInitEPwm2(void)
     // 01: Active low complementary (ALC) mode. EPWMxA is inverted.
     // 10: Active high complementary (AHC). EPWMxB is inverted.
     // 11: Active low (AL) mode. Both EPWMxA and EPWMxB are inverted.
-    EPwm2Regs.DBCTL.bit.POLSEL              = 2;
+    EPwm2Regs.DBCTL.bit.POLSEL              = DB_ACTV_HIC;
 
     // 
-    EPwm2Regs.DBCTL.bit.OUT_MODE            = 3;
+    EPwm2Regs.DBCTL.bit.OUT_MODE            = DB_FULL_ENABLE;
 
     // Dead Band Output Swap Control
     // Bit 13 controls the S6 switch and bit 12 controls the S7 switch.
@@ -606,12 +626,18 @@ inline  static  void    sInitEPwm2(void)
     // (rising edge delay or delay-bypassed A signal path)
     EPwm2Regs.DBCTL.bit.OUTSWAP             = 0;
 
+    EPwm2Regs.DBFED.all                     = DBCOUNT_us(cLLCDBT_RED);
+    EPwm2Regs.DBRED.all                     = DBCOUNT_us(cLLCDBT_FED);
+
+    EPwm2Regs.CMPA.bit.CMPA                 = 650;
+    EPwm2Regs.CMPB.bit.CMPB                 = 10;
+
     EALLOW;
     // Digital Compare
     // Digital Compare AH/AL Combination Trip Select
-    EPwm2Regs.DCAHTRIPSEL.all               = 0;
+    EPwm2Regs.DCAHTRIPSEL.all               = 0x98;
     EPwm2Regs.DCALTRIPSEL.all               = 0;
-    EPwm2Regs.DCBHTRIPSEL.all               = 0;
+    EPwm2Regs.DCBHTRIPSEL.all               = 0x98;
     EPwm2Regs.DCALTRIPSEL.all               = 0;
 
     // Digital Compare Trip Select
@@ -652,16 +678,16 @@ inline  static  void    sInitEPwm2(void)
     EALLOW;
     EPwm2Regs.TZSEL.bit.OSHT1               = TZ_ENABLE;
     EPwm2Regs.TZSEL.bit.OSHT2               = TZ_ENABLE;
-    EPwm2Regs.TZSEL.bit.OSHT3               = TZ_ENABLE;
+    EPwm2Regs.TZSEL.bit.OSHT3               = TZ_DISABLE;
 
     EPwm2Regs.TZSEL.bit.CBC1                = TZ_DISABLE;
     EPwm2Regs.TZSEL.bit.CBC2                = TZ_DISABLE;
     EPwm2Regs.TZSEL.bit.CBC3                = TZ_DISABLE;
 
-    EPwm2Regs.TZSEL.bit.DCAEVT1             = TZ_DISABLE;
-    EPwm2Regs.TZSEL.bit.DCAEVT2             = TZ_DISABLE;
-    EPwm2Regs.TZSEL.bit.DCBEVT1             = TZ_DISABLE;
-    EPwm2Regs.TZSEL.bit.DCBEVT2             = TZ_DISABLE;
+    EPwm2Regs.TZSEL.bit.DCAEVT1             = TZ_ENABLE;
+    EPwm2Regs.TZSEL.bit.DCAEVT2             = TZ_ENABLE;
+    EPwm2Regs.TZSEL.bit.DCBEVT1             = TZ_ENABLE;
+    EPwm2Regs.TZSEL.bit.DCBEVT2             = TZ_ENABLE;
 
     //
     EPwm2Regs.TZCTL.bit.TZA                 = TZ_FORCE_LO;
@@ -696,12 +722,12 @@ inline  static  void    sInitEPwm2(void)
     EPwm2Regs.ETCLR.all                     = 0xFFFF;
 
     //
-    EPwm2Regs.ETSEL.bit.INTEN               = 1;
+    EPwm2Regs.ETSEL.bit.INTEN               = 0;
     EPwm2Regs.ETSEL.bit.INTSEL              = ET_CTR_PRD;
     EPwm2Regs.ETPS.bit.INTPRD               = ET_1ST;
 
     //
-    EPwm2Regs.ETSEL.bit.SOCAEN              = 1;
+    EPwm2Regs.ETSEL.bit.SOCAEN              = 0;
     EPwm2Regs.ETSEL.bit.SOCASEL             = ET_CTRU_CMPB;
     EPwm2Regs.ETPS.bit.SOCAPRD              = ET_1ST;
 
@@ -724,7 +750,7 @@ inline  static  void    sInitEPwm3(void)
     // 101: /10
     // 110: /12
     // 111: /14
-    EPwm3Regs.TBCTL.bit.HSPCLKDIV           = 0;
+    EPwm3Regs.TBCTL.bit.HSPCLKDIV           = TB_DIV1;
 
     // Time Base Clock Pre-Scale Bits
     // These bits select the time base clock pre-scale value (TBCLK = EPWMCLK/(HSPCLKDIV * CLKDIV):
@@ -736,7 +762,7 @@ inline  static  void    sInitEPwm3(void)
     // 101: /32
     // 110: /64
     // 111: /128
-    EPwm3Regs.TBCTL.bit.CLKDIV              = 0;
+    EPwm3Regs.TBCTL.bit.CLKDIV              = TB_DIV1;
 
     // Clear TB Counter
     EPwm3Regs.TBCTR                         = 0;
@@ -754,7 +780,7 @@ inline  static  void    sInitEPwm3(void)
     // The PHSDIR bit indicates the direction the time-base counter (TBCTR) will count after a synchronization
     // event occurs and a new phase value is loaded from the phase (TBPHS) register. 
     // This is irrespective of the direction of the counter before the synchronization event.. 
-    EPwm3Regs.TBCTL.bit.PHSDIR              = 1;
+    EPwm3Regs.TBCTL.bit.PHSDIR              = TB_UP;
 
     // The time-base counter mode is normally configured once and not changed during normal operation. If you change the mode of the counter, 
     // the change will take effect at the next TBCLK edge and the current counter value shall increment or decrement from the value before the mode change. 
@@ -763,18 +789,18 @@ inline  static  void    sInitEPwm3(void)
     // 01: Down-count mode
     // 10: Up-down count mode
     // 11: Freeze counter operation (default on reset)
-    EPwm3Regs.TBCTL.bit.CTRMODE             = 2;
+    EPwm3Regs.TBCTL.bit.CTRMODE             = TB_COUNT_UPDOWN;
 
     //
-    EPwm3Regs.TBCTL.bit.PRDLD               = 0;
+    EPwm3Regs.TBCTL.bit.PRDLD               = TB_SHADOW;
 
     //
-    EPwm3Regs.CMPCTL.bit.SHDWAMODE          = 0;
-    EPwm3Regs.CMPCTL.bit.SHDWBMODE          = 0;
+    EPwm3Regs.CMPCTL.bit.SHDWAMODE          = CC_SHADOW;
+    EPwm3Regs.CMPCTL.bit.SHDWBMODE          = CC_SHADOW;
 
     //
-    EPwm3Regs.CMPCTL.bit.LOADAMODE          = 0;
-    EPwm3Regs.CMPCTL.bit.LOADBMODE          = 0;
+    EPwm3Regs.CMPCTL.bit.LOADAMODE          = CC_CTR_ZERO;
+    EPwm3Regs.CMPCTL.bit.LOADBMODE          = CC_CTR_ZERO;
 
     //
     EPwm3Regs.AQCTL.bit.SHDWAQAMODE         = 0;
@@ -789,19 +815,19 @@ inline  static  void    sInitEPwm3(void)
     // 01: Clear: force EPWMxA output low.
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, and a high signal will be forced low.
-    EPwm3Regs.AQCTLA.bit.CAU                = 0;
-    EPwm3Regs.AQCTLA.bit.CAD                = 0;
-    EPwm3Regs.AQCTLA.bit.CBU                = 0;
-    EPwm3Regs.AQCTLA.bit.CBD                = 0;
-    EPwm3Regs.AQCTLA.bit.ZRO                = 2;
-    EPwm3Regs.AQCTLA.bit.PRD                = 1;
+    EPwm3Regs.AQCTLA.bit.CAU                = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLA.bit.CAD                = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLA.bit.CBU                = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLA.bit.CBD                = AQ_SET;
+    EPwm3Regs.AQCTLA.bit.ZRO                = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLA.bit.PRD                = AQ_CLEAR;
 
-    EPwm3Regs.AQCTLB.bit.CAU                = 0;
-    EPwm3Regs.AQCTLB.bit.CAD                = 0;
-    EPwm3Regs.AQCTLB.bit.CBU                = 0;
-    EPwm3Regs.AQCTLB.bit.CBD                = 0;
-    EPwm3Regs.AQCTLB.bit.ZRO                = 2;
-    EPwm3Regs.AQCTLB.bit.PRD                = 1;
+    EPwm3Regs.AQCTLB.bit.CAU                = AQ_SET;
+    EPwm3Regs.AQCTLB.bit.CAD                = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLB.bit.CBU                = AQ_CLEAR;
+    EPwm3Regs.AQCTLB.bit.CBD                = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLB.bit.ZRO                = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLB.bit.PRD                = AQ_NO_ACTION;
 
     // T1/T2 Event Source Select Bits
     // 0000: DCAEVT1
@@ -823,15 +849,15 @@ inline  static  void    sInitEPwm3(void)
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, 
     // and a high signal will be forced low.
-    EPwm3Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm3Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm3Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm3Regs.AQCTLA2.bit.T1U               = 0;
+    EPwm3Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
 
-    EPwm3Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm3Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm3Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm3Regs.AQCTLB2.bit.T1U               = 0;
+    EPwm3Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm3Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
 
     // Continuous Software Force on Output A/B
     // In immediate mode, a continuous force takes effect on the next TBCLK edge. 
@@ -840,8 +866,8 @@ inline  static  void    sInitEPwm3(void)
     // 01: Forces a continuous low on Output
     // 10: Forces a continuous high on Output
     // 11: Software forcing is disabled and has no effect
-    EPwm3Regs.AQCSFRC.bit.CSFA              = 0;
-    EPwm3Regs.AQCSFRC.bit.CSFB              = 0;
+    EPwm3Regs.AQCSFRC.bit.CSFA              = AQ_NO_ACTION;
+    EPwm3Regs.AQCSFRC.bit.CSFB              = AQ_NO_ACTION;
 
     // This allows you to select the input source to the falling-edge and rising-edge delay. 
     // To produce classical dead-band waveforms the default is EPWMxA In is the source for both falling and rising-edge delays.
@@ -849,7 +875,7 @@ inline  static  void    sInitEPwm3(void)
     // 01: EPWMxB In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxA In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 10: EPWMxA In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxB In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 11: EPWMxB In (from the action-qualifier) is the source for both rising-edge delay and falling-edge delayed signal.
-    EPwm3Regs.DBCTL.bit.IN_MODE             = 0;
+    EPwm3Regs.DBCTL.bit.IN_MODE             = DBA_RED_DBB_FED;
 
     // RED Dead-Band Load Mode
     // 0: Immediate mode. Only the active DBRED register is used. All writes/reads via the CPU directly access the active register for immediate 'RED dead-band action.'
@@ -891,10 +917,10 @@ inline  static  void    sInitEPwm3(void)
     // 01: Active low complementary (ALC) mode. EPWMxA is inverted.
     // 10: Active high complementary (AHC). EPWMxB is inverted.
     // 11: Active low (AL) mode. Both EPWMxA and EPWMxB are inverted.
-    EPwm3Regs.DBCTL.bit.POLSEL              = 2;
+    EPwm3Regs.DBCTL.bit.POLSEL              = DB_ACTV_HIC;
 
     // 
-    EPwm3Regs.DBCTL.bit.OUT_MODE            = 3;
+    EPwm3Regs.DBCTL.bit.OUT_MODE            = DB_FULL_ENABLE;
 
     // Dead Band Output Swap Control
     // Bit 13 controls the S6 switch and bit 12 controls the S7 switch.
@@ -908,9 +934,9 @@ inline  static  void    sInitEPwm3(void)
     EALLOW;
     // Digital Compare
     // Digital Compare AH/AL Combination Trip Select
-    EPwm3Regs.DCAHTRIPSEL.all               = 0;
+    EPwm3Regs.DCAHTRIPSEL.all               = 0x98;
     EPwm3Regs.DCALTRIPSEL.all               = 0;
-    EPwm3Regs.DCBHTRIPSEL.all               = 0;
+    EPwm3Regs.DCBHTRIPSEL.all               = 0x98;
     EPwm3Regs.DCALTRIPSEL.all               = 0;
 
     // Digital Compare Trip Select
@@ -951,16 +977,16 @@ inline  static  void    sInitEPwm3(void)
     EALLOW;
     EPwm3Regs.TZSEL.bit.OSHT1               = TZ_ENABLE;
     EPwm3Regs.TZSEL.bit.OSHT2               = TZ_ENABLE;
-    EPwm3Regs.TZSEL.bit.OSHT3               = TZ_ENABLE;
+    EPwm3Regs.TZSEL.bit.OSHT3               = TZ_DISABLE;
 
     EPwm3Regs.TZSEL.bit.CBC1                = TZ_DISABLE;
     EPwm3Regs.TZSEL.bit.CBC2                = TZ_DISABLE;
     EPwm3Regs.TZSEL.bit.CBC3                = TZ_DISABLE;
 
-    EPwm3Regs.TZSEL.bit.DCAEVT1             = TZ_DISABLE;
-    EPwm3Regs.TZSEL.bit.DCAEVT2             = TZ_DISABLE;
-    EPwm3Regs.TZSEL.bit.DCBEVT1             = TZ_DISABLE;
-    EPwm3Regs.TZSEL.bit.DCBEVT2             = TZ_DISABLE;
+    EPwm3Regs.TZSEL.bit.DCAEVT1             = TZ_ENABLE;
+    EPwm3Regs.TZSEL.bit.DCAEVT2             = TZ_ENABLE;
+    EPwm3Regs.TZSEL.bit.DCBEVT1             = TZ_ENABLE;
+    EPwm3Regs.TZSEL.bit.DCBEVT2             = TZ_ENABLE;
 
     //
     EPwm3Regs.TZCTL.bit.TZA                 = TZ_FORCE_LO;
@@ -995,12 +1021,12 @@ inline  static  void    sInitEPwm3(void)
     EPwm3Regs.ETCLR.all                     = 0xFFFF;
 
     //
-    EPwm3Regs.ETSEL.bit.INTEN               = 1;
+    EPwm3Regs.ETSEL.bit.INTEN               = 0;
     EPwm3Regs.ETSEL.bit.INTSEL              = ET_CTR_PRD;
     EPwm3Regs.ETPS.bit.INTPRD               = ET_1ST;
 
     //
-    EPwm3Regs.ETSEL.bit.SOCAEN              = 1;
+    EPwm3Regs.ETSEL.bit.SOCAEN              = 0;
     EPwm3Regs.ETSEL.bit.SOCASEL             = ET_CTRU_CMPB;
     EPwm3Regs.ETPS.bit.SOCAPRD              = ET_1ST;
 
@@ -1023,7 +1049,7 @@ inline  static  void    sInitEPwm4(void)
     // 101: /10
     // 110: /12
     // 111: /14
-    EPwm4Regs.TBCTL.bit.HSPCLKDIV           = 0;
+    EPwm4Regs.TBCTL.bit.HSPCLKDIV           = TB_DIV1;
 
     // Time Base Clock Pre-Scale Bits
     // These bits select the time base clock pre-scale value (TBCLK = EPWMCLK/(HSPCLKDIV * CLKDIV):
@@ -1035,7 +1061,7 @@ inline  static  void    sInitEPwm4(void)
     // 101: /32
     // 110: /64
     // 111: /128
-    EPwm4Regs.TBCTL.bit.CLKDIV              = 0;
+    EPwm4Regs.TBCTL.bit.CLKDIV              = TB_DIV1;
 
     // Clear TB Counter
     EPwm4Regs.TBCTR                         = 0;
@@ -1053,7 +1079,7 @@ inline  static  void    sInitEPwm4(void)
     // The PHSDIR bit indicates the direction the time-base counter (TBCTR) will count after a synchronization
     // event occurs and a new phase value is loaded from the phase (TBPHS) register. 
     // This is irrespective of the direction of the counter before the synchronization event.. 
-    EPwm4Regs.TBCTL.bit.PHSDIR              = 1;
+    EPwm4Regs.TBCTL.bit.PHSDIR              = TB_UP;
 
     // The time-base counter mode is normally configured once and not changed during normal operation. If you change the mode of the counter, 
     // the change will take effect at the next TBCLK edge and the current counter value shall increment or decrement from the value before the mode change. 
@@ -1062,18 +1088,18 @@ inline  static  void    sInitEPwm4(void)
     // 01: Down-count mode
     // 10: Up-down count mode
     // 11: Freeze counter operation (default on reset)
-    EPwm4Regs.TBCTL.bit.CTRMODE             = 2;
+    EPwm4Regs.TBCTL.bit.CTRMODE             = TB_COUNT_UPDOWN;
 
     //
-    EPwm4Regs.TBCTL.bit.PRDLD               = 0;
+    EPwm4Regs.TBCTL.bit.PRDLD               = TB_SHADOW;
 
     //
-    EPwm4Regs.CMPCTL.bit.SHDWAMODE          = 0;
-    EPwm4Regs.CMPCTL.bit.SHDWBMODE          = 0;
+    EPwm4Regs.CMPCTL.bit.SHDWAMODE          = CC_SHADOW;
+    EPwm4Regs.CMPCTL.bit.SHDWBMODE          = CC_SHADOW;
 
     //
-    EPwm4Regs.CMPCTL.bit.LOADAMODE          = 0;
-    EPwm4Regs.CMPCTL.bit.LOADBMODE          = 0;
+    EPwm4Regs.CMPCTL.bit.LOADAMODE          = CC_CTR_ZERO;
+    EPwm4Regs.CMPCTL.bit.LOADBMODE          = CC_CTR_ZERO;
 
     //
     EPwm4Regs.AQCTL.bit.SHDWAQAMODE         = 0;
@@ -1088,19 +1114,19 @@ inline  static  void    sInitEPwm4(void)
     // 01: Clear: force EPWMxA output low.
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, and a high signal will be forced low.
-    EPwm4Regs.AQCTLA.bit.CAU                = 0;
-    EPwm4Regs.AQCTLA.bit.CAD                = 0;
-    EPwm4Regs.AQCTLA.bit.CBU                = 0;
-    EPwm4Regs.AQCTLA.bit.CBD                = 0;
-    EPwm4Regs.AQCTLA.bit.ZRO                = 2;
-    EPwm4Regs.AQCTLA.bit.PRD                = 1;
+    EPwm4Regs.AQCTLA.bit.CAU                = AQ_CLEAR;
+    EPwm4Regs.AQCTLA.bit.CAD                = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLA.bit.CBU                = AQ_SET;
+    EPwm4Regs.AQCTLA.bit.CBD                = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLA.bit.ZRO                = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLA.bit.PRD                = AQ_NO_ACTION;
 
-    EPwm4Regs.AQCTLB.bit.CAU                = 0;
-    EPwm4Regs.AQCTLB.bit.CAD                = 0;
-    EPwm4Regs.AQCTLB.bit.CBU                = 0;
-    EPwm4Regs.AQCTLB.bit.CBD                = 0;
-    EPwm4Regs.AQCTLB.bit.ZRO                = 2;
-    EPwm4Regs.AQCTLB.bit.PRD                = 1;
+    EPwm4Regs.AQCTLB.bit.CAU                = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLB.bit.CAD                = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLB.bit.CBU                = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLB.bit.CBD                = AQ_CLEAR;
+    EPwm4Regs.AQCTLB.bit.ZRO                = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLB.bit.PRD                = AQ_SET;
 
     // T1/T2 Event Source Select Bits
     // 0000: DCAEVT1
@@ -1122,15 +1148,15 @@ inline  static  void    sInitEPwm4(void)
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, 
     // and a high signal will be forced low.
-    EPwm4Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm4Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm4Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm4Regs.AQCTLA2.bit.T1U               = 0;
+    EPwm4Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
 
-    EPwm4Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm4Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm4Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm4Regs.AQCTLB2.bit.T1U               = 0;
+    EPwm4Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm4Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
 
     // Continuous Software Force on Output A/B
     // In immediate mode, a continuous force takes effect on the next TBCLK edge. 
@@ -1139,8 +1165,8 @@ inline  static  void    sInitEPwm4(void)
     // 01: Forces a continuous low on Output
     // 10: Forces a continuous high on Output
     // 11: Software forcing is disabled and has no effect
-    EPwm4Regs.AQCSFRC.bit.CSFA              = 0;
-    EPwm4Regs.AQCSFRC.bit.CSFB              = 0;
+    EPwm4Regs.AQCSFRC.bit.CSFA              = AQ_NO_ACTION;
+    EPwm4Regs.AQCSFRC.bit.CSFB              = AQ_NO_ACTION;
 
     // This allows you to select the input source to the falling-edge and rising-edge delay. 
     // To produce classical dead-band waveforms the default is EPWMxA In is the source for both falling and rising-edge delays.
@@ -1148,7 +1174,7 @@ inline  static  void    sInitEPwm4(void)
     // 01: EPWMxB In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxA In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 10: EPWMxA In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxB In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 11: EPWMxB In (from the action-qualifier) is the source for both rising-edge delay and falling-edge delayed signal.
-    EPwm4Regs.DBCTL.bit.IN_MODE             = 0;
+    EPwm4Regs.DBCTL.bit.IN_MODE             = DBA_RED_DBB_FED;
 
     // RED Dead-Band Load Mode
     // 0: Immediate mode. Only the active DBRED register is used. All writes/reads via the CPU directly access the active register for immediate 'RED dead-band action.'
@@ -1190,10 +1216,10 @@ inline  static  void    sInitEPwm4(void)
     // 01: Active low complementary (ALC) mode. EPWMxA is inverted.
     // 10: Active high complementary (AHC). EPWMxB is inverted.
     // 11: Active low (AL) mode. Both EPWMxA and EPWMxB are inverted.
-    EPwm4Regs.DBCTL.bit.POLSEL              = 2;
+    EPwm4Regs.DBCTL.bit.POLSEL              = DB_ACTV_HIC;
 
     // 
-    EPwm4Regs.DBCTL.bit.OUT_MODE            = 3;
+    EPwm4Regs.DBCTL.bit.OUT_MODE            = DB_FULL_ENABLE;
 
     // Dead Band Output Swap Control
     // Bit 13 controls the S6 switch and bit 12 controls the S7 switch.
@@ -1204,12 +1230,18 @@ inline  static  void    sInitEPwm4(void)
     // (rising edge delay or delay-bypassed A signal path)
     EPwm4Regs.DBCTL.bit.OUTSWAP             = 0;
 
+    EPwm4Regs.DBFED.all                     = DBCOUNT_us(cLLCDBT_FED);
+    EPwm4Regs.DBRED.all                     = DBCOUNT_us(cLLCDBT_RED);
+
+    EPwm4Regs.CMPA.bit.CMPA                 = 10;
+    EPwm4Regs.CMPB.bit.CMPB                 = 650;
+
     EALLOW;
     // Digital Compare
     // Digital Compare AH/AL Combination Trip Select
-    EPwm4Regs.DCAHTRIPSEL.all               = 0;
+    EPwm4Regs.DCAHTRIPSEL.all               = 0x98;
     EPwm4Regs.DCALTRIPSEL.all               = 0;
-    EPwm4Regs.DCBHTRIPSEL.all               = 0;
+    EPwm4Regs.DCBHTRIPSEL.all               = 0x08;
     EPwm4Regs.DCALTRIPSEL.all               = 0;
 
     // Digital Compare Trip Select
@@ -1250,16 +1282,16 @@ inline  static  void    sInitEPwm4(void)
     EALLOW;
     EPwm4Regs.TZSEL.bit.OSHT1               = TZ_ENABLE;
     EPwm4Regs.TZSEL.bit.OSHT2               = TZ_ENABLE;
-    EPwm4Regs.TZSEL.bit.OSHT3               = TZ_ENABLE;
+    EPwm4Regs.TZSEL.bit.OSHT3               = TZ_DISABLE;
 
     EPwm4Regs.TZSEL.bit.CBC1                = TZ_DISABLE;
     EPwm4Regs.TZSEL.bit.CBC2                = TZ_DISABLE;
     EPwm4Regs.TZSEL.bit.CBC3                = TZ_DISABLE;
 
-    EPwm4Regs.TZSEL.bit.DCAEVT1             = TZ_DISABLE;
-    EPwm4Regs.TZSEL.bit.DCAEVT2             = TZ_DISABLE;
-    EPwm4Regs.TZSEL.bit.DCBEVT1             = TZ_DISABLE;
-    EPwm4Regs.TZSEL.bit.DCBEVT2             = TZ_DISABLE;
+    EPwm4Regs.TZSEL.bit.DCAEVT1             = TZ_ENABLE;
+    EPwm4Regs.TZSEL.bit.DCAEVT2             = TZ_ENABLE;
+    EPwm4Regs.TZSEL.bit.DCBEVT1             = TZ_ENABLE;
+    EPwm4Regs.TZSEL.bit.DCBEVT2             = TZ_ENABLE;
 
     //
     EPwm4Regs.TZCTL.bit.TZA                 = TZ_FORCE_LO;
@@ -1294,12 +1326,12 @@ inline  static  void    sInitEPwm4(void)
     EPwm4Regs.ETCLR.all                     = 0xFFFF;
 
     //
-    EPwm4Regs.ETSEL.bit.INTEN               = 1;
+    EPwm4Regs.ETSEL.bit.INTEN               = 0;
     EPwm4Regs.ETSEL.bit.INTSEL              = ET_CTR_PRD;
     EPwm4Regs.ETPS.bit.INTPRD               = ET_1ST;
 
     //
-    EPwm4Regs.ETSEL.bit.SOCAEN              = 1;
+    EPwm4Regs.ETSEL.bit.SOCAEN              = 0;
     EPwm4Regs.ETSEL.bit.SOCASEL             = ET_CTRU_CMPB;
     EPwm4Regs.ETPS.bit.SOCAPRD              = ET_1ST;
 
@@ -1322,7 +1354,7 @@ inline  static  void    sInitEPwm5(void)
     // 101: /10
     // 110: /12
     // 111: /14
-    EPwm5Regs.TBCTL.bit.HSPCLKDIV           = 0;
+    EPwm5Regs.TBCTL.bit.HSPCLKDIV           = TB_DIV1;
 
     // Time Base Clock Pre-Scale Bits
     // These bits select the time base clock pre-scale value (TBCLK = EPWMCLK/(HSPCLKDIV * CLKDIV):
@@ -1334,7 +1366,7 @@ inline  static  void    sInitEPwm5(void)
     // 101: /32
     // 110: /64
     // 111: /128
-    EPwm5Regs.TBCTL.bit.CLKDIV              = 0;
+    EPwm5Regs.TBCTL.bit.CLKDIV              = TB_DIV1;
 
     // Clear TB Counter
     EPwm5Regs.TBCTR                         = 0;
@@ -1352,7 +1384,7 @@ inline  static  void    sInitEPwm5(void)
     // The PHSDIR bit indicates the direction the time-base counter (TBCTR) will count after a synchronization
     // event occurs and a new phase value is loaded from the phase (TBPHS) register. 
     // This is irrespective of the direction of the counter before the synchronization event.. 
-    EPwm5Regs.TBCTL.bit.PHSDIR              = 1;
+    EPwm5Regs.TBCTL.bit.PHSDIR              = TB_UP;
 
     // The time-base counter mode is normally configured once and not changed during normal operation. If you change the mode of the counter, 
     // the change will take effect at the next TBCLK edge and the current counter value shall increment or decrement from the value before the mode change. 
@@ -1361,18 +1393,18 @@ inline  static  void    sInitEPwm5(void)
     // 01: Down-count mode
     // 10: Up-down count mode
     // 11: Freeze counter operation (default on reset)
-    EPwm5Regs.TBCTL.bit.CTRMODE             = 2;
+    EPwm5Regs.TBCTL.bit.CTRMODE             = TB_COUNT_UPDOWN;
 
     //
-    EPwm5Regs.TBCTL.bit.PRDLD               = 0;
+    EPwm5Regs.TBCTL.bit.PRDLD               = TB_SHADOW;
 
     //
-    EPwm5Regs.CMPCTL.bit.SHDWAMODE          = 0;
-    EPwm5Regs.CMPCTL.bit.SHDWBMODE          = 0;
+    EPwm5Regs.CMPCTL.bit.SHDWAMODE          = CC_SHADOW;
+    EPwm5Regs.CMPCTL.bit.SHDWBMODE          = CC_SHADOW;
 
     //
-    EPwm5Regs.CMPCTL.bit.LOADAMODE          = 0;
-    EPwm5Regs.CMPCTL.bit.LOADBMODE          = 0;
+    EPwm5Regs.CMPCTL.bit.LOADAMODE          = CC_CTR_ZERO_PRD;
+    EPwm5Regs.CMPCTL.bit.LOADBMODE          = CC_CTR_ZERO_PRD;
 
     //
     EPwm5Regs.AQCTL.bit.SHDWAQAMODE         = 0;
@@ -1387,19 +1419,19 @@ inline  static  void    sInitEPwm5(void)
     // 01: Clear: force EPWMxA output low.
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, and a high signal will be forced low.
-    EPwm5Regs.AQCTLA.bit.CAU                = 0;
-    EPwm5Regs.AQCTLA.bit.CAD                = 0;
-    EPwm5Regs.AQCTLA.bit.CBU                = 0;
-    EPwm5Regs.AQCTLA.bit.CBD                = 0;
-    EPwm5Regs.AQCTLA.bit.ZRO                = 2;
-    EPwm5Regs.AQCTLA.bit.PRD                = 1;
+    EPwm5Regs.AQCTLA.bit.CAU                = AQ_CLEAR;
+    EPwm5Regs.AQCTLA.bit.CAD                = AQ_SET;
+    EPwm5Regs.AQCTLA.bit.CBU                = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLA.bit.CBD                = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLA.bit.ZRO                = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLA.bit.PRD                = AQ_NO_ACTION;
 
-    EPwm5Regs.AQCTLB.bit.CAU                = 0;
-    EPwm5Regs.AQCTLB.bit.CAD                = 0;
-    EPwm5Regs.AQCTLB.bit.CBU                = 0;
-    EPwm5Regs.AQCTLB.bit.CBD                = 0;
-    EPwm5Regs.AQCTLB.bit.ZRO                = 2;
-    EPwm5Regs.AQCTLB.bit.PRD                = 1;
+    EPwm5Regs.AQCTLB.bit.CAU                = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLB.bit.CAD                = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLB.bit.CBU                = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLB.bit.CBD                = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLB.bit.ZRO                = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLB.bit.PRD                = AQ_NO_ACTION;
 
     // T1/T2 Event Source Select Bits
     // 0000: DCAEVT1
@@ -1421,15 +1453,15 @@ inline  static  void    sInitEPwm5(void)
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, 
     // and a high signal will be forced low.
-    EPwm5Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm5Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm5Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm5Regs.AQCTLA2.bit.T1U               = 0;
+    EPwm5Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
 
-    EPwm5Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm5Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm5Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm5Regs.AQCTLB2.bit.T1U               = 0;
+    EPwm5Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm5Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
 
     // Continuous Software Force on Output A/B
     // In immediate mode, a continuous force takes effect on the next TBCLK edge. 
@@ -1438,8 +1470,8 @@ inline  static  void    sInitEPwm5(void)
     // 01: Forces a continuous low on Output
     // 10: Forces a continuous high on Output
     // 11: Software forcing is disabled and has no effect
-    EPwm5Regs.AQCSFRC.bit.CSFA              = 0;
-    EPwm5Regs.AQCSFRC.bit.CSFB              = 0;
+    EPwm5Regs.AQCSFRC.bit.CSFA              = AQ_NO_ACTION;
+    EPwm5Regs.AQCSFRC.bit.CSFB              = AQ_NO_ACTION;
 
     // This allows you to select the input source to the falling-edge and rising-edge delay. 
     // To produce classical dead-band waveforms the default is EPWMxA In is the source for both falling and rising-edge delays.
@@ -1447,13 +1479,13 @@ inline  static  void    sInitEPwm5(void)
     // 01: EPWMxB In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxA In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 10: EPWMxA In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxB In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 11: EPWMxB In (from the action-qualifier) is the source for both rising-edge delay and falling-edge delayed signal.
-    EPwm5Regs.DBCTL.bit.IN_MODE             = 0;
+    EPwm5Regs.DBCTL.bit.IN_MODE             = DBA_ALL;
 
     // RED Dead-Band Load Mode
     // 0: Immediate mode. Only the active DBRED register is used. All writes/reads via the CPU directly access the active register for immediate 'RED dead-band action.'
     // 1: Shadow mode. Operates as a double buffer. All writes via the CPU access Shadow register. Default at Reset is Immediate mode (for compatibility with legacy).
-    EPwm5Regs.DBCTL.bit.SHDWDBREDMODE       = 1;
-    EPwm5Regs.DBCTL.bit.SHDWDBFEDMODE       = 1;
+    EPwm5Regs.DBCTL.bit.SHDWDBREDMODE       = 0;
+    EPwm5Regs.DBCTL.bit.SHDWDBFEDMODE       = 0;
 
     // Active DBFED/DBRED Load from Shadow Select Mode
     // 00: Load on Counter = 0 (CNT_eq)
@@ -1489,10 +1521,10 @@ inline  static  void    sInitEPwm5(void)
     // 01: Active low complementary (ALC) mode. EPWMxA is inverted.
     // 10: Active high complementary (AHC). EPWMxB is inverted.
     // 11: Active low (AL) mode. Both EPWMxA and EPWMxB are inverted.
-    EPwm5Regs.DBCTL.bit.POLSEL              = 2;
+    EPwm5Regs.DBCTL.bit.POLSEL              = DB_ACTV_HIC;
 
     // 
-    EPwm5Regs.DBCTL.bit.OUT_MODE            = 3;
+    EPwm5Regs.DBCTL.bit.OUT_MODE            = DB_FULL_ENABLE;
 
     // Dead Band Output Swap Control
     // Bit 13 controls the S6 switch and bit 12 controls the S7 switch.
@@ -1503,17 +1535,23 @@ inline  static  void    sInitEPwm5(void)
     // (rising edge delay or delay-bypassed A signal path)
     EPwm5Regs.DBCTL.bit.OUTSWAP             = 0;
 
+    EPwm5Regs.DBFED.all                     = DBCOUNT_us(cInvInitDBT);
+    EPwm5Regs.DBRED.all                     = DBCOUNT_us(cInvInitDBT);
+
+    EPwm5Regs.CMPA.bit.CMPA                 = EPwm5Regs.TBPRD >> 1;
+    EPwm5Regs.CMPB.bit.CMPB                 = EPwm5Regs.TBPRD >> 1;
+
     EALLOW;
     // Digital Compare
     // Digital Compare AH/AL Combination Trip Select
-    EPwm5Regs.DCAHTRIPSEL.all               = 0;
+    EPwm5Regs.DCAHTRIPSEL.all               = 0x18;
     EPwm5Regs.DCALTRIPSEL.all               = 0;
     EPwm5Regs.DCBHTRIPSEL.all               = 0;
     EPwm5Regs.DCALTRIPSEL.all               = 0;
 
     // Digital Compare Trip Select
     EPwm5Regs.DCTRIPSEL.bit.DCAHCOMPSEL     = DC_COMBINATION;
-    EPwm5Regs.DCTRIPSEL.bit.DCALCOMPSEL     = DC_COMBINATION;
+    EPwm5Regs.DCTRIPSEL.bit.DCALCOMPSEL     = DC_TRIPIN4;
     EPwm5Regs.DCTRIPSEL.bit.DCBHCOMPSEL     = DC_COMBINATION;
     EPwm5Regs.DCTRIPSEL.bit.DCBLCOMPSEL     = DC_COMBINATION;
 
@@ -1549,14 +1587,14 @@ inline  static  void    sInitEPwm5(void)
     EALLOW;
     EPwm5Regs.TZSEL.bit.OSHT1               = TZ_ENABLE;
     EPwm5Regs.TZSEL.bit.OSHT2               = TZ_ENABLE;
-    EPwm5Regs.TZSEL.bit.OSHT3               = TZ_ENABLE;
+    EPwm5Regs.TZSEL.bit.OSHT3               = TZ_DISABLE;
 
     EPwm5Regs.TZSEL.bit.CBC1                = TZ_DISABLE;
     EPwm5Regs.TZSEL.bit.CBC2                = TZ_DISABLE;
-    EPwm5Regs.TZSEL.bit.CBC3                = TZ_DISABLE;
+    EPwm5Regs.TZSEL.bit.CBC3                = TZ_ENABLE;
 
-    EPwm5Regs.TZSEL.bit.DCAEVT1             = TZ_DISABLE;
-    EPwm5Regs.TZSEL.bit.DCAEVT2             = TZ_DISABLE;
+    EPwm5Regs.TZSEL.bit.DCAEVT1             = TZ_ENABLE;
+    EPwm5Regs.TZSEL.bit.DCAEVT2             = TZ_ENABLE;
     EPwm5Regs.TZSEL.bit.DCBEVT1             = TZ_DISABLE;
     EPwm5Regs.TZSEL.bit.DCBEVT2             = TZ_DISABLE;
 
@@ -1574,8 +1612,8 @@ inline  static  void    sInitEPwm5(void)
     //
     EPwm5Regs.TZDCSEL.bit.DCAEVT1           = TZ_DCAH_HI;
     EPwm5Regs.TZDCSEL.bit.DCAEVT2           = TZ_DCAL_HI;
-    EPwm5Regs.TZDCSEL.bit.DCBEVT1           = TZ_DCAH_HI;
-    EPwm5Regs.TZDCSEL.bit.DCBEVT2           = TZ_DCAL_HI;
+    EPwm5Regs.TZDCSEL.bit.DCBEVT1           = TZ_EVT_DISABLE;
+    EPwm5Regs.TZDCSEL.bit.DCBEVT2           = TZ_EVT_DISABLE;
 
     //
     EPwm5Regs.TZCLR.bit.CBCPULSE            = 0;
@@ -1621,7 +1659,7 @@ inline  static  void    sInitEPwm6(void)
     // 101: /10
     // 110: /12
     // 111: /14
-    EPwm6Regs.TBCTL.bit.HSPCLKDIV           = 0;
+    EPwm6Regs.TBCTL.bit.HSPCLKDIV           = TB_DIV1;
 
     // Time Base Clock Pre-Scale Bits
     // These bits select the time base clock pre-scale value (TBCLK = EPWMCLK/(HSPCLKDIV * CLKDIV):
@@ -1633,7 +1671,7 @@ inline  static  void    sInitEPwm6(void)
     // 101: /32
     // 110: /64
     // 111: /128
-    EPwm6Regs.TBCTL.bit.CLKDIV              = 0;
+    EPwm6Regs.TBCTL.bit.CLKDIV              = TB_DIV1;
 
     // Clear TB Counter
     EPwm6Regs.TBCTR                         = 0;
@@ -1651,7 +1689,7 @@ inline  static  void    sInitEPwm6(void)
     // The PHSDIR bit indicates the direction the time-base counter (TBCTR) will count after a synchronization
     // event occurs and a new phase value is loaded from the phase (TBPHS) register. 
     // This is irrespective of the direction of the counter before the synchronization event.. 
-    EPwm6Regs.TBCTL.bit.PHSDIR              = 1;
+    EPwm6Regs.TBCTL.bit.PHSDIR              = TB_UP;
 
     // The time-base counter mode is normally configured once and not changed during normal operation. If you change the mode of the counter, 
     // the change will take effect at the next TBCLK edge and the current counter value shall increment or decrement from the value before the mode change. 
@@ -1660,18 +1698,18 @@ inline  static  void    sInitEPwm6(void)
     // 01: Down-count mode
     // 10: Up-down count mode
     // 11: Freeze counter operation (default on reset)
-    EPwm6Regs.TBCTL.bit.CTRMODE             = 2;
+    EPwm6Regs.TBCTL.bit.CTRMODE             = TB_COUNT_UPDOWN;
 
     //
-    EPwm6Regs.TBCTL.bit.PRDLD               = 0;
+    EPwm6Regs.TBCTL.bit.PRDLD               = TB_SHADOW;
 
     //
-    EPwm6Regs.CMPCTL.bit.SHDWAMODE          = 0;
-    EPwm6Regs.CMPCTL.bit.SHDWBMODE          = 0;
+    EPwm6Regs.CMPCTL.bit.SHDWAMODE          = CC_SHADOW;
+    EPwm6Regs.CMPCTL.bit.SHDWBMODE          = CC_SHADOW;
 
     //
-    EPwm6Regs.CMPCTL.bit.LOADAMODE          = 0;
-    EPwm6Regs.CMPCTL.bit.LOADBMODE          = 0;
+    EPwm6Regs.CMPCTL.bit.LOADAMODE          = CC_CTR_ZERO_PRD;
+    EPwm6Regs.CMPCTL.bit.LOADBMODE          = CC_CTR_ZERO_PRD;
 
     //
     EPwm6Regs.AQCTL.bit.SHDWAQAMODE         = 0;
@@ -1686,19 +1724,19 @@ inline  static  void    sInitEPwm6(void)
     // 01: Clear: force EPWMxA output low.
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, and a high signal will be forced low.
-    EPwm6Regs.AQCTLA.bit.CAU                = 0;
-    EPwm6Regs.AQCTLA.bit.CAD                = 0;
-    EPwm6Regs.AQCTLA.bit.CBU                = 0;
-    EPwm6Regs.AQCTLA.bit.CBD                = 0;
-    EPwm6Regs.AQCTLA.bit.ZRO                = 2;
-    EPwm6Regs.AQCTLA.bit.PRD                = 1;
+    EPwm6Regs.AQCTLA.bit.CAU                = AQ_CLEAR;
+    EPwm6Regs.AQCTLA.bit.CAD                = AQ_SET;
+    EPwm6Regs.AQCTLA.bit.CBU                = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLA.bit.CBD                = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLA.bit.ZRO                = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLA.bit.PRD                = AQ_NO_ACTION;
 
-    EPwm6Regs.AQCTLB.bit.CAU                = 0;
-    EPwm6Regs.AQCTLB.bit.CAD                = 0;
-    EPwm6Regs.AQCTLB.bit.CBU                = 0;
-    EPwm6Regs.AQCTLB.bit.CBD                = 0;
-    EPwm6Regs.AQCTLB.bit.ZRO                = 2;
-    EPwm6Regs.AQCTLB.bit.PRD                = 1;
+    EPwm6Regs.AQCTLB.bit.CAU                = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLB.bit.CAD                = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLB.bit.CBU                = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLB.bit.CBD                = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLB.bit.ZRO                = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLB.bit.PRD                = AQ_NO_ACTION;
 
     // T1/T2 Event Source Select Bits
     // 0000: DCAEVT1
@@ -1720,15 +1758,15 @@ inline  static  void    sInitEPwm6(void)
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, 
     // and a high signal will be forced low.
-    EPwm6Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm6Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm6Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm6Regs.AQCTLA2.bit.T1U               = 0;
+    EPwm6Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
 
-    EPwm6Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm6Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm6Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm6Regs.AQCTLB2.bit.T1U               = 0;
+    EPwm6Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm6Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
 
     // Continuous Software Force on Output A/B
     // In immediate mode, a continuous force takes effect on the next TBCLK edge. 
@@ -1737,8 +1775,8 @@ inline  static  void    sInitEPwm6(void)
     // 01: Forces a continuous low on Output
     // 10: Forces a continuous high on Output
     // 11: Software forcing is disabled and has no effect
-    EPwm6Regs.AQCSFRC.bit.CSFA              = 0;
-    EPwm6Regs.AQCSFRC.bit.CSFB              = 0;
+    EPwm6Regs.AQCSFRC.bit.CSFA              = AQ_NO_ACTION;
+    EPwm6Regs.AQCSFRC.bit.CSFB              = AQ_NO_ACTION;
 
     // This allows you to select the input source to the falling-edge and rising-edge delay. 
     // To produce classical dead-band waveforms the default is EPWMxA In is the source for both falling and rising-edge delays.
@@ -1746,13 +1784,13 @@ inline  static  void    sInitEPwm6(void)
     // 01: EPWMxB In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxA In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 10: EPWMxA In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxB In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 11: EPWMxB In (from the action-qualifier) is the source for both rising-edge delay and falling-edge delayed signal.
-    EPwm6Regs.DBCTL.bit.IN_MODE             = 0;
+    EPwm6Regs.DBCTL.bit.IN_MODE             = DBA_ALL;
 
     // RED Dead-Band Load Mode
     // 0: Immediate mode. Only the active DBRED register is used. All writes/reads via the CPU directly access the active register for immediate 'RED dead-band action.'
     // 1: Shadow mode. Operates as a double buffer. All writes via the CPU access Shadow register. Default at Reset is Immediate mode (for compatibility with legacy).
-    EPwm6Regs.DBCTL.bit.SHDWDBREDMODE       = 1;
-    EPwm6Regs.DBCTL.bit.SHDWDBFEDMODE       = 1;
+    EPwm6Regs.DBCTL.bit.SHDWDBREDMODE       = 0;
+    EPwm6Regs.DBCTL.bit.SHDWDBFEDMODE       = 0;
 
     // Active DBFED/DBRED Load from Shadow Select Mode
     // 00: Load on Counter = 0 (CNT_eq)
@@ -1788,10 +1826,10 @@ inline  static  void    sInitEPwm6(void)
     // 01: Active low complementary (ALC) mode. EPWMxA is inverted.
     // 10: Active high complementary (AHC). EPWMxB is inverted.
     // 11: Active low (AL) mode. Both EPWMxA and EPWMxB are inverted.
-    EPwm6Regs.DBCTL.bit.POLSEL              = 2;
+    EPwm6Regs.DBCTL.bit.POLSEL              = DB_ACTV_HIC;
 
     // 
-    EPwm6Regs.DBCTL.bit.OUT_MODE            = 3;
+    EPwm6Regs.DBCTL.bit.OUT_MODE            = DB_FULL_ENABLE;
 
     // Dead Band Output Swap Control
     // Bit 13 controls the S6 switch and bit 12 controls the S7 switch.
@@ -1802,17 +1840,23 @@ inline  static  void    sInitEPwm6(void)
     // (rising edge delay or delay-bypassed A signal path)
     EPwm6Regs.DBCTL.bit.OUTSWAP             = 0;
 
+    EPwm6Regs.DBFED.all                     = DBCOUNT_us(cInvInitDBT);
+    EPwm6Regs.DBRED.all                     = DBCOUNT_us(cInvInitDBT);
+
+    EPwm6Regs.CMPA.bit.CMPA                 = EPwm6Regs.TBPRD >> 1;
+    EPwm6Regs.CMPB.bit.CMPB                 = cSwPrdDiff;
+
     EALLOW;
     // Digital Compare
     // Digital Compare AH/AL Combination Trip Select
-    EPwm6Regs.DCAHTRIPSEL.all               = 0;
+    EPwm6Regs.DCAHTRIPSEL.all               = 0x18;
     EPwm6Regs.DCALTRIPSEL.all               = 0;
     EPwm6Regs.DCBHTRIPSEL.all               = 0;
     EPwm6Regs.DCALTRIPSEL.all               = 0;
 
     // Digital Compare Trip Select
     EPwm6Regs.DCTRIPSEL.bit.DCAHCOMPSEL     = DC_COMBINATION;
-    EPwm6Regs.DCTRIPSEL.bit.DCALCOMPSEL     = DC_COMBINATION;
+    EPwm6Regs.DCTRIPSEL.bit.DCALCOMPSEL     = DC_TRIPIN4;
     EPwm6Regs.DCTRIPSEL.bit.DCBHCOMPSEL     = DC_COMBINATION;
     EPwm6Regs.DCTRIPSEL.bit.DCBLCOMPSEL     = DC_COMBINATION;
 
@@ -1848,14 +1892,14 @@ inline  static  void    sInitEPwm6(void)
     EALLOW;
     EPwm6Regs.TZSEL.bit.OSHT1               = TZ_ENABLE;
     EPwm6Regs.TZSEL.bit.OSHT2               = TZ_ENABLE;
-    EPwm6Regs.TZSEL.bit.OSHT3               = TZ_ENABLE;
+    EPwm6Regs.TZSEL.bit.OSHT3               = TZ_DISABLE;
 
     EPwm6Regs.TZSEL.bit.CBC1                = TZ_DISABLE;
     EPwm6Regs.TZSEL.bit.CBC2                = TZ_DISABLE;
     EPwm6Regs.TZSEL.bit.CBC3                = TZ_DISABLE;
 
-    EPwm6Regs.TZSEL.bit.DCAEVT1             = TZ_DISABLE;
-    EPwm6Regs.TZSEL.bit.DCAEVT2             = TZ_DISABLE;
+    EPwm6Regs.TZSEL.bit.DCAEVT1             = TZ_ENABLE;
+    EPwm6Regs.TZSEL.bit.DCAEVT2             = TZ_ENABLE;
     EPwm6Regs.TZSEL.bit.DCBEVT1             = TZ_DISABLE;
     EPwm6Regs.TZSEL.bit.DCBEVT2             = TZ_DISABLE;
 
@@ -1873,8 +1917,8 @@ inline  static  void    sInitEPwm6(void)
     //
     EPwm6Regs.TZDCSEL.bit.DCAEVT1           = TZ_DCAH_HI;
     EPwm6Regs.TZDCSEL.bit.DCAEVT2           = TZ_DCAL_HI;
-    EPwm6Regs.TZDCSEL.bit.DCBEVT1           = TZ_DCAH_HI;
-    EPwm6Regs.TZDCSEL.bit.DCBEVT2           = TZ_DCAL_HI;
+    EPwm6Regs.TZDCSEL.bit.DCBEVT1           = TZ_EVT_DISABLE;
+    EPwm6Regs.TZDCSEL.bit.DCBEVT2           = TZ_EVT_DISABLE;
 
     //
     EPwm6Regs.TZCLR.bit.CBCPULSE            = 0;
@@ -1892,12 +1936,12 @@ inline  static  void    sInitEPwm6(void)
     EPwm6Regs.ETCLR.all                     = 0xFFFF;
 
     //
-    EPwm6Regs.ETSEL.bit.INTEN               = 1;
+    EPwm6Regs.ETSEL.bit.INTEN               = 0;
     EPwm6Regs.ETSEL.bit.INTSEL              = ET_CTR_PRD;
     EPwm6Regs.ETPS.bit.INTPRD               = ET_1ST;
 
     //
-    EPwm6Regs.ETSEL.bit.SOCAEN              = 1;
+    EPwm6Regs.ETSEL.bit.SOCAEN              = 0;
     EPwm6Regs.ETSEL.bit.SOCASEL             = ET_CTRU_CMPB;
     EPwm6Regs.ETPS.bit.SOCAPRD              = ET_1ST;
 
@@ -1920,7 +1964,7 @@ inline  static  void    sInitEPwm7(void)
     // 101: /10
     // 110: /12
     // 111: /14
-    EPwm7Regs.TBCTL.bit.HSPCLKDIV           = 0;
+    EPwm7Regs.TBCTL.bit.HSPCLKDIV           = TB_DIV1;
 
     // Time Base Clock Pre-Scale Bits
     // These bits select the time base clock pre-scale value (TBCLK = EPWMCLK/(HSPCLKDIV * CLKDIV):
@@ -1932,7 +1976,7 @@ inline  static  void    sInitEPwm7(void)
     // 101: /32
     // 110: /64
     // 111: /128
-    EPwm7Regs.TBCTL.bit.CLKDIV              = 0;
+    EPwm7Regs.TBCTL.bit.CLKDIV              = TB_DIV1;
 
     // Clear TB Counter
     EPwm7Regs.TBCTR                         = 0;
@@ -1950,7 +1994,7 @@ inline  static  void    sInitEPwm7(void)
     // The PHSDIR bit indicates the direction the time-base counter (TBCTR) will count after a synchronization
     // event occurs and a new phase value is loaded from the phase (TBPHS) register. 
     // This is irrespective of the direction of the counter before the synchronization event.. 
-    EPwm7Regs.TBCTL.bit.PHSDIR              = 1;
+    EPwm7Regs.TBCTL.bit.PHSDIR              = TB_UP;
 
     // The time-base counter mode is normally configured once and not changed during normal operation. If you change the mode of the counter, 
     // the change will take effect at the next TBCLK edge and the current counter value shall increment or decrement from the value before the mode change. 
@@ -1959,18 +2003,18 @@ inline  static  void    sInitEPwm7(void)
     // 01: Down-count mode
     // 10: Up-down count mode
     // 11: Freeze counter operation (default on reset)
-    EPwm7Regs.TBCTL.bit.CTRMODE             = 2;
+    EPwm7Regs.TBCTL.bit.CTRMODE             = TB_COUNT_UPDOWN;
 
     //
-    EPwm7Regs.TBCTL.bit.PRDLD               = 0;
+    EPwm7Regs.TBCTL.bit.PRDLD               = TB_SHADOW;
 
     //
-    EPwm7Regs.CMPCTL.bit.SHDWAMODE          = 0;
-    EPwm7Regs.CMPCTL.bit.SHDWBMODE          = 0;
+    EPwm7Regs.CMPCTL.bit.SHDWAMODE          = CC_SHADOW;
+    EPwm7Regs.CMPCTL.bit.SHDWBMODE          = CC_SHADOW;
 
     //
-    EPwm7Regs.CMPCTL.bit.LOADAMODE          = 0;
-    EPwm7Regs.CMPCTL.bit.LOADBMODE          = 0;
+    EPwm7Regs.CMPCTL.bit.LOADAMODE          = CC_CTR_ZERO_PRD;
+    EPwm7Regs.CMPCTL.bit.LOADBMODE          = CC_CTR_ZERO_PRD;
 
     //
     EPwm7Regs.AQCTL.bit.SHDWAQAMODE         = 0;
@@ -1985,19 +2029,19 @@ inline  static  void    sInitEPwm7(void)
     // 01: Clear: force EPWMxA output low.
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, and a high signal will be forced low.
-    EPwm7Regs.AQCTLA.bit.CAU                = 0;
-    EPwm7Regs.AQCTLA.bit.CAD                = 0;
-    EPwm7Regs.AQCTLA.bit.CBU                = 0;
-    EPwm7Regs.AQCTLA.bit.CBD                = 0;
-    EPwm7Regs.AQCTLA.bit.ZRO                = 2;
-    EPwm7Regs.AQCTLA.bit.PRD                = 1;
+    EPwm7Regs.AQCTLA.bit.CAU                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLA.bit.CAD                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLA.bit.CBU                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLA.bit.CBD                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLA.bit.ZRO                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLA.bit.PRD                = AQ_NO_ACTION;
 
-    EPwm7Regs.AQCTLB.bit.CAU                = 0;
-    EPwm7Regs.AQCTLB.bit.CAD                = 0;
-    EPwm7Regs.AQCTLB.bit.CBU                = 0;
-    EPwm7Regs.AQCTLB.bit.CBD                = 0;
-    EPwm7Regs.AQCTLB.bit.ZRO                = 2;
-    EPwm7Regs.AQCTLB.bit.PRD                = 1;
+    EPwm7Regs.AQCTLB.bit.CAU                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLB.bit.CAD                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLB.bit.CBU                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLB.bit.CBD                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLB.bit.ZRO                = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLB.bit.PRD                = AQ_NO_ACTION;
 
     // T1/T2 Event Source Select Bits
     // 0000: DCAEVT1
@@ -2019,15 +2063,15 @@ inline  static  void    sInitEPwm7(void)
     // 10: Set: force EPWMxA output high.
     // 11: Toggle EPWMxA output: low output signal will be forced high, 
     // and a high signal will be forced low.
-    EPwm7Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm7Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm7Regs.AQCTLA2.bit.T1U               = 0;
-    EPwm7Regs.AQCTLA2.bit.T1U               = 0;
+    EPwm7Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLA2.bit.T1U               = AQ_NO_ACTION;
 
-    EPwm7Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm7Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm7Regs.AQCTLB2.bit.T1U               = 0;
-    EPwm7Regs.AQCTLB2.bit.T1U               = 0;
+    EPwm7Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
+    EPwm7Regs.AQCTLB2.bit.T1U               = AQ_NO_ACTION;
 
     // Continuous Software Force on Output A/B
     // In immediate mode, a continuous force takes effect on the next TBCLK edge. 
@@ -2036,8 +2080,8 @@ inline  static  void    sInitEPwm7(void)
     // 01: Forces a continuous low on Output
     // 10: Forces a continuous high on Output
     // 11: Software forcing is disabled and has no effect
-    EPwm7Regs.AQCSFRC.bit.CSFA              = 0;
-    EPwm7Regs.AQCSFRC.bit.CSFB              = 0;
+    EPwm7Regs.AQCSFRC.bit.CSFA              = AQ_NO_ACTION;
+    EPwm7Regs.AQCSFRC.bit.CSFB              = AQ_NO_ACTION;
 
     // This allows you to select the input source to the falling-edge and rising-edge delay. 
     // To produce classical dead-band waveforms the default is EPWMxA In is the source for both falling and rising-edge delays.
@@ -2045,13 +2089,13 @@ inline  static  void    sInitEPwm7(void)
     // 01: EPWMxB In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxA In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 10: EPWMxA In (from the action-qualifier) is the source for risingedge delayed signal.EPWMxB In (from the action-qualifier) is the source for falling-edge delayed signal.
     // 11: EPWMxB In (from the action-qualifier) is the source for both rising-edge delay and falling-edge delayed signal.
-    EPwm7Regs.DBCTL.bit.IN_MODE             = 0;
+    EPwm7Regs.DBCTL.bit.IN_MODE             = DBA_ALL;
 
     // RED Dead-Band Load Mode
     // 0: Immediate mode. Only the active DBRED register is used. All writes/reads via the CPU directly access the active register for immediate 'RED dead-band action.'
     // 1: Shadow mode. Operates as a double buffer. All writes via the CPU access Shadow register. Default at Reset is Immediate mode (for compatibility with legacy).
-    EPwm7Regs.DBCTL.bit.SHDWDBREDMODE       = 1;
-    EPwm7Regs.DBCTL.bit.SHDWDBFEDMODE       = 1;
+    EPwm7Regs.DBCTL.bit.SHDWDBREDMODE       = 0;
+    EPwm7Regs.DBCTL.bit.SHDWDBFEDMODE       = 0;
 
     // Active DBFED/DBRED Load from Shadow Select Mode
     // 00: Load on Counter = 0 (CNT_eq)
@@ -2087,10 +2131,10 @@ inline  static  void    sInitEPwm7(void)
     // 01: Active low complementary (ALC) mode. EPWMxA is inverted.
     // 10: Active high complementary (AHC). EPWMxB is inverted.
     // 11: Active low (AL) mode. Both EPWMxA and EPWMxB are inverted.
-    EPwm7Regs.DBCTL.bit.POLSEL              = 2;
+    EPwm7Regs.DBCTL.bit.POLSEL              = DB_ACTV_HI;
 
     // 
-    EPwm7Regs.DBCTL.bit.OUT_MODE            = 3;
+    EPwm7Regs.DBCTL.bit.OUT_MODE            = DB_DISABLE;
 
     // Dead Band Output Swap Control
     // Bit 13 controls the S6 switch and bit 12 controls the S7 switch.
@@ -2145,9 +2189,9 @@ inline  static  void    sInitEPwm7(void)
 
     // Trip Zone of Epwm
     EALLOW;
-    EPwm7Regs.TZSEL.bit.OSHT1               = TZ_ENABLE;
-    EPwm7Regs.TZSEL.bit.OSHT2               = TZ_ENABLE;
-    EPwm7Regs.TZSEL.bit.OSHT3               = TZ_ENABLE;
+    EPwm7Regs.TZSEL.bit.OSHT1               = TZ_DISABLE;
+    EPwm7Regs.TZSEL.bit.OSHT2               = TZ_DISABLE;
+    EPwm7Regs.TZSEL.bit.OSHT3               = TZ_DISABLE;
 
     EPwm7Regs.TZSEL.bit.CBC1                = TZ_DISABLE;
     EPwm7Regs.TZSEL.bit.CBC2                = TZ_DISABLE;
@@ -2170,10 +2214,10 @@ inline  static  void    sInitEPwm7(void)
     EPwm7Regs.TZEINT.bit.OST                = TZ_DISABLE;
 
     //
-    EPwm7Regs.TZDCSEL.bit.DCAEVT1           = TZ_DCAH_HI;
-    EPwm7Regs.TZDCSEL.bit.DCAEVT2           = TZ_DCAL_HI;
-    EPwm7Regs.TZDCSEL.bit.DCBEVT1           = TZ_DCAH_HI;
-    EPwm7Regs.TZDCSEL.bit.DCBEVT2           = TZ_DCAL_HI;
+    EPwm7Regs.TZDCSEL.bit.DCAEVT1           = TZ_EVT_DISABLE;
+    EPwm7Regs.TZDCSEL.bit.DCAEVT2           = TZ_EVT_DISABLE;
+    EPwm7Regs.TZDCSEL.bit.DCBEVT1           = TZ_EVT_DISABLE;
+    EPwm7Regs.TZDCSEL.bit.DCBEVT2           = TZ_EVT_DISABLE;
 
     //
     EPwm7Regs.TZCLR.bit.CBCPULSE            = 0;
@@ -2191,12 +2235,12 @@ inline  static  void    sInitEPwm7(void)
     EPwm7Regs.ETCLR.all                     = 0xFFFF;
 
     //
-    EPwm7Regs.ETSEL.bit.INTEN               = 1;
+    EPwm7Regs.ETSEL.bit.INTEN               = 0;
     EPwm7Regs.ETSEL.bit.INTSEL              = ET_CTR_PRD;
     EPwm7Regs.ETPS.bit.INTPRD               = ET_1ST;
 
     //
-    EPwm7Regs.ETSEL.bit.SOCAEN              = 1;
+    EPwm7Regs.ETSEL.bit.SOCAEN              = 0;
     EPwm7Regs.ETSEL.bit.SOCASEL             = ET_CTRU_CMPB;
     EPwm7Regs.ETPS.bit.SOCAPRD              = ET_1ST;
 
