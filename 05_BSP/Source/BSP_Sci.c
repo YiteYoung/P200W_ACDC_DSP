@@ -38,8 +38,8 @@ unsigned char   sQDataOut   (QUEUE *pq, unsigned char *pData);
 
 void    sInitSci(void)
 {
-    sDrv_SetSci(SCI_PORT_A, eSCI_BAUD_4800, eSCI_Char_Eight, eSCI_Parity_None, eSCI_Stop_One, eSCI_FIFO_DIS);
-    sDrv_SetSci(SCI_PORT_B, eSCI_BAUD_4800, eSCI_Char_Eight, eSCI_Parity_None, eSCI_Stop_One, eSCI_FIFO_DIS);
+    sDrv_SetSci(SCI_PORT_A, eSCI_BAUD_9600, eSCI_Char_Eight, eSCI_Parity_None, eSCI_Stop_One, eSCI_FIFO_DIS);
+    sDrv_SetSci(SCI_PORT_B, eSCI_BAUD_9600, eSCI_Char_Eight, eSCI_Parity_None, eSCI_Stop_One, eSCI_FIFO_DIS);
 
     sQSciInit(SCI_PORT_A,cRx_MaxBuff_Num);
     sQSciInit(SCI_PORT_B,cRx_MaxBuff_Num);
@@ -90,7 +90,7 @@ unsigned char sSCiRxISR(unsigned int SCI_NO, unsigned char *RxData)
     SciStruct       *pSci;
     unsigned char   bData,ByteNum;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return false;
     }
@@ -121,7 +121,7 @@ void    sSciTxISR(unsigned int SCI_NO)
 {
     SciStruct *pSci;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return;
     }
@@ -153,7 +153,7 @@ unsigned char sSciRead(unsigned int SCI_NO, unsigned char *pBuff)
     SciStruct       *pSci;
     unsigned char   Status;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return(eSci_IDErr);
     }
@@ -180,7 +180,7 @@ unsigned char   sSciWrite(unsigned int SCI_NO, unsigned char *pStart, unsigned i
 {
     SciStruct *pSci;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return eSci_IDErr;
     }
@@ -213,7 +213,7 @@ void    sSciDeathAutoRest(unsigned int SCI_NO,unsigned int GATTime, unsigned int
     SciStruct           *pSci;
     unsigned char       SciDeathAct;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return;
     }
@@ -285,7 +285,7 @@ unsigned char sGetSciDeathFlag(unsigned int SCI_NO)
 {
     SciStruct *pSci;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return false;
     }
@@ -299,7 +299,7 @@ void    sClrSciDeathFlag(unsigned int SCI_NO)
 {
     SciStruct *pSci;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return;
     }
@@ -313,7 +313,7 @@ unsigned char sGetSciFrameStart(unsigned int SCI_NO)
 {
     SciStruct *pSci;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return false;
     }
@@ -327,7 +327,7 @@ void sClrSciFrameStart(unsigned int SCI_NO)
 {
     SciStruct *pSci;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return;
     }
@@ -341,7 +341,7 @@ unsigned char sGetSciFrameStop(unsigned int SCI_NO)
 {
     SciStruct *pSci;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return false;
     }
@@ -355,7 +355,7 @@ void    sClrSciFrameStop(unsigned int SCI_NO)
 {
     SciStruct *pSci;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return;
     }
@@ -370,7 +370,7 @@ void sQSciInit(unsigned int SCI_NO, unsigned int RxSize)
     SciStruct   *pSci;
     QUEUE       *pq;
 
-    if (sSCI_NO_Check(SCI_NO)) 
+    if (sSCI_NO_Check(SCI_NO) == false) 
     {
         return;
     }

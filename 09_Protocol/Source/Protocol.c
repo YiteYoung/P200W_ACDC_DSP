@@ -1,8 +1,11 @@
 #include "Protocol.h"
 
+#pragma DATA_SECTION(t_Set,     ".UartSet_Protocol");
+#pragma DATA_SECTION(sTxTable,  ".UartTable_Protocol");
+
 typedef struct
 {
-    unsigned int Address_Test;  // 0x00
+    unsigned int Cmd;  // 0x00
     unsigned int Control;
     unsigned int InvVolt;
     unsigned int InvFreq;
@@ -36,6 +39,7 @@ void                    sSci_TxDeal     (unsigned char SCI_NO, volatile RxTx_t *
 
 void                    sSci_GetData    (volatile RxTx_t *pRxTx);
 void                    sSci_SetData    (volatile RxTx_t *pRxTx);
+void                    sSci_Control    (volatile RxTx_t *pRxTx);
 void                    sSci_UpGrade    (volatile RxTx_t *pRxTx);
 
 static void             sAdd_Tx_Head    (volatile RxTx_t *pRxTx, RxTx_RxCmd_e eTxCmd);
@@ -125,8 +129,6 @@ void    sSci_RxTxDeal(unsigned char SCI_NO, unsigned char RxData)
 
 void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t *pRxTx)
 {
-    unsigned LastReg;
-
     // 等待前帧完成，不解析新帧
     if(pRxTx->RxTx_Flag.bit.RxFrameOk == true)
     {
@@ -206,20 +208,13 @@ void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t 
             sRx_WordData(pRxTx, RxData, (volatile unsigned int *)&pRxTx->t_RxData.i16Reg);
             break;
 
-        case eRxTx_RegLen:
-            if(sRx_WordData(pRxTx, RxData, &pRxTx->t_RxData.u16RegByteLen) == true)
-            {
-                pRxTx->t_RxData.u16RegLen   = pRxTx->t_RxData.u16RegByteLen >> 1;
-            }
-            break;
-
         case eRxTx_Data:
             if(pRxTx->u16WordNum >= (DATA_INFO_MAX - 1))
             {
                 pRxTx->u16WordNum = DATA_INFO_MAX - 1;
             }
 
-            if(sRx_WordData(pRxTx, RxData, (volatile unsigned int *)&pRxTx->t_RxData.u16Soi[pRxTx->u16WordNum]) == true)
+            if(sRx_WordData(pRxTx, RxData, (volatile unsigned int *)&pRxTx->t_RxData.i16DataInfo[pRxTx->u16WordNum]) == true)
             {
                 pRxTx->u16WordNum++;
             }
@@ -248,9 +243,7 @@ void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t 
         pRxTx->u16WordNum               = 0;
         pRxTx->u16ThisWord              = 0x0000;
         pRxTx->RxTx_Flag.bit.WordPackOk = false;
-    }
-    else
-    {
+
         switch (pRxTx->RxTx_Status) 
         {
             case eRxTx_Soi:
@@ -294,15 +287,30 @@ void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t 
                     pRxTx->RxTx_Status      = eRxTx_Err;
                     pRxTx->RxTx_ErrCode     = eRxTx_Err_Cmd;
                 }
+                break;
 
             case eRxTx_Reg:
                 if(pRxTx->t_RxData.u16Cmd == eRxTx_RxCmd_Write)
                 {
-                    if(cSet_CMD_REG_ADDR_OK(pRxTx->t_RxData.i16Reg))
+                    if(sSet_CMD_REG_ADDR_OK(pRxTx->t_RxData.i16Reg))
                     {
-                        pRxTx->u16AscByteLen    = RLEN_BYTE_NUM;
+                        pRxTx->u16AscByteLen    = DATA_BYTE_NUM;
                         pRxTx->u16WordPart      = DATA_PART_LO;
-                        pRxTx->RxTx_Status      = eRxTx_RegLen;
+                        pRxTx->RxTx_Status      = eRxTx_Data;
+                    }
+                    else
+                    {
+                        pRxTx->RxTx_Status      = eRxTx_Err;
+                        pRxTx->RxTx_ErrCode     = eRxTx_Err_Reg;
+                    }
+                }
+                else if(pRxTx->t_RxData.u16Cmd == eRxTx_RxCmd_Control)
+                {
+                    if(sCtl_CMD_REG_ADDR_OK(pRxTx->t_RxData.i16Reg))
+                    {
+                        pRxTx->u16AscByteLen    = DATA_BYTE_NUM;
+                        pRxTx->u16WordPart      = DATA_PART_LO;
+                        pRxTx->RxTx_Status      = eRxTx_Data;
                     }
                     else
                     {
@@ -312,11 +320,11 @@ void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t 
                 }
                 else if(pRxTx->t_RxData.u16Cmd == eRxTx_RxCmd_Read)
                 {
-                    if(cGet_CMD_REG_ADDR_OK(pRxTx->t_RxData.i16Reg))
+                    if(sGet_CMD_REG_ADDR_OK(pRxTx->t_RxData.i16Reg))
                     {
-                        pRxTx->u16AscByteLen    = RLEN_BYTE_NUM;
+                        pRxTx->u16AscByteLen    = DATA_BYTE_NUM;
                         pRxTx->u16WordPart      = DATA_PART_LO;
-                        pRxTx->RxTx_Status      = eRxTx_RegLen;
+                        pRxTx->RxTx_Status      = eRxTx_Data;
                     }
                     else
                     {
@@ -326,56 +334,11 @@ void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t 
                 }
                 else
                 {
-                    pRxTx->u16AscByteLen    = RLEN_BYTE_NUM;
+                    pRxTx->u16AscByteLen    = DATA_BYTE_NUM;
                     pRxTx->u16WordPart      = DATA_PART_LO;
-                    pRxTx->RxTx_Status      = eRxTx_RegLen; 
+                    pRxTx->RxTx_Status      = eRxTx_Data; 
                 }
                 break;
-
-            case eRxTx_RegLen:
-                LastReg = pRxTx->t_RxData.i16Reg + pRxTx->t_RxData.u16RegLen - 1;
-                if( pRxTx->t_RxData.u16Cmd == eRxTx_RxCmd_Write )
-                {
-                    if( pRxTx->t_RxData.u16RegLen > 0                       &&\
-                        pRxTx->t_RxData.u16RegLen <= MAX_SET_CMD_REG_LEN    &&\
-                        LastReg < SET_CMD_REG_END                           )
-                    {
-                        pRxTx->u16AscByteLen = pRxTx->t_RxData.u16RegLen * 2;
-                        pRxTx->u16WordPart   = DATA_PART_LO;
-                        pRxTx->RxTx_Status   = eRxTx_Data;
-                    }
-                    else
-                    {
-                        pRxTx->RxTx_Status   = eRxTx_Err;
-                        pRxTx->RxTx_ErrCode  = eRxTx_Err_RegLen;
-                    }
-                }
-                else if( pRxTx->t_RxData.u16Cmd == eRxTx_RxCmd_Read )
-                {
-                    if( pRxTx->t_RxData.u16RegLen > 0                       &&\
-                        pRxTx->t_RxData.u16RegLen <= MAX_GET_CMD_REG_LEN    &&\
-                        LastReg < GET_CMD_REG_END                           )
-                    {
-                        pRxTx->RxTx_Flag.bit.CrcCalEn   = false;
-
-                        pRxTx->u16AscByteLen            = CRC_BYTE_NUM;
-                        pRxTx->u16WordPart              = DATA_PART_LO;
-                        pRxTx->RxTx_Status              = eRxTx_Check;
-                    }
-                    else
-                    {
-                        pRxTx->RxTx_Status              = eRxTx_Err;
-                        pRxTx->RxTx_ErrCode             = eRxTx_Err_RegLen;
-                    }
-                }
-                else
-                {
-                    pRxTx->u16AscByteLen                = pRxTx->t_RxData.u16RegLen * 2;
-                    pRxTx->u16WordPart                  = DATA_PART_LO;
-                    pRxTx->RxTx_Status                  = eRxTx_Data;
-                }
-                break;
-
 
             case eRxTx_Data:
                 pRxTx->RxTx_Flag.bit.CrcCalEn           = false;
@@ -409,6 +372,7 @@ void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t 
 
             default:
                 sInitProtocol(SCI_NO, false);
+                break;
         }
     }
 
@@ -432,6 +396,7 @@ void    sSci_TxDeal(unsigned char SCI_NO, volatile RxTx_t *pRxTx)
         return;
     }
 
+    t_Set.Cmd = pRxTx->t_RxData.u16Cmd;
     switch (pRxTx->t_RxData.u16Cmd) 
     {
         case eRxTx_RxCmd_Read:
@@ -441,6 +406,9 @@ void    sSci_TxDeal(unsigned char SCI_NO, volatile RxTx_t *pRxTx)
         case eRxTx_RxCmd_Write:
             sSci_SetData(pRxTx);
             break;
+
+        case eRxTx_RxCmd_Control:
+            sSci_Control(pRxTx);
 
         case eRxTx_RxCmd_UpGrade:
             sSci_UpGrade(pRxTx);
@@ -479,7 +447,7 @@ void    sSci_TxDeal(unsigned char SCI_NO, volatile RxTx_t *pRxTx)
 
 void    sSci_GetData(volatile RxTx_t *pRxTx)
 {
-    unsigned int i,index,u16Data;
+    unsigned int u16Data;
 
     pRxTx->u16TxBuffLen = 0;
 
@@ -498,25 +466,15 @@ void    sSci_GetData(volatile RxTx_t *pRxTx)
         return;
     }
 
-    for (i = 0; i < pRxTx->t_RxData.u16RegLen; i++) 
-    {
-        index = pRxTx->t_RxData.i16Reg + i - GET_CMD_REG_START;
-        if( index >= MAX_GET_CMD_REG_LEN)
-        {
-            index = MAX_GET_CMD_REG_LEN - 1;
-        }
-
-        u16Data = sTxTable[index]();
-        pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data      ) & 0x00FF);
-        pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data >> 8 ) & 0x00FF);
-    }
+    u16Data = sTxTable[pRxTx->t_RxData.i16Reg]();
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data      ) & 0x00FF);
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data >> 8 ) & 0x00FF);
 }
 
 void    sSci_SetData(volatile RxTx_t *pRxTx)
 {
-    unsigned int    i,index,u16Data;
+    unsigned int    u16Data;
     unsigned int    *pData;
-    int             SetValue;
 
     pRxTx->u16TxBuffLen = 0;
 
@@ -525,36 +483,40 @@ void    sSci_SetData(volatile RxTx_t *pRxTx)
         return;
     }
 
-    for (i = 0; i < pRxTx->t_RxData.u16RegLen; i++)
-    {
-        index = pRxTx->t_RxData.i16Reg + i;
-        if( index >= SET_CMD_REG_END)
-        {
-            index = SET_CMD_REG_END - 1;
-        }
+    t_Set.Control = eReg_Control_None;
 
-        if(index == eReg_SetData_01)
-        {
-            SetValue = pRxTx->t_RxData.i16DataInfo[i];
-            if( SetValue <= eRxTx_Control_None || SetValue >= eRxTx_Control_End )
-            {
-                t_Set.Control = eRxTx_Control_None;
-            }
-            else
-            {
-                t_Set.Control = SetValue;
-            }
-        }
-        else 
-        {
-            t_Set.Control = eRxTx_Control_None;
-
-            pData = &t_Set.InvVolt + i;
-            *pData = (unsigned int)pRxTx->t_RxData.i16DataInfo[i];
-        }
-    }
+    pData = &t_Set.InvVolt + pRxTx->t_RxData.i16Reg;
+    *pData = (unsigned int)pRxTx->t_RxData.i16DataInfo[0];
 
     sAdd_Tx_Head(pRxTx, eRxTx_RxCmd_Write);
+
+    u16Data = eRxTx_ANS_OK;
+    if(pRxTx->RxTx_ErrCode == eRxTx_Err_Check)
+    {
+        u16Data = eRXTX_ANS_NG;
+    }
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data      ) & 0x00FF);
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data >> 8 ) & 0x00FF);
+}
+
+void    sSci_Control(volatile RxTx_t *pRxTx)
+{
+    unsigned int    u16Data;
+    unsigned int    *pData;
+
+    pRxTx->u16TxBuffLen = 0;
+
+    if(pRxTx->t_RxData.i16Reg < CTL_CMD_REG_START || pRxTx->t_RxData.i16Reg >= CTL_CMD_REG_END)
+    {
+        return;
+    }
+
+    t_Set.Control = pRxTx->t_RxData.i16Reg;
+
+    pData = &t_Set.InvVolt + pRxTx->t_RxData.i16Reg;
+    *pData = (unsigned int)pRxTx->t_RxData.i16DataInfo[0];
+
+    sAdd_Tx_Head(pRxTx, eRxTx_RxCmd_Control);
 
     u16Data = eRxTx_ANS_OK;
     if(pRxTx->RxTx_ErrCode == eRxTx_Err_Check)
@@ -579,7 +541,7 @@ void    sSci_UpGrade(volatile RxTx_t *pRxTx)
     u16Data = pRxTx->t_RxData.i16DataInfo[0];
     if(u16Data == 0x55AA)
     {
-        t_Set.Control = eRxTx_Control_BootLoader;
+        t_Set.Control = eReg_Control_BootLoader;
     }
     else 
     {
@@ -620,14 +582,10 @@ void    sAdd_Tx_Head(volatile RxTx_t *pRxTx,RxTx_RxCmd_e eTxCmd)
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data       ) & 0x00FF;
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data >>  8 ) & 0x00FF;
 
-    // Reg Len
-    u16Data = pRxTx->t_RxData.u16RegLen << 1;
-    if(pRxTx->RxTx_ErrCode == eRxTx_Err_Check)
-    {
-        u16Data = 2;
-    }
-    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data       ) & 0x00FF;
-    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data >>  8 ) & 0x00FF;
+    // Data
+    // u16Data = pRxTx->t_RxData.u16Cmd;
+    // pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data       ) & 0x00FF;
+    // pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data >>  8 ) & 0x00FF;
 }
 
 void    sAdd_Crc(volatile RxTx_t *pRxTx)
@@ -654,6 +612,8 @@ static void sRx_DataPack(volatile RxTx_t *pRxTx,unsigned int RxData, unsigned sh
 {
     unsigned int rxHex;
 
+    pRxTx->u16AscByteLen--;
+
     rxHex = RxData;
 
     switch (pRxTx->u16WordPart) 
@@ -668,7 +628,7 @@ static void sRx_DataPack(volatile RxTx_t *pRxTx,unsigned int RxData, unsigned sh
             break;
 
         case DATA_PART_LO:
-            pRxTx->u16ThisWord      |=  (rxHex << 8);
+            pRxTx->u16ThisWord      |=  rxHex;
             pRxTx->u16WordPart      =   DATA_PART_HI;
             if(DataFirst == DATA_FIRST_HI)
             {
@@ -677,7 +637,7 @@ static void sRx_DataPack(volatile RxTx_t *pRxTx,unsigned int RxData, unsigned sh
             break;
 
         case DATA_PART_ALL_LO:
-            pRxTx->u16ThisWord      |=  (rxHex << 8);
+            pRxTx->u16ThisWord      |=  rxHex;
             pRxTx->u16WordPart      =   DATA_PART_ALL_LO;
             pRxTx->RxTx_Flag.bit.WordPackOk = true;
             break;

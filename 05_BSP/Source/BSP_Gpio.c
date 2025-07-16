@@ -220,12 +220,13 @@ void sInitGpio(void)
     GpioCtrlRegs.GPAMUX2.bit.GPIO21             = 0;
     GpioCtrlRegs.GPADIR.bit.GPIO21              = 1;
 
-#if 1 
-    // LAUNCHPAD
+#if 0 
+
     GpioCtrlRegs.GPAPUD.bit.GPIO22              = 0;
     GpioCtrlRegs.GPAMUX2.bit.GPIO22             = 1;
     GpioCtrlRegs.GPAQSEL2.bit.GPIO22            = 1;
 #else
+    // LAUNCHPAD
     GpioCtrlRegs.GPAPUD.bit.GPIO22              = 1;
     GpioCtrlRegs.GPAMUX2.bit.GPIO22             = 0;
     GpioCtrlRegs.GPADIR.bit.GPIO22              = 1;

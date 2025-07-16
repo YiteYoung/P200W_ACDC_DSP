@@ -4,6 +4,7 @@
 "./01_App/Source/Interrupt.obj"
 "./01_App/Source/Sample.obj"
 "./01_App/Source/Temperature.obj"
+"./01_App/Source/Uart.obj"
 "./01_App/Source/UserMath.obj"
 "./01_App/Source/main.obj"
 "./02_Ctr/Source/Config_Inv.obj"

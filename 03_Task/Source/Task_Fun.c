@@ -29,7 +29,7 @@ void sFunTask(void)
             sDebugLed_Run();
         }
         
-        // sRun_UartData();
+        sUart_DealData();
 
         if (sGetTime_1ms() == true)
         {

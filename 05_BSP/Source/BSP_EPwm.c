@@ -1936,7 +1936,7 @@ inline  static  void    sInitEPwm6(void)
     EPwm6Regs.ETCLR.all                     = 0xFFFF;
 
     //
-    EPwm6Regs.ETSEL.bit.INTEN               = 0;
+    EPwm6Regs.ETSEL.bit.INTEN               = 1;
     EPwm6Regs.ETSEL.bit.INTSEL              = ET_CTR_PRD;
     EPwm6Regs.ETPS.bit.INTPRD               = ET_1ST;
 

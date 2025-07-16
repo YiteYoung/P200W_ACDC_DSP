@@ -35,20 +35,20 @@
 #define     RX_DATA_PART_TYPE           DATA_FIRST_LO
 
 // 保存数据长度定义
-#define     DATA_INFO_MAX               20
+#define     DATA_INFO_MAX               2
 
 // 接收数据长度定义
-#define     DATA_RX_BUFF_MAX            100
+#define     DATA_RX_BUFF_MAX            50
 
 // 发送数据长度定义
-#define     DATA_TX_BUFF_MAX            180
+#define     DATA_TX_BUFF_MAX            50
 
 // 字节长度
 #define     SOI_BYTE_NUM                2
 #define     LEN_BYTE_NUM                2
 #define     CMD_BYTE_NUM                2
 #define     REG_BYTE_NUM                2
-#define     RLEN_BYTE_NUM               2
+#define     DATA_BYTE_NUM               2
 #define     CRC_BYTE_NUM                2
 
 // 存储长度位置
@@ -57,18 +57,20 @@
 // 起始地址
 #define     SET_CMD_REG_START           eReg_SetData_Start     
 #define     GET_CMD_REG_START           eReg_GetData_Start
+#define     CTL_CMD_REG_START           eReg_Control_Start
 
 // 结束地址
 #define     SET_CMD_REG_END             eReg_SetData_END     
 #define     GET_CMD_REG_END             eReg_GetData_END
+#define     CTL_CMD_REG_END             eReg_Control_End
 
 // 地址最大长度
 #define     MAX_SET_CMD_REG_LEN         ((unsigned int)SET_CMD_REG_END - SET_CMD_REG_START)
 #define     MAX_GET_CMD_REG_LEN         ((unsigned int)GET_CMD_REG_END - GET_CMD_REG_START)
 
-#define     cSet_CMD_REG_ADDR_OK(x)     ((x >= SET_CMD_REG_START) && (x < SET_CMD_REG_END))
-#define     cGet_CMD_REG_ADDR_OK(x)     ((x >= GET_CMD_REG_START) && (x < GET_CMD_REG_END))
-
+#define     sSet_CMD_REG_ADDR_OK(x)     ((x >= SET_CMD_REG_START) && (x < SET_CMD_REG_END))
+#define     sGet_CMD_REG_ADDR_OK(x)     ((x >= GET_CMD_REG_START) && (x < GET_CMD_REG_END))
+#define     sCtl_CMD_REG_ADDR_OK(x)     ((x >= CTL_CMD_REG_START) && (x < CTL_CMD_REG_END))
 #define     DATA_TABLE_SIZE             50
 
 typedef enum
@@ -95,10 +97,13 @@ typedef enum
     eReg_SetData_19,
     eReg_SetData_20,
 
-    eReg_SetData_END,
+    eReg_SetData_END
+}Reg_SetData_e;
 
-    eReg_GetData_Start  = 0x0100,
-    eReg_GetData_01     = 0x0100,
+typedef enum 
+{
+    eReg_GetData_Start  = 0x0000,
+    eReg_GetData_01     = 0x0000,
     eReg_GetData_02,
     eReg_GetData_03,
     eReg_GetData_04,
@@ -120,7 +125,25 @@ typedef enum
     eReg_GetData_20,
 
     eReg_GetData_END 
-}Reg_Addr_e;
+}Reg_GetData_e;
+
+typedef enum
+{
+    eReg_Control_Start      = 0x00,
+    eReg_Control_None       = 0x00,
+
+    eReg_Control_InvOn,
+    eReg_Control_InvOff,
+    eReg_Control_ChgOn,
+    eReg_Control_ChgOff,
+    eReg_Control_GridOn,
+    eReg_Control_GridOff,
+    eReg_Control_AllOff,
+    eReg_Control_ClrFault,
+    eReg_Control_BootLoader,
+
+    eReg_Control_End
+}Reg_Control_e;
 
 typedef enum
 {
@@ -129,7 +152,6 @@ typedef enum
     eRxTx_Len,
     eRxTx_Cmd,
     eRxTx_Reg,
-    eRxTx_RegLen,
     eRxTx_Data,
     eRxTx_Check,
     eRxTx_Eoi,
@@ -159,30 +181,14 @@ typedef enum
 
     eRxTx_RxCmd_Read,
     eRxTx_RxCmd_Write,
+    eRxTx_RxCmd_Control,
     eRxTx_RxCmd_UpGrade,
     eRxTx_RxCmd_Reply,
 
     eRxTx_RxCmd_End
 }RxTx_RxCmd_e;
 
-typedef enum
-{
-    eRxTx_Control_None      = 0x00,
 
-    // eRxTx_Control_Read,
-    // eRxTx_Control_Write,
-    eRxTx_Control_InvOn,
-    eRxTx_Control_InvOff,
-    eRxTx_Control_ChgOn,
-    eRxTx_Control_ChgOff,
-    eRxTx_Control_GridOn,
-    eRxTx_Control_GridOff,
-    eRxTx_Control_AllOff,
-    eRxTx_Control_ClrFault,
-    eRxTx_Control_BootLoader,
-
-    eRxTx_Control_End
-}RxTx_Control_e;
 
 typedef enum
 {

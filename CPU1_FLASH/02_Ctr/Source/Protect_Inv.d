@@ -64,6 +64,7 @@
 02_Ctr/Source/Protect_Inv.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/01_App/Include/UserMath.h
 02_Ctr/Source/Protect_Inv.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/01_App/Include/Grid.h
 02_Ctr/Source/Protect_Inv.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/01_App/Include/UserDefine.h
+02_Ctr/Source/Protect_Inv.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/01_App/Include/Uart.h
 02_Ctr/Source/Protect_Inv.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Config_Inv.h
 02_Ctr/Source/Protect_Inv.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Config_LLc.h
 02_Ctr/Source/Protect_Inv.obj: D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Ctr_Inv.h
@@ -218,6 +219,8 @@ D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/01_App/Include/UserMath.h:
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/01_App/Include/Grid.h:
 
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/01_App/Include/UserDefine.h:
+
+D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/01_App/Include/Uart.h:
 
 D:/Yite/PPS/P200W_ACDC_DSP_2800137/P200W_ACDC_DSP/02_Ctr/Include/Config_Inv.h:
 

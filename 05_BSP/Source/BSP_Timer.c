@@ -81,6 +81,12 @@ void    sSYS_Time(void)
     //     }
     // }
 
+    t_Time.t_Flag.Time_4ms      = false;
+    t_Time.t_Flag.Time_10ms     = false;
+    t_Time.t_Flag.Time_20ms     = false;
+    t_Time.t_Flag.Time_100ms    = false;
+    t_Time.t_Flag.Time_1s       = false;
+
     if(t_Time.t_Flag.Time_2ms == true)
     {
         t_Time.t_Flag.Time_4ms      = sIncTime(&t_Time.u16Nor_4msCnt,(unsigned int) (4 / 2));

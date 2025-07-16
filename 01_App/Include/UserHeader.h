@@ -9,6 +9,7 @@
 #include "Grid.h"
 #include "UserMath.h"
 #include "UserDefine.h"
+#include "Uart.h"
 
 // Control
 #include "Config_Inv.h"

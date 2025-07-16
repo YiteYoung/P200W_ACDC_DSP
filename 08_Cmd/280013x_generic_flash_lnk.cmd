@@ -3,7 +3,11 @@ MEMORY
    BEGIN            : origin = 0x00080000, length = 0x00000002
    BOOT_RSVD        : origin = 0x00000002, length = 0x00000126
 
-   RAMM0            : origin = 0x00000128, length = 0x000002D8
+   RAMM0            : origin = 0x00000128, length = 0x000000D8
+
+   UART_SETRAM      : origin = 0x00000200, length = 0x00000020
+   USER_PENDRAM     : origin = 0x00000220, length = 0x000001E0
+
    RAMM1            : origin = 0x00000400, length = 0x000003F8
    // RAMM1_RSVD       : origin = 0x000007F8, length = 0x00000008 /* Reserve and do not use for code as per the errata advisory "Memory: Prefetching Beyond Valid Memory" */
 
@@ -19,7 +23,11 @@ MEMORY
    FLASH_BANK0_SEC_16_23   : origin = 0x084000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_24_31   : origin = 0x086000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_32_39   : origin = 0x088000, length = 0x2000  /* on-chip Flash */
-   FLASH_BANK0_SEC_40_47   : origin = 0x08A000, length = 0x2000  /* on-chip Flash */
+   FLASH_BANK0_SEC_40_47   : origin = 0x08A000, length = 0x1000  /* on-chip Flash */
+
+   UART_DATABUFF           : origin = 0x08B000, length = 0x0200
+   USER_PENDFLASH          : origin = 0x08B200, length = 0x0E00
+
    FLASH_BANK0_SEC_48_55   : origin = 0x08C000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_56_63   : origin = 0x08E000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_64_71   : origin = 0x090000, length = 0x2000  /* on-chip Flash */
@@ -88,4 +96,16 @@ SECTIONS
     /*  Allocate IQ math areas: */
    IQmath           : > FLASH_BANK0_SEC_32_39, ALIGN(8)
    IQmathTables     : > FLASH_BANK0_SEC_32_39, ALIGN(8)
+
+   UNION            : > UART_DATABUFF, ALIGN(8)
+   {
+      .UartTable_App
+      .UartTable_Protocol
+   }
+
+   UNION            : > UART_SETRAM, ALIGN(8)
+   {
+      .UartSet_App
+      .UartSet_Protocol
+   }
 }
