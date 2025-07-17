@@ -84,6 +84,20 @@ float sAdc_GetReal(ADC_Sample_e Goal)
     return pAdcReal->f32Real;
 }
 
+int sAdc_Geti16Real(ADC_Sample_e Goal)
+{
+    ADC_Real_t *pAdcReal;
+
+    if(Goal >= eAdc_Sample_End)
+    {
+        return 0;
+    }
+
+    pAdcReal = &t_ADC.GridVolt + Goal;
+
+    return (int)pAdcReal->f32Real;
+}
+
 unsigned int sAdc_GetNTCResult(unsigned int NTC)
 {
     unsigned int *pNTC;

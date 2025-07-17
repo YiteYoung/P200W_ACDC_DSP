@@ -7,8 +7,6 @@
 #define UART_FUNCTION
 #endif
 
-#define UART_DATA_TABLE_SIZE    50
-
 
 UART_FUNCTION void  sUart_DealData(void);
 

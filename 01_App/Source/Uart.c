@@ -2,8 +2,14 @@
 
 #pragma DATA_SECTION(t_UartSet,     ".UartSet_App");
 #pragma DATA_SECTION(sTxTable,      ".UartTable_App");
+#pragma DATA_SECTION(sSampleTable,  ".SampleTable_App");
 
 static signed int   sGetNull    (void)
+{
+    return 0;
+}
+
+static signed int   sSample_GetNull    (ADC_Sample_e Goal)
 {
     return 0;
 }
@@ -13,10 +19,30 @@ static signed int   sGetNull    (void)
 //     return 0;
 // }
 
-typedef int (*pData) (void);
-volatile const pData sTxTable[UART_DATA_TABLE_SIZE] = 
+typedef     signed int  (*pData)        (void);
+volatile const pData sTxTable[DATA_TABLE_SIZE] = 
 {
-    sGetNull,sGetNull,sGetNull,sGetNull,
+    sConfig_GetInvSet,      sConfig_GetPfcSet,      sGetNull,       sGetNull,
+    sGetNull,               sGetNull,               sGetNull,       sGetNull,
+    sGetNull,               sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull,              sGetNull,      sGetNull,
+    sGetNull,             sGetNull
+};
+
+typedef     signed int  (*pSampleData)  (ADC_Sample_e);
+volatile const pSampleData sSampleTable[cSAMPLE_FUNCTION_NUM] = 
+{
+    sAdc_Geti16Real,    sSample_GetRms,     sSample_GetNull,        sSample_GetNull,
+    sSample_GetNull,    sSample_GetNull,    sSample_GetNull,        sSample_GetNull
 };
 
 typedef struct

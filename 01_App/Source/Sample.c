@@ -159,6 +159,7 @@ void    sSample_Cal_Inv(void)
     t_Sample.ComVolt.i16Rms     = sSample_RmsCal(&t_Sample.ComVolt.f32Rms_Sum, &t_Sample.ComVolt.u16SampleCnt);
 
     t_Sample.OutVolt.i16Rms     = sSample_RmsCal(&t_Sample.OutVolt.f32Rms_Sum, &t_Sample.OutVolt.u16SampleCnt);
+    t_Sample.OutVolt.i16Rms     = 1234;
 
     t_Sample.OutCurr.i16Rms     = sSample_RmsCal(&t_Sample.OutCurr.f32Rms_Sum, &t_Sample.OutCurr.u16SampleCnt);
 

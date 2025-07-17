@@ -1,7 +1,8 @@
 #include "Protocol.h"
 
-#pragma DATA_SECTION(t_Set,     ".UartSet_Protocol");
-#pragma DATA_SECTION(sTxTable,  ".UartTable_Protocol");
+#pragma DATA_SECTION(t_Set,         ".UartSet_Protocol");
+#pragma DATA_SECTION(sTxTable,      ".UartTable_Protocol");
+#pragma DATA_SECTION(sSampleTable,  ".SampleTable_Protocol");
 
 typedef struct
 {
@@ -27,10 +28,12 @@ typedef struct
     unsigned int Rsvd13;
 }RxTx_Set_t;
 
-typedef                 signed int      (*pRxTxData)(void);
+typedef                 signed int      (*pRxTxData)        (void);
+typedef                 signed int      (*pSampleData)      (int);
 
 static                  RxTx_Set_t      t_Set;
 volatile static const   pRxTxData       sTxTable[DATA_TABLE_SIZE];
+volatile static const   pSampleData     sSampleTable[cSAMPLE_FUNCTION_NUM];
 static                  RxTx_t          t_RxTx;
 
 
@@ -88,10 +91,12 @@ void    sInitProtocol(unsigned char SCI_NO, unsigned short bTxClrEn)
         pRxTx->t_RxData.u16Soi[i]       = 0;
     }
 
-    for (i = 0; i < DATA_INFO_MAX; i++) 
-    {
-        pRxTx->t_RxData.i16DataInfo[i]  = 0;
-    }
+    // for (i = 0; i < DATA_INFO_MAX; i++) 
+    // {
+    //     pRxTx->t_RxData.i16DataInfo[i]  = 0;
+    // }
+
+    pRxTx->t_RxData.i16DataInfo         = 0;
 
     if(bTxClrEn == true)
     {
@@ -116,7 +121,9 @@ void    sSci_RxTxDeal(unsigned char SCI_NO, unsigned char RxData)
     {
         sSci_RxDeal(SCI_NO,RxData,pRxTx);
     }
-    else
+
+    // sSci_RxDeal函数将处理RxFrameOk标志位，不能用一个if分支，否则丢帧
+    if(pRxTx->RxTx_Flag.bit.RxFrameOk == true)
     {
         sSci_TxDeal(SCI_NO,pRxTx);
     }
@@ -124,6 +131,7 @@ void    sSci_RxTxDeal(unsigned char SCI_NO, unsigned char RxData)
     if( pRxTx->RxTx_Flag.bit.TxPackOk == true)
     {
         sSciWrite(SCI_NO,(unsigned char *)(pRxTx->u8TxBuff), pRxTx->u16TxBuffLen);
+        pRxTx->RxTx_Flag.bit.TxPackOk = false;
     }
 }
 
@@ -214,7 +222,7 @@ void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t 
                 pRxTx->u16WordNum = DATA_INFO_MAX - 1;
             }
 
-            if(sRx_WordData(pRxTx, RxData, (volatile unsigned int *)&pRxTx->t_RxData.i16DataInfo[pRxTx->u16WordNum]) == true)
+            if(sRx_WordData(pRxTx, RxData, (volatile unsigned int *)&pRxTx->t_RxData.i16DataInfo) == true)
             {
                 pRxTx->u16WordNum++;
             }
@@ -409,6 +417,7 @@ void    sSci_TxDeal(unsigned char SCI_NO, volatile RxTx_t *pRxTx)
 
         case eRxTx_RxCmd_Control:
             sSci_Control(pRxTx);
+            break;
 
         case eRxTx_RxCmd_UpGrade:
             sSci_UpGrade(pRxTx);
@@ -422,7 +431,7 @@ void    sSci_TxDeal(unsigned char SCI_NO, volatile RxTx_t *pRxTx)
             break;
     }
 
-    if( pRxTx->u16TxBuffLen > 0 && pRxTx->u16TxBuffLen <= DATA_TX_BUFF_MAX - 2)\
+    if( pRxTx->u16TxBuffLen > 0 && pRxTx->u16TxBuffLen <= DATA_TX_BUFF_MAX - 2)
     {
         sAdd_Crc(pRxTx);
 
@@ -447,7 +456,8 @@ void    sSci_TxDeal(unsigned char SCI_NO, volatile RxTx_t *pRxTx)
 
 void    sSci_GetData(volatile RxTx_t *pRxTx)
 {
-    unsigned int u16Data;
+    unsigned int    u16Data;
+    unsigned char   u8ByteH,u8ByteL;
 
     pRxTx->u16TxBuffLen = 0;
 
@@ -466,9 +476,27 @@ void    sSci_GetData(volatile RxTx_t *pRxTx)
         return;
     }
 
-    u16Data = sTxTable[pRxTx->t_RxData.i16Reg]();
+    u8ByteH = (pRxTx->t_RxData.i16Reg >> 8) & 0xFF;
+    u8ByteL = pRxTx->t_RxData.i16Reg & 0xFF;
+    if( u8ByteH < eType_Data_Other )
+    {
+        if(u8ByteL > cSAMPLE_DATA_NUM)
+        {
+            u16Data = 0;
+        }
+        else
+        {
+            u16Data = sSampleTable[u8ByteH](u8ByteL);
+        }
+    }
+    else
+    {
+        u16Data = sTxTable[u8ByteL]();
+    }
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data      ) & 0x00FF);
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data >> 8 ) & 0x00FF);
+
+
 }
 
 void    sSci_SetData(volatile RxTx_t *pRxTx)
@@ -486,7 +514,7 @@ void    sSci_SetData(volatile RxTx_t *pRxTx)
     t_Set.Control = eReg_Control_None;
 
     pData = &t_Set.InvVolt + pRxTx->t_RxData.i16Reg;
-    *pData = (unsigned int)pRxTx->t_RxData.i16DataInfo[0];
+    *pData = (unsigned int)pRxTx->t_RxData.i16DataInfo;
 
     sAdd_Tx_Head(pRxTx, eRxTx_RxCmd_Write);
 
@@ -513,9 +541,6 @@ void    sSci_Control(volatile RxTx_t *pRxTx)
 
     t_Set.Control = pRxTx->t_RxData.i16Reg;
 
-    pData = &t_Set.InvVolt + pRxTx->t_RxData.i16Reg;
-    *pData = (unsigned int)pRxTx->t_RxData.i16DataInfo[0];
-
     sAdd_Tx_Head(pRxTx, eRxTx_RxCmd_Control);
 
     u16Data = eRxTx_ANS_OK;
@@ -538,7 +563,7 @@ void    sSci_UpGrade(volatile RxTx_t *pRxTx)
         return;
     }
 
-    u16Data = pRxTx->t_RxData.i16DataInfo[0];
+    u16Data = pRxTx->t_RxData.i16DataInfo;
     if(u16Data == 0x55AA)
     {
         t_Set.Control = eReg_Control_BootLoader;
@@ -581,11 +606,6 @@ void    sAdd_Tx_Head(volatile RxTx_t *pRxTx,RxTx_RxCmd_e eTxCmd)
     u16Data = pRxTx->t_RxData.i16Reg;
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data       ) & 0x00FF;
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data >>  8 ) & 0x00FF;
-
-    // Data
-    // u16Data = pRxTx->t_RxData.u16Cmd;
-    // pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data       ) & 0x00FF;
-    // pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data >>  8 ) & 0x00FF;
 }
 
 void    sAdd_Crc(volatile RxTx_t *pRxTx)
@@ -594,14 +614,14 @@ void    sAdd_Crc(volatile RxTx_t *pRxTx)
 
     if(pRxTx->u16TxBuffLen > (LEN_BYTE_ID + LEN_BYTE_NUM))
     {
-        u16Data = pRxTx->u16TxBuffLen - LEN_BYTE_ID - LEN_BYTE_NUM;
+        u16Data = pRxTx->u16TxBuffLen - SOI_BYTE_NUM - LEN_BYTE_NUM + CRC_BYTE_NUM;
     }
     else
     {
         u16Data = 0;
     }
-    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data       ) & 0x00FF;
-    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data >>  8 ) & 0x00FF;
+    pRxTx->u8TxBuff[LEN_BYTE_ID + 0]  =   (unsigned char)(u16Data       ) & 0x00FF;
+    pRxTx->u8TxBuff[LEN_BYTE_ID + 1]  =   (unsigned char)(u16Data >>  8 ) & 0x00FF;
 
     u16Data = sModByteCrc16((unsigned int *)pRxTx->u8TxBuff, pRxTx->u16TxBuffLen,CRC_Hi);
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  =   (unsigned char)(u16Data       ) & 0x00FF;

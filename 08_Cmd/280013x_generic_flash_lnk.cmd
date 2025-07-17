@@ -25,7 +25,8 @@ MEMORY
    FLASH_BANK0_SEC_32_39   : origin = 0x088000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_40_47   : origin = 0x08A000, length = 0x1000  /* on-chip Flash */
 
-   UART_DATABUFF           : origin = 0x08B000, length = 0x0200
+   UART_DATABUFF           : origin = 0x08B000, length = 0x0100
+   UART_SAMPLEBUFF         : origin = 0x08B100, length = 0x0100
    USER_PENDFLASH          : origin = 0x08B200, length = 0x0E00
 
    FLASH_BANK0_SEC_48_55   : origin = 0x08C000, length = 0x2000  /* on-chip Flash */
@@ -101,6 +102,12 @@ SECTIONS
    {
       .UartTable_App
       .UartTable_Protocol
+   }
+
+   UNION            : > UART_SAMPLEBUFF, ALIGN(8)
+   {
+      .SampleTable_App
+      .SampleTable_Protocol
    }
 
    UNION            : > UART_SETRAM, ALIGN(8)

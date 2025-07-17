@@ -73,6 +73,10 @@
 #define     sCtl_CMD_REG_ADDR_OK(x)     ((x >= CTL_CMD_REG_START) && (x < CTL_CMD_REG_END))
 #define     DATA_TABLE_SIZE             50
 
+// 采样对象最大数值
+#define     cSAMPLE_DATA_NUM            10
+#define     cSAMPLE_FUNCTION_NUM        8
+
 typedef enum
 {
     eReg_SetData_Start = 0x0000,
@@ -124,8 +128,14 @@ typedef enum
     eReg_GetData_19,
     eReg_GetData_20,
 
-    eReg_GetData_END 
+    eReg_GetData_END = 0x10FF
 }Reg_GetData_e;
+
+typedef enum 
+{
+    eType_Data_ParaMeter = 0,
+    eType_Data_Other = 0x10
+}DataType_e;
 
 typedef enum
 {
@@ -221,7 +231,7 @@ typedef struct
       signed int    i16Reg;
     unsigned int    u16RegLen;
     unsigned int    u16RegByteLen;
-      signed int    i16DataInfo[DATA_INFO_MAX];
+      signed int    i16DataInfo;
     unsigned int    u16DataCheck;
 }RxData_t;
 

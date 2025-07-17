@@ -114,6 +114,7 @@ BSP_ADC_FUNCTION    void            sAdc_InitGain           (void);
 BSP_ADC_FUNCTION    void            sAdc_Convert            (void);
 BSP_ADC_FUNCTION    unsigned int    sAdc_GetResult          (ADC_Sample_e Goal);
 BSP_ADC_FUNCTION    float           sAdc_GetReal            (ADC_Sample_e Goal);
+BSP_ADC_FUNCTION    int             sAdc_Geti16Real         (ADC_Sample_e Goal);
 BSP_ADC_FUNCTION    unsigned int    sAdc_GetNTCResult       (unsigned int NTC);
 BSP_ADC_FUNCTION    ADC_Real_t*     sAdc_GetRealStr         (ADC_Sample_e Goal);
 
