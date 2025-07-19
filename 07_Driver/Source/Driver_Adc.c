@@ -38,16 +38,16 @@ void    sDrv_IninAdc(void)
 
     // =================================== ADC_A =========================== //
     // SOCx Channel Select
-    AdcaRegs.ADCSOC0CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC1CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC2CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC3CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC4CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC5CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC6CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC7CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC8CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdcaRegs.ADCSOC9CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
+    AdcaRegs.ADCSOC0CTL.bit.CHSEL           = 15;   // Set Soc0 channel select to ADCINA    (A15公共端电压)
+    AdcaRegs.ADCSOC1CTL.bit.CHSEL           = 2;    // Set Soc0 channel select to ADCINA    (A2输出电压)
+    AdcaRegs.ADCSOC2CTL.bit.CHSEL           = 1;    // Set Soc0 channel select to ADCINA    (A1输出电流)
+    AdcaRegs.ADCSOC3CTL.bit.CHSEL           = 6;    // Set Soc0 channel select to ADCINA    (A6电网电压)
+    AdcaRegs.ADCSOC4CTL.bit.CHSEL           = 10;   // Set Soc0 channel select to ADCINA    (A10电网电流)
+    AdcaRegs.ADCSOC5CTL.bit.CHSEL           = 11;   // Set Soc0 channel select to ADCINA    (A11电感电流)
+    AdcaRegs.ADCSOC6CTL.bit.CHSEL           = 11;   // Set Soc0 channel select to ADCINA    (A11电感电流)
+    AdcaRegs.ADCSOC7CTL.bit.CHSEL           = 3;    // Set Soc0 channel select to ADCINA    (A3NTC1)
+    AdcaRegs.ADCSOC8CTL.bit.CHSEL           = 4;    // Set Soc0 channel select to ADCINA    (A4NTC2)
+    AdcaRegs.ADCSOC9CTL.bit.CHSEL           = 5;    // Set Soc0 channel select to ADCINA    (A5NTC3)
     AdcaRegs.ADCSOC10CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
     AdcaRegs.ADCSOC11CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
     AdcaRegs.ADCSOC12CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
@@ -102,8 +102,8 @@ void    sDrv_IninAdc(void)
     AdcaRegs.ADCSOC2CTL.bit.TRIGSEL         = 0;
     AdcaRegs.ADCSOC3CTL.bit.TRIGSEL         = 0;
     AdcaRegs.ADCSOC4CTL.bit.TRIGSEL         = 0;
-    AdcaRegs.ADCSOC5CTL.bit.TRIGSEL         = 0;
-    AdcaRegs.ADCSOC6CTL.bit.TRIGSEL         = 0;
+    AdcaRegs.ADCSOC5CTL.bit.TRIGSEL         = 0x0D;
+    AdcaRegs.ADCSOC6CTL.bit.TRIGSEL         = 0x0E;
     AdcaRegs.ADCSOC7CTL.bit.TRIGSEL         = 0;
     AdcaRegs.ADCSOC8CTL.bit.TRIGSEL         = 0;
     AdcaRegs.ADCSOC9CTL.bit.TRIGSEL         = 0;
@@ -203,22 +203,22 @@ void    sDrv_IninAdc(void)
 
     // =================================== ADC_C =========================== //
     // SOCx Channel Select
-    AdccRegs.ADCSOC0CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC1CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC2CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC3CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC4CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC5CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC6CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC7CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC8CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC9CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC10CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC11CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC12CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC13CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC14CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
-    AdccRegs.ADCSOC15CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINA
+    AdccRegs.ADCSOC0CTL.bit.CHSEL           = 15;   // Set Soc0 channel select to ADCINC    (C15电池电压采样)
+    AdccRegs.ADCSOC1CTL.bit.CHSEL           = 1;    // Set Soc0 channel select to ADCINC    (C1电池电流采样)
+    AdccRegs.ADCSOC2CTL.bit.CHSEL           = 6;    // Set Soc0 channel select to ADCINC    (C6母线电压采样)
+    AdccRegs.ADCSOC3CTL.bit.CHSEL           = 3;    // Set Soc0 channel select to ADCINC    (C3LLC电流采样)
+    AdccRegs.ADCSOC4CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINC    
+    AdccRegs.ADCSOC5CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC6CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC7CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC8CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC9CTL.bit.CHSEL           = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC10CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC11CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC12CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC13CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC14CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINC
+    AdccRegs.ADCSOC15CTL.bit.CHSEL          = 0;    // Set Soc0 channel select to ADCINC
 
     // Set ADCINT1/2 Trigger Socx
     // 00: No ADCINT trigger SOCx
@@ -262,10 +262,10 @@ void    sDrv_IninAdc(void)
     //  11h ADCTRIG17 - ePWM7, ADCSOCA
     //  12h ADCTRIG18 - ePWM7, ADCSOCB
     //  13h - 3Fh - Reserved
-    AdccRegs.ADCSOC0CTL.bit.TRIGSEL         = 0;
-    AdccRegs.ADCSOC1CTL.bit.TRIGSEL         = 0;
-    AdccRegs.ADCSOC2CTL.bit.TRIGSEL         = 0;
-    AdccRegs.ADCSOC3CTL.bit.TRIGSEL         = 0;
+    AdccRegs.ADCSOC0CTL.bit.TRIGSEL         = 0x05;
+    AdccRegs.ADCSOC1CTL.bit.TRIGSEL         = 0x05;
+    AdccRegs.ADCSOC2CTL.bit.TRIGSEL         = 0x05;
+    AdccRegs.ADCSOC3CTL.bit.TRIGSEL         = 0x05;
     AdccRegs.ADCSOC4CTL.bit.TRIGSEL         = 0;
     AdccRegs.ADCSOC5CTL.bit.TRIGSEL         = 0;
     AdccRegs.ADCSOC6CTL.bit.TRIGSEL         = 0;

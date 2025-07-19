@@ -1,21 +1,25 @@
 #include "BSP_Adc.h"
 
+#pragma CODE_SECTION(sAdc_Convert,".TI.ramfunc");
+
 #define     cMaxMinLimit(x,Min,Max)     {   x = (x) >= (Max) ? (Max) : (x) ; x = (x) <= (Min) ? (Min) : (x) ; }
 
 #define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
+#define     cInvVoltAdcResult           AdcaResultRegs.ADCRESULT1
+#define     cInvCurrAdcResult           AdcaResultRegs.ADCRESULT2
+#define     cGridVoltAdcResult          AdcaResultRegs.ADCRESULT3
+#define     cGridCurrAdcResult          AdcaResultRegs.ADCRESULT4
+#define     cIndCurrZeroAdcResult       AdcaResultRegs.ADCRESULT5
+#define     cIndCurrPrdAdcResult        AdcaResultRegs.ADCRESULT6
 
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
+#define     cNTC1AdcResult              AdcaResultRegs.ADCRESULT7
+#define     cNTC2AdcResult              AdcaResultRegs.ADCRESULT8
+#define     cNTC3AdcResult              AdcaResultRegs.ADCRESULT9
 
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
-#define     cComVoltAdcResult           AdcaResultRegs.ADCRESULT0
+#define     cBatVoltAdcResult           AdcaResultRegs.ADCRESULT0
+#define     cBatCurrAdcResult           AdcaResultRegs.ADCRESULT1
+#define     cBusVoltAdcResult           AdcaResultRegs.ADCRESULT2
+#define     cLLcCurrAdcResult           AdcaResultRegs.ADCRESULT3
 
 static      ADC_t                       t_ADC;
 
@@ -48,12 +52,59 @@ void    sAdc_Convert()
     float       f32ADSample;
     signed int  i16ADCData;
 
-    // =========================== ADC A =================================== //
-    // Com Volt
     t_ADC.ComVolt.u16AdcResult      =   cComVoltAdcResult;
     i16ADCData                      =   (int)t_ADC.ComVolt.u16AdcResult - t_ADC.ComVolt.i16Mid;
     f32ADSample                     =   (float)i16ADCData * t_ADC.ComVolt.f32Gain;
     t_ADC.ComVolt.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.GridVolt.u16AdcResult      =   cGridVoltAdcResult;
+    i16ADCData                      =   (int)t_ADC.GridVolt.u16AdcResult - t_ADC.GridVolt.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.GridVolt.f32Gain;
+    t_ADC.GridVolt.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.OutVolt.u16AdcResult      =   cInvVoltAdcResult;
+    i16ADCData                      =   (int)t_ADC.OutVolt.u16AdcResult - t_ADC.OutVolt.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.OutVolt.f32Gain;
+    t_ADC.OutVolt.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.BatVolt.u16AdcResult      =   cBatVoltAdcResult;
+    i16ADCData                      =   (int)t_ADC.BatVolt.u16AdcResult - t_ADC.BatVolt.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.BatVolt.f32Gain;
+    t_ADC.BatVolt.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.BusVolt.u16AdcResult      =   cBusVoltAdcResult;
+    i16ADCData                      =   (int)t_ADC.BusVolt.u16AdcResult - t_ADC.BusVolt.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.BusVolt.f32Gain;
+    t_ADC.BusVolt.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.GridCurr.u16AdcResult      =   cGridCurrAdcResult;
+    i16ADCData                      =   (int)t_ADC.GridCurr.u16AdcResult - t_ADC.GridCurr.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.GridCurr.f32Gain;
+    t_ADC.GridCurr.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.OutCurr.u16AdcResult      =   cInvCurrAdcResult;
+    i16ADCData                      =   (int)t_ADC.OutCurr.u16AdcResult - t_ADC.OutCurr.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.OutCurr.f32Gain;
+    t_ADC.OutCurr.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.BatCurr.u16AdcResult      =   cBatCurrAdcResult;
+    i16ADCData                      =   (int)t_ADC.BatCurr.u16AdcResult - t_ADC.BatCurr.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.BatCurr.f32Gain;
+    t_ADC.BatCurr.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.IndCurr.u16AdcResult      =   (cIndCurrZeroAdcResult + cIndCurrPrdAdcResult) >> 1;
+    i16ADCData                      =   (int)t_ADC.IndCurr.u16AdcResult - t_ADC.IndCurr.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.IndCurr.f32Gain;
+    t_ADC.IndCurr.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.LLCCurr.u16AdcResult      =   cLLcCurrAdcResult;
+    i16ADCData                      =   (int)t_ADC.LLCCurr.u16AdcResult - t_ADC.LLCCurr.i16Mid;
+    f32ADSample                     =   (float)i16ADCData * t_ADC.LLCCurr.f32Gain;
+    t_ADC.LLCCurr.f32Real           =   f32ADSample * 1.0f;
+
+    t_ADC.NTC1                      = cNTC1AdcResult;
+    t_ADC.NTC2                      = cNTC2AdcResult;
+    t_ADC.NTC3                      = cNTC3AdcResult;
 }
 
 unsigned int sAdc_GetResult(ADC_Sample_e Goal)

@@ -1,5 +1,8 @@
 #include "UserHeader.h"
 
+#pragma CODE_SECTION(sInv_ISR,          ".TI.ramfunc");
+#pragma CODE_SECTION(Inv_PwmXUp_ISR,    ".TI.ramfunc");
+
 void sInv_ISR(void)
 {
     static unsigned int u16ISRCnt;
@@ -25,15 +28,15 @@ void sInv_ISR(void)
 
     sSample_Accumulate();
 
-    sSample_ZeroDeal(0,0,0,0);
+    sSample_ZeroDeal(sPLL_GetGridCrossN2P(),sPLL_GetGridCrossP2N(),sPLL_GetInvCrossN2P(),sPLL_GetInvCrossP2N());
 
     sGrid_WaveLossDetect();
 
     unsigned char u8RxData;
-    sSCiRxISR(SCI_PORT_A, &u8RxData);
+    sSciRxISR(SCI_PORT_A, &u8RxData);
     sSciTxISR(SCI_PORT_A);
 
-    sSCiRxISR(SCI_PORT_B, &u8RxData);
+    sSciRxISR(SCI_PORT_B, &u8RxData);
     sSciTxISR(SCI_PORT_B);
 
     u16ISRCnt++;

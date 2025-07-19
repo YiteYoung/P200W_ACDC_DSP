@@ -5,12 +5,6 @@ void sInitDspConfig(void)
     InitSysCtrl();
     DELAY_US(50);
 
-    // Device_cal();
-
-    // sInitRam();
-    // memcpy(&RamfuncsRunStart, &RamfuncsLoadStart, (size_t)&RamfuncsLoadSize);
-    // InitFlash();
-
     sInitGpio();
     sInitInterrupt();
     sInitSci();

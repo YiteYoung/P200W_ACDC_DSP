@@ -1,5 +1,10 @@
 #include "UserHeader.h"
 
+#pragma CODE_SECTION(sSample_Filter,        ".TI.ramfunc");
+#pragma CODE_SECTION(sSample_Accumulate,    ".TI.ramfunc");
+#pragma CODE_SECTION(sSample_ZeroDeal,      ".TI.ramfunc");
+
+
 static void     sClrSampleCnt       (ADC_Sample_e Goal);
 unsigned int    sSample_RmsCal      (float *SampleSum,unsigned int *SampleCnt);
 signed   int    sSample_AvgCal      (float *SampleSum,unsigned int *SampleCnt);
@@ -159,7 +164,6 @@ void    sSample_Cal_Inv(void)
     t_Sample.ComVolt.i16Rms     = sSample_RmsCal(&t_Sample.ComVolt.f32Rms_Sum, &t_Sample.ComVolt.u16SampleCnt);
 
     t_Sample.OutVolt.i16Rms     = sSample_RmsCal(&t_Sample.OutVolt.f32Rms_Sum, &t_Sample.OutVolt.u16SampleCnt);
-    t_Sample.OutVolt.i16Rms     = 1234;
 
     t_Sample.OutCurr.i16Rms     = sSample_RmsCal(&t_Sample.OutCurr.f32Rms_Sum, &t_Sample.OutCurr.u16SampleCnt);
 
@@ -486,10 +490,22 @@ signed int  sSample_GetRms(ADC_Sample_e Goal)
 
 signed int sSample_GetInvWatt(void)
 {
-    return t_Load.InvLoad.i32LoadWatt;
+    return (int)t_Load.InvLoad.i32LoadWatt;
 }
 
 signed int sSample_GetPfcWatt(void)
 {
-    return t_Load.GridLoad.i32LoadWatt;
+    return (int)t_Load.GridLoad.i32LoadWatt;
 }
+
+signed int sSample_GetInvVA(void)
+{
+    return (int)t_Load.InvLoad.u32LoadVA;
+}
+
+signed int sSample_GetPfcVA(void)
+{
+    return (int)t_Load.GridLoad.u32LoadVA;
+}
+
+

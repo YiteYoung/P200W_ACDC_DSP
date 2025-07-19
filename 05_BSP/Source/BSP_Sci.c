@@ -1,5 +1,8 @@
 #include "BSP_Sci.h"
 
+#pragma CODE_SECTION(sSciRxISR, ".TI.ramfunc");
+#pragma CODE_SECTION(sSciTxISR, ".TI.ramfunc");
+
 typedef struct{
     unsigned char   *pIn;
     unsigned char   *pOut;
@@ -84,7 +87,7 @@ void    sSciRest(unsigned int SCI_NO)
     sSCI_FIFOTX_INT_EN(SCI_NO);
 }
 
-unsigned char sSCiRxISR(unsigned int SCI_NO, unsigned char *RxData)
+unsigned char sSciRxISR(unsigned int SCI_NO, unsigned char *RxData)
 {
     QUEUE           *pq;
     SciStruct       *pSci;

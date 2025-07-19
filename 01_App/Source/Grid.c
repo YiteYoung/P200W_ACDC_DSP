@@ -1,5 +1,7 @@
 #include "UserHeader.h"
 
+#pragma CODE_SECTION(sGrid_WaveLossDetect ,".TI.ramfunc");
+
 static      GridProt_t          t_GridPort;
 
 void    sGrid_InitThreshold(void)

@@ -1,6 +1,12 @@
 #include "UserHeader.h"
 // #include "PLL.h"
 
+#pragma CODE_SECTION(sSetSinCos             ,".TI.ramfunc");
+#pragma CODE_SECTION(sHalfWavePointCal      ,".TI.ramfunc");
+
+#pragma CODE_SECTION(sPLL_ClrInvPosWaveEn   ,".TI.ramfunc");
+
+
 static  PLL_t   t_PLL;
 
 #define cSetSinThetaQ14     (int)(__sinpuf32(__divf32(135.0,360.0)) * 16384.0)

@@ -27,17 +27,17 @@
 #define     cLLC_RES_OCP_10A          10.0f
 #define     cPFC_IND_OCP_10A          10.0f
 
-#define     cV_Com_V_1V             (20.0f / (2200.0f * 3.0f + 0.1f))       // Com Volt
-#define     cV_Grid_V_1V            (20.0f / (2200.0f * 3.0f + 0.1f))       // Grid Volt
-#define     cV_Inv_V_1V             (20.0f / (2200.0f * 3.0f + 0.1f))       // InvOut Volt
-#define     cV_Bus_V_1V             (20.0f / (2200.0f * 3.0f + 0.1f))       // Bus Volt
-#define     cV_Bat_V_1V             (20.0f / (2200.0f * 3.0f + 0.1f))       // Bat Volt
+#define     cV_Com_V_1V             (5.1f  /  ( 430.0f * 3.0f        ))                             // Com Volt
+#define     cV_Grid_V_1V            (5.1f  /  ( 200.0f * 9.0f        ))                             // Grid Volt
+#define     cV_Inv_V_1V             (5.1f  /  ( 430.0f * 3.0f        ))                             // InvOut Volt
+#define     cV_Bus_V_1V             (5.1f  /  ( 430.0f * 3.0f        ))                             // Bus Volt
+#define     cV_Bat_V_1V             (10.0f /  ( 330.0f * 2.0f + 10.0f)) * (1.0f) * (15.0f / 10.0f)  // Bat Volt(AMC1311固定增益1.0)
 
-#define     cI_Grid_V_1A            (20.0f / (2200.0f * 3.0f + 0.1f))       // Grid Curr
-#define     cI_Inv_V_1A             (20.0f / (2200.0f * 3.0f + 0.1f))       // InvOut Curr
-#define     cI_Ind_V_1A             (20.0f / (2200.0f * 3.0f + 0.1f))       // PfcInd_Curr
-#define     cI_LLC_V_1A             (20.0f / (2200.0f * 3.0f + 0.1f))       // LLc_Curr
-#define     cI_Bat_V_1A             (20.0f / (2200.0f * 3.0f + 0.1f))       // Bat_Curr
+#define     cI_Grid_V_1A            (0.044f)                                                        // Grid Curr
+#define     cI_Inv_V_1A             (0.044f)                                                        // InvOut Curr
+#define     cI_Ind_V_1A             (0.044f)                                                        // PfcInd_Curr
+#define     cI_LLC_V_1A             (0.003f / 1.0f) * (10.0f/ 1.0f)                                 // LLc_Curr
+#define     cI_Bat_V_1A             (0.003f / 2.0f) * (8.2f) * (15.0f / 10.0f)                      // Bat_Curr(AMC1300固定增益8.2)
 
 #define     cComVolt_ADC_Gain       ((cADC_REF * cADC_RAIO) / (cV_Com_V_1V * cADC_MAX_RANGE))
 #define     cInvVolt_ADC_Gain       ((cADC_REF * cADC_RAIO) / (cV_Inv_V_1V * cADC_MAX_RANGE))
@@ -54,7 +54,7 @@
 #define     cLLC_RES_OCP_DAC_10A    ((cLLC_RES_OCP_10A * cI_LLC_V_1A * cDAC_MAX_RANGE) / cDAC_REF)
 #define     cPFC_IND_OCP_DAC_10A    ((cPFC_IND_OCP_10A * cI_Ind_V_1A * cDAC_MAX_RANGE) / cDAC_REF)
  
-#define     sADCSoftStart()         { AdcaRegs.ADCSOCFRC1.all = 0x0000; AdccRegs.ADCSOCFRC1.all = 0x0000; }
+#define     sADCSoftStart()         { AdcaRegs.ADCSOCFRC1.all = 0x009F; AdccRegs.ADCSOCFRC1.all = 0x0000; }
 
 
 typedef enum

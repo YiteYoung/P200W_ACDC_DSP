@@ -64,7 +64,10 @@
 #define cVdc490V                4900
 #define cVdc520V                5200
 
+#define cCurr0A                 0
 #define cCurr1A                 10
+#define cCurr2A                 20
+#define cCurr5A                 50
 #define cCurr10A                100
 #define cCurr20A                200
 #define cCurr30A                300
@@ -77,9 +80,12 @@
 #define cFreq65Hz               6500
 
 #define cPower0W                0
+#define cPower10W               10
+#define cPower50W               50
 #define cPower100W              100
 #define cPower200W              200
 #define cPower500W              500
+#define cPower1KW               1000
 #define cPower1800W             1800
 
 #define cPWM_PRD_45K            1333

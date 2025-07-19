@@ -530,7 +530,6 @@ void    sSci_SetData(volatile RxTx_t *pRxTx)
 void    sSci_Control(volatile RxTx_t *pRxTx)
 {
     unsigned int    u16Data;
-    unsigned int    *pData;
 
     pRxTx->u16TxBuffLen = 0;
 

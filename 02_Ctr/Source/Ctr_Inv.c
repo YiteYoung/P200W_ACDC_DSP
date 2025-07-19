@@ -1,5 +1,25 @@
 #include "UserHeader.h"
 
+#pragma CODE_SECTION(sInv_Control        ,".TI.ramfunc");
+
+#pragma CODE_SECTION(sInvVoltLoop        ,".TI.ramfunc");
+#pragma CODE_SECTION(sInvCurrLoop        ,".TI.ramfunc");
+#pragma CODE_SECTION(sInvSpwm            ,".TI.ramfunc");
+
+#pragma CODE_SECTION(sBatCCCVLoop        ,".TI.ramfunc");
+#pragma CODE_SECTION(sPfcVoltLoop        ,".TI.ramfunc");
+#pragma CODE_SECTION(sPfcCurrLoop        ,".TI.ramfunc");
+#pragma CODE_SECTION(sPfcSpwm            ,".TI.ramfunc");
+
+#pragma CODE_SECTION(sLoopClear          ,".TI.ramfunc");
+
+#pragma CODE_SECTION(sPfcBurst_Check     ,".TI.ramfunc");
+#pragma CODE_SECTION(sISR_TZDeal         ,".TI.ramfunc");
+ 
+#pragma CODE_SECTION(sPwm_Enable         ,".TI.ramfunc");
+#pragma CODE_SECTION(sPwm_Disable        ,".TI.ramfunc");
+
+
 void    sInvVoltLoop        (void);
 void    sInvCurrLoop        (void);
 void    sInvSpwm            (void);
@@ -11,7 +31,6 @@ void    sPfcCurrLoop        (void);
 void    sPfcSpwm            (void);
 
 void    sLoopClear          (void);
-// void    sInv_PosWaveClr     (void);
 
 void    sPfcBurst_Check     (void);
 void    sISR_TZDeal         (void);

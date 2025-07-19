@@ -97,4 +97,7 @@ SAMPLE_FUNCTION signed int      sSample_GetRms          (ADC_Sample_e Goal);
 
 SAMPLE_FUNCTION signed int      sSample_GetInvWatt      (void);
 SAMPLE_FUNCTION signed int      sSample_GetPfcWatt      (void);
+
+SAMPLE_FUNCTION signed int      sSample_GetInvVA        (void);
+SAMPLE_FUNCTION signed int      sSample_GetPfcVA        (void);
 #endif

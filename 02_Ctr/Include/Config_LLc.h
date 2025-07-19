@@ -29,12 +29,26 @@ typedef struct
 
     float       f32LLCTrancRaio;
 
-    float       f32MainDcPowerLimit;        //主控限电池侧功率
-    float       f32ChgDcPowerLimit;         //默认限电池侧功率
-    float       f32LimitDcPowerLimit;       //功率环限电池侧功率 
+    float       f32PowerLimitRef;           // 限功率参考值
+    float       f32CurrLimitErrSum;         // 限电流积分环输出
+    float       f32PowerLimitErrSum;        // 限功率积分环输出
+
+    float       f32MainDcPowerLimit;        // 主控限电池侧功率
+    float       f32ChgDcPowerLimit;         // 默认限电池侧功率
+    float       f32LimitDcPowerLimit;       // 功率环限电池侧功率 
 }ConfigLLC_t;
 
 CONFIG_LLC_FUNCTION void    sConfig_InitLLC                     (void);
+CONFIG_LLC_FUNCTION void    sConfig_LLCPowerLimit               (void);
+
+CONFIG_LLC_FUNCTION void    sConfig_SetMainDcPowerLimit         (float Value);
+CONFIG_LLC_FUNCTION float   sConfig_GetMainDcPowerLimit         (void);
+
+CONFIG_LLC_FUNCTION void    sConfig_SetChgDcPowerLimit          (float Value);
+CONFIG_LLC_FUNCTION float   sConfig_GetChgDcPowerLimit          (void);
+
+CONFIG_LLC_FUNCTION void    sConfig_SetLimitDcPowerLimit        (float Value);
+CONFIG_LLC_FUNCTION float   sConfig_GetLimitDcPowerLimit        (void);
 
 CONFIG_LLC_FUNCTION void    sConfig_SetBatCurr                  (int Value);
 CONFIG_LLC_FUNCTION void    sConfig_SetBatVolt                  (int Value);

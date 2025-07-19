@@ -3,6 +3,8 @@
 static SOGI_t       t_SOGI;
 static BandStop_t   t_BandStop;
 
+#pragma CODE_SECTION(sSOGI_Cal, ".TI.ramfunc");
+
 void    sSOGI_Init(int PLL_Freq,unsigned long Cal_Freq,int Kp)
 {
     t_SOGI.i16PLLFs = PLL_Freq;

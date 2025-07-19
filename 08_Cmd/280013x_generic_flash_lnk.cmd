@@ -23,16 +23,16 @@ MEMORY
    FLASH_BANK0_SEC_16_23   : origin = 0x084000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_24_31   : origin = 0x086000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_32_39   : origin = 0x088000, length = 0x2000  /* on-chip Flash */
-   FLASH_BANK0_SEC_40_47   : origin = 0x08A000, length = 0x1000  /* on-chip Flash */
-
-   UART_DATABUFF           : origin = 0x08B000, length = 0x0100
-   UART_SAMPLEBUFF         : origin = 0x08B100, length = 0x0100
-   USER_PENDFLASH          : origin = 0x08B200, length = 0x0E00
-
+   FLASH_BANK0_SEC_40_47   : origin = 0x08A000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_48_55   : origin = 0x08C000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_56_63   : origin = 0x08E000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_64_71   : origin = 0x090000, length = 0x2000  /* on-chip Flash */
-   FLASH_BANK0_SEC_72_79   : origin = 0x092000, length = 0x2000  /* on-chip Flash */
+   FLASH_BANK0_SEC_72_79   : origin = 0x092000, length = 0x1000  /* on-chip Flash */
+   
+   UART_DATABUFF           : origin = 0x093000, length = 0x0100
+   UART_SAMPLEBUFF         : origin = 0x093100, length = 0x0100
+   USER_PENDFLASH          : origin = 0x093200, length = 0x0E00
+
    FLASH_BANK0_SEC_80_87   : origin = 0x094000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_88_95   : origin = 0x096000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_96_103  : origin = 0x098000, length = 0x2000  /* on-chip Flash */
@@ -47,7 +47,9 @@ SECTIONS
 {
    codestart        : > BEGIN
 
-   .text            : >> FLASH_BANK0_SEC_8_15 | FLASH_BANK0_SEC_16_23 | FLASH_BANK0_SEC_24_31, ALIGN(8)
+   .text            : >> FLASH_BANK0_SEC_8_15  | FLASH_BANK0_SEC_16_23 | FLASH_BANK0_SEC_24_31 | 
+                         FLASH_BANK0_SEC_32_39 | FLASH_BANK0_SEC_40_47 | FLASH_BANK0_SEC_48_55, ALIGN(8)
+   
 
    .cinit           : > FLASH_BANK0_SEC_0_7, ALIGN(8)
    .switch          : > FLASH_BANK0_SEC_0_7, ALIGN(8)
@@ -67,7 +69,7 @@ SECTIONS
 #else
    .pinit           : >> FLASH_BANK0_SEC_0_7, ALIGN(8)
    .ebss            : > RAMLS0
-   .econst          : >> FLASH_BANK0_SEC_32_39, ALIGN(8)
+   .econst          : >> FLASH_BANK0_SEC_0_7, ALIGN(8)
    .esysmem         : > RAMLS0
    .cio             : > RAMLS0
 #endif

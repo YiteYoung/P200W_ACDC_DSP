@@ -139,6 +139,7 @@ int     sConfig_GetInvSet(void)
     return t_InvConfig.t_Inv.i16VoltSet;
 }
 
+// =================================================================================== //
 void sConfig_PfcVoltCal(int BatVolt, int GridVolt, int BatCurr)
 {
     float f32TempA,f32DetaVolt;
@@ -173,3 +174,5 @@ int    sConfig_GetPfcSet(void)
 {
     return t_InvConfig.t_Pfc.i16PfcVoltSet;
 }
+
+

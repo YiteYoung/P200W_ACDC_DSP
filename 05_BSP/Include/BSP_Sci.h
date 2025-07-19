@@ -32,7 +32,7 @@ typedef enum
 
 BSP_SCI_FUNCTION   void             sInitSci            (void);
 BSP_SCI_FUNCTION    void            sSciRest            (unsigned int SCI_NO);
-BSP_SCI_FUNCTION    unsigned char   sSCiRxISR           (unsigned int SCI_NO, unsigned char *RxData);
+BSP_SCI_FUNCTION    unsigned char   sSciRxISR           (unsigned int SCI_NO, unsigned char *RxData);
 BSP_SCI_FUNCTION    void            sSciTxISR           (unsigned int SCI_NO);
 BSP_SCI_FUNCTION    unsigned char   sSciRead            (unsigned int SCI_NO, unsigned char *pBuff);
 BSP_SCI_FUNCTION    unsigned char   sSciWrite           (unsigned int SCI_NO, unsigned char *pStart, unsigned int TxLen);
