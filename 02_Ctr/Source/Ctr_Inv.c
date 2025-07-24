@@ -1100,3 +1100,17 @@ int     sInv_GetControlFsm(void)
 {
     return t_InvControl.t_Flag.InvFsm;
 }
+
+// float   sInv_GetInvDLoopRef(void)  { return (float)t_InvControl.t_Inv.t_PI.Volt_ID.i16Ref;      }
+// float   sInv_GetInvDLoopFed(void)  { return (float)t_InvControl.t_Inv.t_PI.Volt_ID.i16Fed;      }
+// float   sInv_GetInvDLoopErr(void)  { return (float)t_InvControl.t_Inv.t_PI.Volt_ID.i16Err;      }
+// float   sInv_GetInvDLoopOut(void)  { return (float)t_InvControl.t_Inv.t_PI.Volt_ID.i16PIOut;    }
+float   sInv_GetInvDLoopRef(void)  { return (float)111.222f;     }
+float   sInv_GetInvDLoopFed(void)  { return (float)333.444f;    }
+float   sInv_GetInvDLoopErr(void)  { return (float)555.666f;    }
+float   sInv_GetInvDLoopOut(void)  { return (float)777.888f;   }
+
+float   sInv_GetInvQLoopRef(void)  { return (float)t_InvControl.t_Inv.t_PI.Volt_IQ.i16Ref;      }
+float   sInv_GetInvQLoopFed(void)  { return (float)t_InvControl.t_Inv.t_PI.Volt_IQ.i16Fed;      }
+float   sInv_GetInvQLoopErr(void)  { return (float)t_InvControl.t_Inv.t_PI.Volt_IQ.i16Err;      }
+float   sInv_GetInvQLoopOut(void)  { return (float)t_InvControl.t_Inv.t_PI.Volt_IQ.i16PIOut;    }

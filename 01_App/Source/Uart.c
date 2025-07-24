@@ -3,6 +3,7 @@
 #pragma DATA_SECTION(t_UartSet,     ".UartSet_App");
 #pragma DATA_SECTION(sTxTable,      ".UartTable_App");
 #pragma DATA_SECTION(sSampleTable,  ".SampleTable_App");
+#pragma DATA_SECTION(sVofaTable,    ".VofaTable_App");
 
 static signed int   sGetNull    (void)
 {
@@ -43,6 +44,12 @@ volatile const pSampleData sSampleTable[cSAMPLE_FUNCTION_NUM] =
 {
     sAdc_Geti16Real,    sSample_GetRms,     sSample_GetNull,        sSample_GetNull,
     sSample_GetNull,    sSample_GetNull,    sSample_GetNull,        sSample_GetNull
+};
+
+typedef     float (*pVofaData)  (void);
+volatile const pVofaData sVofaTable[cVOFA_CHANEL_NUM] = 
+{
+    sInv_GetInvDLoopRef,    sInv_GetInvDLoopFed,     sInv_GetInvDLoopErr,        sInv_GetInvDLoopOut
 };
 
 typedef struct

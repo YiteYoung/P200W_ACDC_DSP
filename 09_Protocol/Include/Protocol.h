@@ -73,9 +73,14 @@
 #define     sCtl_CMD_REG_ADDR_OK(x)     ((x >= CTL_CMD_REG_START) && (x < CTL_CMD_REG_END))
 #define     DATA_TABLE_SIZE             50
 
-// 采样对象最大数值
+// 通过形参获取采样值的最大形参
 #define     cSAMPLE_DATA_NUM            10
+
+// 获取带形参型数据的函数数量(Table Size)
 #define     cSAMPLE_FUNCTION_NUM        8
+
+// 定义VOFA通道数
+#define     cVOFA_CHANEL_NUM             4
 
 typedef enum
 {
@@ -194,17 +199,22 @@ typedef enum
     eRxTx_RxCmd_Control,
     eRxTx_RxCmd_UpGrade,
     eRxTx_RxCmd_Reply,
+    eRxTx_RxCmd_Vofa,
 
     eRxTx_RxCmd_End
 }RxTx_RxCmd_e;
-
-
 
 typedef enum
 {
     eRxTx_ANS_OK    = 0xEEAA,
     eRXTX_ANS_NG    = 0x0000
 }RxTX_Ans_e;
+
+typedef union 
+{
+    float           f_Data;
+    unsigned int    byte[2];            // DSP最小存储16位,两字节
+}float_Data_u;
 
 typedef struct
 {
@@ -214,7 +224,8 @@ typedef struct
     unsigned int    WordPackOk  :1;     // 数据打包完成
     unsigned int    CrcCalEn    :1;     // crc计算使能
 
-    unsigned int    Resv        :11;    // Resv
+    unsigned int    VOFAEn      :1;     // VOFA使能
+    unsigned int    Resv        :10;    // Resv
 }RxTx_Flag_t;
 
 typedef union
@@ -259,7 +270,11 @@ typedef struct
     unsigned char   u8TxBuff[DATA_TX_BUFF_MAX];
 }RxTx_t;
 
-PROTOCOL_FUNCTION   void    sInitProtocol       (unsigned char SCI_NO, unsigned short bTxClrEn);
-PROTOCOL_FUNCTION   void    sSci_RxTxDeal       (unsigned char SCI_NO, unsigned char RxData);  
+PROTOCOL_FUNCTION   void            sInitProtocol       (unsigned char SCI_NO, unsigned short bTxClrEn);
+PROTOCOL_FUNCTION   void            sSci_RxTxDeal       (unsigned char SCI_NO, unsigned char RxData);
+PROTOCOL_FUNCTION   void            sSci_VofaTxDeal     (unsigned char SCI_NO);  
+
+PROTOCOL_FUNCTION   unsigned char   sSci_GetVofaEn      (void);
+PROTOCOL_FUNCTION   void            sSci_ClrVofaEn      (void);
 
 #endif

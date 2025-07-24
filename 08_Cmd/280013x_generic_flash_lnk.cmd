@@ -31,7 +31,8 @@ MEMORY
    
    UART_DATABUFF           : origin = 0x093000, length = 0x0100
    UART_SAMPLEBUFF         : origin = 0x093100, length = 0x0100
-   USER_PENDFLASH          : origin = 0x093200, length = 0x0E00
+   UART_VOFABUFF           : origin = 0x093200, length = 0x0100
+   USER_PENDFLASH          : origin = 0x093300, length = 0x0D00
 
    FLASH_BANK0_SEC_80_87   : origin = 0x094000, length = 0x2000  /* on-chip Flash */
    FLASH_BANK0_SEC_88_95   : origin = 0x096000, length = 0x2000  /* on-chip Flash */
@@ -110,6 +111,12 @@ SECTIONS
    {
       .SampleTable_App
       .SampleTable_Protocol
+   }
+
+   UNION            : > UART_VOFABUFF, ALIGN(8)
+   {
+      .VofaTable_App
+      .VofaTable_Protocol
    }
 
    UNION            : > UART_SETRAM, ALIGN(8)

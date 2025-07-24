@@ -25,5 +25,15 @@ void    sSciTask(void)
         {
             sSci_RxTxDeal(SCI_PORT_A,bRxData);
         }
+
+        if(sGetTime_20ms() == false)
+        {
+            return;
+        }
+
+        if(sSci_GetVofaEn() == true)
+        {
+            sSci_VofaTxDeal(SCI_PORT_A);
+        }
     }
 }

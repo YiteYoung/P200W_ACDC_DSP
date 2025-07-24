@@ -3,6 +3,7 @@
 #pragma DATA_SECTION(t_Set,         ".UartSet_Protocol");
 #pragma DATA_SECTION(sTxTable,      ".UartTable_Protocol");
 #pragma DATA_SECTION(sSampleTable,  ".SampleTable_Protocol");
+#pragma DATA_SECTION(sVofaTable,    ".VofaTable_Protocol");
 
 typedef struct
 {
@@ -30,10 +31,13 @@ typedef struct
 
 typedef                 signed int      (*pRxTxData)        (void);
 typedef                 signed int      (*pSampleData)      (int);
+typedef                 float           (*pVofaData)        (void);
 
 static                  RxTx_Set_t      t_Set;
 volatile static const   pRxTxData       sTxTable[DATA_TABLE_SIZE];
 volatile static const   pSampleData     sSampleTable[cSAMPLE_FUNCTION_NUM];
+volatile static const   pVofaData       sVofaTable[cVOFA_CHANEL_NUM];
+
 static                  RxTx_t          t_RxTx;
 
 
@@ -44,6 +48,9 @@ void                    sSci_GetData    (volatile RxTx_t *pRxTx);
 void                    sSci_SetData    (volatile RxTx_t *pRxTx);
 void                    sSci_Control    (volatile RxTx_t *pRxTx);
 void                    sSci_UpGrade    (volatile RxTx_t *pRxTx);
+
+void                    sSci_Vofa       (volatile RxTx_t *pRxTx);
+void                    sSci_VofaData   (volatile RxTx_t *pRxTx);
 
 static void             sAdd_Tx_Head    (volatile RxTx_t *pRxTx, RxTx_RxCmd_e eTxCmd);
 static void             sAdd_Crc        (volatile RxTx_t *pRxTx);
@@ -91,11 +98,6 @@ void    sInitProtocol(unsigned char SCI_NO, unsigned short bTxClrEn)
         pRxTx->t_RxData.u16Soi[i]       = 0;
     }
 
-    // for (i = 0; i < DATA_INFO_MAX; i++) 
-    // {
-    //     pRxTx->t_RxData.i16DataInfo[i]  = 0;
-    // }
-
     pRxTx->t_RxData.i16DataInfo         = 0;
 
     if(bTxClrEn == true)
@@ -122,11 +124,15 @@ void    sSci_RxTxDeal(unsigned char SCI_NO, unsigned char RxData)
         sSci_RxDeal(SCI_NO,RxData,pRxTx);
     }
 
-    // sSci_RxDeal函数将处理RxFrameOk标志位，不能用一个if分支，否则丢帧
-    if(pRxTx->RxTx_Flag.bit.RxFrameOk == true)
+    // sSci_RxDeal函数将处理RxFrameOk标志位，不能用一个if分支，否则丢帧    
+    if(pRxTx->RxTx_Flag.bit.RxFrameOk == true)    
     {
         sSci_TxDeal(SCI_NO,pRxTx);
     }
+    // else if(pRxTx->RxTx_Flag.bit.VOFAEn == true)
+    // {
+    //     sSci_VofaTxDeal(SCI_NO,pRxTx);
+    // }
 
     if( pRxTx->RxTx_Flag.bit.TxPackOk == true)
     {
@@ -340,6 +346,12 @@ void    sSci_RxDeal(unsigned char SCI_NO, unsigned char RxData, volatile RxTx_t 
                         pRxTx->RxTx_ErrCode     = eRxTx_Err_Reg;
                     }
                 }
+                else if(pRxTx->t_RxData.u16Cmd == eRxTx_RxCmd_Vofa)
+                {
+                    pRxTx->u16AscByteLen    = DATA_BYTE_NUM;
+                    pRxTx->u16WordPart      = DATA_PART_LO;
+                    pRxTx->RxTx_Status      = eRxTx_Data;
+                }
                 else
                 {
                     pRxTx->u16AscByteLen    = DATA_BYTE_NUM;
@@ -424,6 +436,10 @@ void    sSci_TxDeal(unsigned char SCI_NO, volatile RxTx_t *pRxTx)
             break;
 
         case eRxTx_RxCmd_Reply:
+            break;
+
+        case eRxTx_RxCmd_Vofa:
+            sSci_Vofa(pRxTx);
             break;
 
         default :
@@ -581,6 +597,77 @@ void    sSci_UpGrade(volatile RxTx_t *pRxTx)
     }
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data      ) & 0x00FF);
     pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data >> 8 ) & 0x00FF);
+}
+
+void    sSci_Vofa(volatile RxTx_t *pRxTx)
+{
+    unsigned int    u16Data;
+
+    pRxTx->u16TxBuffLen = 0;
+
+    if(pRxTx->t_RxData.i16Reg == 0x01)
+    {
+        t_RxTx.RxTx_Flag.bit.VOFAEn = true;
+    }
+    else if(pRxTx->t_RxData.i16Reg == 0x10)
+    {
+        pRxTx->RxTx_Flag.bit.VOFAEn = false;        
+    }
+
+    sAdd_Tx_Head(pRxTx, eRxTx_RxCmd_Vofa);
+
+    u16Data = eRxTx_ANS_OK;
+    if(pRxTx->RxTx_ErrCode == eRxTx_Err_Check)
+    {
+        u16Data = eRXTX_ANS_NG;
+    }
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data      ) & 0x00FF);
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((u16Data >> 8 ) & 0x00FF);
+}
+
+void    sSci_VofaData(volatile RxTx_t *pRxTx)
+{
+    // 使用JustFloat协议进行上位机示波器数据类型
+    float_Data_u    f32Data;
+    unsigned int    i;
+
+    pRxTx->u16TxBuffLen = 0;
+
+    for(i = 0; i < cVOFA_CHANEL_NUM; i++)
+    {
+        f32Data.f_Data = sVofaTable[i]();
+        pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((f32Data.byte[0]      ) & 0x00FF);
+        pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((f32Data.byte[0] >> 8 ) & 0x00FF);
+        pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((f32Data.byte[1]      ) & 0x00FF);
+        pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = (unsigned char)((f32Data.byte[1] >> 8 ) & 0x00FF);
+    }
+
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = 0x00;
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = 0x00;
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = 0x80;
+    pRxTx->u8TxBuff[pRxTx->u16TxBuffLen++]  = 0x7F;
+}
+
+void    sSci_VofaTxDeal(unsigned char SCI_NO)
+{
+    volatile RxTx_t *pRxTx;
+    pRxTx = &t_RxTx;
+
+    sSci_VofaData(pRxTx);
+
+    sSciWrite(SCI_NO,(unsigned char *)(pRxTx->u8TxBuff), pRxTx->u16TxBuffLen);
+
+    sInitProtocol(SCI_NO, false);    
+}
+
+unsigned char sSci_GetVofaEn(void)
+{
+    return( t_RxTx.RxTx_Flag.bit.VOFAEn );
+}
+
+void sSci_ClrVofaEn(void)
+{
+    t_RxTx.RxTx_Flag.bit.VOFAEn = false;
 }
 
 void    sAdd_Tx_Head(volatile RxTx_t *pRxTx,RxTx_RxCmd_e eTxCmd)

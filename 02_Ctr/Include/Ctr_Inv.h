@@ -186,4 +186,15 @@ CTR_INV_FUNCTION  int         sInv_GetPfcRef      (void);
 
 CTR_INV_FUNCTION  int         sInv_GetControlFsm  (void);
 
+CTR_INV_FUNCTION  float       sInv_GetInvDLoopRef (void);
+CTR_INV_FUNCTION  float       sInv_GetInvDLoopFed (void);
+CTR_INV_FUNCTION  float       sInv_GetInvDLoopErr (void);
+CTR_INV_FUNCTION  float       sInv_GetInvDLoopOut (void);
+
+CTR_INV_FUNCTION  float       sInv_GetInvQLoopRef (void);
+CTR_INV_FUNCTION  float       sInv_GetInvQLoopFed (void);
+CTR_INV_FUNCTION  float       sInv_GetInvQLoopErr (void);
+CTR_INV_FUNCTION  float       sInv_GetInvQLoopOut (void);
+
+
 #endif
